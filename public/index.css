@@ -1,0 +1,42 @@
+.socials {
+	font-size: 25pt;
+	color: gray;
+	position: relative;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+h6 {
+    text-align: center;
+}
+.devicons {
+	font-size: 25pt;
+	margin-bottom: 0;
+}
+a {
+	color: gray; 
+}
+p {
+    margin-bottom: 1em;
+}
+a.business-card {
+    text-decoration: none;
+}
+#profile-pic {
+	object-position: top !important;
+}
+
+video.fullscreen { 
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -100;
+	transform: translate(-50%, -50%);
+  }
+video.project {
+	box-sizing: inherit !important;
+	width: 100%;
+}
