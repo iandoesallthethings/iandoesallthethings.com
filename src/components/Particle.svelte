@@ -1,12 +1,13 @@
 <script lang="ts">
 	import ProjectCard from '$components/ProjectCard.svelte'
+	import { fade, fly, slide } from 'svelte/transition'
 
 	import float from '$lib/float'
 
 	export let particle
 </script>
 
-<div use:float class="particle">
+<div use:float class="particle" transition:fade>
 	<ProjectCard project={particle} />
 </div>
 

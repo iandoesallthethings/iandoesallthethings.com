@@ -9,12 +9,15 @@
 - [x] Make particles drift
 - [x] Refactor into svelte action
 - [x] Implement draggability
-- [ ] Make particles throwable (vector addition and scaling)
-- [ ] Put all particles on same noise field
+- [x] Put all particles on same noise field
+- [ ] Vary z by small amount for each particle to prevent bunching
+- [ ] Make particles throwable (vector addition and momentum scaling)
 - [ ] Visualize noise field? (maybe p5js?)
 
 ### Content
 - [x] Add thumbnails and dummy text to particles
+- [x] Filter displayed particles by field
+- [ ] Push focused particles toward the top?
 - [ ] Implement notion database backend
 - [ ] Curate and update projects
 - [ ] Write article for each project

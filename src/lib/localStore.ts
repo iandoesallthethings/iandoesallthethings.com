@@ -4,7 +4,10 @@ import { browser } from '$app/env'
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
-export default function localStore (key: string, initialValue: JsonValue): Writable<JsonValue> {
+export default function localStore<JsonValue> (
+	key: string,
+	initialValue: JsonValue
+): Writable<JsonValue> {
 	const store = writable(initialValue)
 
 	if (browser) {

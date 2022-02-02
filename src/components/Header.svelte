@@ -1,6 +1,7 @@
 <script lang="ts">
 	// import DarkModeSwitch from '$components/DarkModeSwitch.svelte'
 	import { focus } from '$lib/stores'
+	import { fix_and_destroy_block } from 'svelte/internal'
 	import { fade, fly } from 'svelte/transition'
 
 	let header
@@ -14,12 +15,15 @@
 		{
 			name: 'music',
 			description:
-				'Saxophonist, synth enthusiast, and member of the psychedelic dance act Partials.'
+				'Saxophonist, synth enthusiast, member of the psychedelic dance act Partials, maker of weird modular techno.'
 		},
 		{
 			name: 'education',
 			description:
 				'Private music teacher with Bachelor of Music in Music Education from the University of Georgia.'
+		},
+		{
+			name: 'all the things'
 		}
 	]
 
@@ -66,28 +70,30 @@
 
 	<div class="w-full flex justify-center items-center mx-10 flex-col items-center">
 		{#key $focus}
-			<div class="blurb" out:fly={{ y: -200, duration: 300 }} in:fly={{ y: 200, duration: 500 }}>
-				{fields.find((field) => field.name === $focus).description}
-			</div>
+			{#if fields.find((field) => field.name === $focus)?.description}
+				<div class="blurb" in:fly={{ y: -200, duration: 1000 }}>
+					{fields.find((field) => field.name === $focus).description}
+				</div>
+			{/if}
 		{/key}
 	</div>
 </header>
 
 <style>
 	header {
-		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row flex-wrap md:flex-nowrap items-start;
+		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row flex-wrap lg:flex-nowrap items-start;
 	}
 
 	nav {
-		@apply flex justify-between w-full min-w-fit text-xl space-x-4 whitespace-nowrap;
+		@apply flex justify-between w-full min-w-fit text-base md:text-xl space-x-2 md:space-x-4 whitespace-nowrap;
 	}
 
 	.blurb {
-		@apply flex justify-center text-center rounded-xl shadow-lg bg-sky-400 bg-opacity-50 p-5 max-w-prose;
+		@apply flex justify-center text-center rounded-xl shadow-md bg-sky-400 bg-opacity-50 p-5 max-w-prose;
 	}
 
 	input + span {
-		@apply text-xl cursor-pointer text-white px-2 py-1;
+		@apply cursor-pointer text-white px-2 py-1 text-base md:text-xl;
 	}
 	input:hover + span {
 		@apply bg-white bg-opacity-10 rounded-md shadow-sm;

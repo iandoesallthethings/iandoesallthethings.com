@@ -74,6 +74,12 @@ export default [
 		display: true
 	},
 	{
+		name: 'iandoesallthethings.com',
+		title: 'iandoesallthethings.com',
+		field: 'development',
+		display: true
+	},
+	{
 		name: 'modular',
 		title: 'The Rhizome: A Modular Synthesizer',
 		field: 'development',

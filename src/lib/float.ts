@@ -1,9 +1,10 @@
+import { browser } from '$app/env'
 import { Noise } from 'noisejs'
 
 type Angle = number // in Degrees
 type XComponent = number
 type YComponent = number
-type Coordinate = { x: number; y: number; z?: number }
+type Coordinate = { x: number; y: number }
 type Components = { x: XComponent; y: YComponent }
 type Vector = { direction: Angle; magnitude: number }
 
@@ -14,7 +15,6 @@ interface SvelteAction {
 
 interface FloatOptions {
 	pool?: HTMLElement
-	noise?
 }
 
 function wrap (num: number, min: number, max: number): number {
@@ -27,6 +27,10 @@ function clamp (num: number, min: number, max: number): number {
 
 function randomIntBetween (min: number, max: number): number {
 	return Math.floor(Math.random() * (max - min) + min)
+}
+
+function randomBetween (min: number, max: number) {
+	return Math.random() * (max - min) + min
 }
 
 function round (num: number, digits: number): number {
@@ -45,8 +49,7 @@ function cosDegrees (degrees: Angle): XComponent {
 function addVectorToCoordinate (coordinate: Coordinate, vector: Vector): Coordinate {
 	return {
 		x: coordinate.x + vector.magnitude * cosDegrees(vector.direction),
-		y: coordinate.y + vector.magnitude * sinDegrees(vector.direction),
-		z: coordinate.z
+		y: coordinate.y + vector.magnitude * sinDegrees(vector.direction)
 	}
 }
 
@@ -83,16 +86,28 @@ function pointerPosition (e, relativeNode) {
 	}
 }
 
+const noise = new Noise(Math.E)
+let z = Math.random()
+
+function flow () {
+	z = Math.random()
+	console.log('flow changed')
+
+	// setTimeout(flow, Math.floor(Math.random() * 1000))
+	if (browser) setTimeout(() => requestAnimationFrame(flow), randomIntBetween(5000, 10000))
+}
+flow()
+
 export default function float (
 	particle: HTMLElement,
 	options?: FloatOptions | undefined
 ): SvelteAction {
 	let pool = options?.pool || (particle.parentNode as HTMLElement)
-	let noise = options?.noise || new Noise(Math.random())
 
 	let position: Coordinate = randomCoordinate()
 	let momentum: Vector = { direction: 0, magnitude: 0 } // Degrees and pixels
 	let handle: Coordinate = { x: 0, y: 0 }
+	let zOffset = randomBetween(-0.1, 0.1)
 	let dragging = false
 	let cooldown = 0
 
@@ -104,12 +119,8 @@ export default function float (
 		return randomIntBetween(0, pool.getBoundingClientRect().height)
 	}
 
-	function randomZ (): number {
-		return Math.random()
-	}
-
 	function randomCoordinate (): Coordinate {
-		return clampToContainer({ x: randomX(), y: randomY(), z: randomZ() })
+		return clampToContainer({ x: randomX(), y: randomY() })
 	}
 
 	function clampToContainer (coordinate: Coordinate): Coordinate {
@@ -118,36 +129,36 @@ export default function float (
 
 		return {
 			x: clamp(coordinate.x, 0, poolRect.width - particleRect.width),
-			y: clamp(coordinate.y, 0, poolRect.height - particleRect.width),
-			z: coordinate.z
+			y: clamp(coordinate.y, 0, poolRect.height - particleRect.width)
 		}
 	}
 
 	function flowDirection (coordinate: Coordinate): Angle {
-		const noiseValue = noise.perlin3(coordinate.x / 1000, coordinate.y / 1000, coordinate.z)
+		const noiseValue = noise.perlin3(coordinate.x / 1000, coordinate.y / 1000, z + zOffset)
 		return clamp(noiseValue * 360 + 180, 0, 360)
 	}
 
 	function drift () {
 		if (momentum.magnitude <= 0) push()
 
+		momentum.direction = flowDirection(position)
 		// Idea from Thomas: Scale the influence of the perlin flow on direction to 1/magnitude
 		// momentum = addVectors(momentum, {
 		// 	direction: flowDirection(position),
-		// 	magnitude: momentum.magnitude - 0.005
+		// 	magnitude: 1 * (1 / momentum.magnitude)
 		// })
-		momentum = {
-			direction: flowDirection(position),
-			magnitude: momentum.magnitude - 0.005
-		}
 
 		updatePosition(addVectorToCoordinate(position, momentum))
+
+		applyFriction()
+	}
+	function applyFriction (amount = 0.005) {
+		momentum.magnitude -= amount
 	}
 
 	function push () {
 		if (cooldown > 0) return cooldown--
 
-		position.z = Math.random() * 10
 		momentum.magnitude = Math.random() + 0.5
 		setCooldown()
 	}
@@ -165,6 +176,7 @@ export default function float (
 	function dragEnd (e) {
 		dragging = false
 		particle.releasePointerCapture(e.pointerId)
+		// momentum.magnitude = 0
 		setCooldown()
 	}
 
@@ -196,11 +208,10 @@ export default function float (
 		if (!dragging) return
 		const newPosition = pointerPosition(e, pool)
 
-		// updateMomentum(lastPosition, newPosition)
+		// updateMomentum(lastPosition, newPosition) // Makes them throwable kiiiiiiinda!
 		updatePosition({
 			x: newPosition.x - handle.x,
-			y: newPosition.y - handle.y,
-			z: position.z
+			y: newPosition.y - handle.y
 		})
 	}
 
@@ -215,12 +226,12 @@ export default function float (
 		if (!dragging) drift()
 		setTimeout(() => requestAnimationFrame(run), 10)
 	}
+
 	run()
 
 	return {
 		update (newOptions) {
 			pool = newOptions.pool || pool
-			noise = newOptions.noise || noise
 		},
 		destroy () {
 			particle.removeEventListener('pointerdown', dragStart)

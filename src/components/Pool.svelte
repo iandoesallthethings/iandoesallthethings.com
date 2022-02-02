@@ -1,12 +1,15 @@
 <script lang="ts">
 	import Particle from '$components/Particle.svelte'
+	import { focus } from '$lib/stores'
 
 	export let particles
 </script>
 
 <figure>
 	{#each particles as particle}
-		<Particle {particle} />
+		{#if particle.field === $focus || $focus === 'all the things'}
+			<Particle {particle} />
+		{/if}
 	{/each}
 
 	<!-- <div class="divider" /> -->
