@@ -18,6 +18,6 @@
 
 <style>
 	main {
-		@apply absolute top-0 left-0 w-full h-full;
+		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500;
 	}
 </style>

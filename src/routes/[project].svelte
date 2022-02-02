@@ -10,11 +10,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	export let project
+
+	function close() {
+		goto('/')
+	}
 </script>
 
 <div class="wrapper">
-	<div on:click={() => goto('/')} class="overlay" />
-	<div class="page">
+	<div on:click={close} class="overlay" />
+
+	<article class="page">
 		<h1 class="text-blue-300">{project.title}</h1>
 		<p>
 			A bunch of text goes here n junk. I'm too lazy to copy Lorem ipsum dolor sit amet, ad ullum
@@ -40,7 +45,7 @@
 		</p>
 
 		<a href={project.link} class="text-blue-300" target="_blank">See it here!</a>
-	</div>
+	</article>
 </div>
 
 <style>
@@ -53,6 +58,6 @@
 	}
 
 	.page {
-		@apply bg-white max-w-prose min-w-min z-50 h-min rounded-2xl p-5 space-y-4 shadow-2xl;
+		@apply bg-white max-w-prose min-w-min max-h-screen overflow-y-scroll z-50 h-min rounded-2xl p-5 m-5 space-y-4 shadow-2xl;
 	}
 </style>
