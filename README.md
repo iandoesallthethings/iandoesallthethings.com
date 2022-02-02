@@ -1,45 +1,38 @@
-# svelte app
+# create-svelte
 
-This is a personal portfolio built in [Svelte](https://svelte.dev). It lives at https://github.com/iandoesallthethings/denkyuu.io.
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
 
-## Get started
+## Creating a project
 
-Install the dependencies...
-
-```bash
-yarn install
-```
-
-...then start [Rollup](https://rollupjs.org):
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-yarn dev
+# create a new project in the current directory
+npm init svelte@next
+
+# create a new project in my-app
+npm init svelte@next my-app
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). 
+> Note: the `@next` is temporary
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+## Developing
 
-## Building and running in production mode
-
-To create an optimised version of the app:
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-yarn build
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-You can run the newly built app with `yarn start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
+## Building
 
-## Running in dev mode
+Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
 
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for _any_ path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
+```bash
+npm run build
 ```
 
-## Deploying to the web
-
-This site is geared towards simple static hosting such as firebase or s3. Just stick the public directory into whatever cli you like best. The `yarn deploy` script builds and syncs changes to my s3 bucket.
+> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
