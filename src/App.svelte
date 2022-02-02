@@ -9,6 +9,7 @@
   import { darkMode } from './stores.js'
 
   export let allProjects
+  // export let testPage
 
   let currentPage = null
   let video
@@ -37,6 +38,8 @@
 </script>
 
 <svelte:window on:load={changePage} on:hashchange={changePage} />
+
+<!-- {@html testPage} -->
 
 <div id="page">
   <aside on:click={toggleVideo}>

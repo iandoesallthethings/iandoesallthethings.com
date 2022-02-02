@@ -4,8 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w ",
-    "start": "sirv public --single --host 0.0.0.0",
-    "s3-sync": "aws s3 sync public s3://iandoesallthethings.com",
+    "start": "sirv public --single --host",
+    "s3-sync": "aws s3 sync public s3://site-iandoesallthethings.com-contents --profile=ian",
     "deploy": "yarn build && yarn s3-sync"
   },
   "devDependencies": {

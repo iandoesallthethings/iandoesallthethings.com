@@ -1,14 +1,23 @@
 import App from './App.svelte'
 import allProjects from './projects.js'
 
-const fetchProjects = () => {
-  // Pull from db or notion or whatever here! :D
-  return allProjects
+// Potion Endpoints
+// https://potion-api.now.sh/html?id=:id
+// https://potion-api.now.sh/table?id=:id
+// https://potion-api.now.sh/table-description?id=:id
+
+const preload = async () => {
+  // const response = await fetch(
+  //   'https://potion-api.now.sh/html?id=b9469cf4c6a244b3aa58be8dd3996467'
+  // )
+
+  // const text = await response.text()
+
+  return new App({
+    target: document.body,
+    // props: { allProjects, testPage: text },
+    props: { allProjects },
+  })
 }
 
-const app = new App({
-  target: document.body,
-  props: { allProjects: fetchProjects() },
-})
-
-export default app
+export default preload()
