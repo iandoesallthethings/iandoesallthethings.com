@@ -4,6 +4,7 @@
 
 	import Header from '$components/Header.svelte'
 	import Pool from '$components/Pool.svelte'
+	import Konami from '$components/Konami.svelte'
 
 	import projects from '$lib/projects'
 </script>
@@ -16,8 +17,10 @@
 	<slot />
 </main>
 
+<Konami />
+
 <style>
 	main {
-		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500;
+		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500 overflow-hidden;
 	}
 </style>

@@ -54,10 +54,10 @@
 	}
 
 	.overlay {
-		@apply absolute top-0 left-0 w-full h-full flex justify-center items-center z-40 cursor-pointer;
+		@apply absolute top-0 left-0 w-full h-full flex justify-center items-center z-30 cursor-pointer;
 	}
 
 	.page {
-		@apply bg-white max-w-prose min-w-min max-h-screen overflow-y-scroll z-50 h-min rounded-2xl p-5 m-5 space-y-4 shadow-2xl;
+		@apply bg-white max-w-prose min-w-min max-h-screen overflow-y-scroll z-40 h-min rounded-2xl p-5 m-5 space-y-4 shadow-2xl;
 	}
 </style>

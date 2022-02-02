@@ -1,7 +1,7 @@
 <script lang="ts">
-	import DarkModeSwitch from '$components/DarkModeSwitch.svelte'
+	// import DarkModeSwitch from '$components/DarkModeSwitch.svelte'
 	import { focus } from '$lib/stores'
-	import { fade } from 'svelte/transition'
+	import { fade, fly } from 'svelte/transition'
 
 	let header
 
@@ -64,9 +64,9 @@
 		</nav>
 	</div>
 
-	<div class="w-full flex justify-center items-center">
+	<div class="w-full flex justify-center items-center mx-10 flex-col items-center">
 		{#key $focus}
-			<div class="blurb" in:typewriter={{ speed: 5 }}>
+			<div class="blurb" out:fly={{ y: -200, duration: 300 }} in:fly={{ y: 200, duration: 500 }}>
 				{fields.find((field) => field.name === $focus).description}
 			</div>
 		{/key}
@@ -75,7 +75,7 @@
 
 <style>
 	header {
-		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row;
+		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row flex-wrap md:flex-nowrap items-start;
 	}
 
 	nav {
