@@ -24,9 +24,10 @@ export async function get (): Promise<Partial<Response>> {
 			const image = dbPage.properties.image?.files[0]?.file.url
 			const video = dbPage.properties.video?.files[0]?.file.url
 			const fields = dbPage.properties.fields.multi_select.map(f => f.name)
+			const link = dbPage.properties.link.url
 			const page = await notion.blocks.children.list({ block_id: dbPage.id })
 
-			return { name, route, fields, image, video, page }
+			return { name, route, fields, image, video, link, page }
 		})
 
 	const db = {

@@ -3,7 +3,7 @@
 	import { get } from 'svelte/store'
 	import dbStore from '$lib/localDb'
 
-	export async function load({ params }) {
+	export async function load({ fetch, params }) {
 		if (browser) {
 			const cachedDb = get(dbStore)
 			if (cachedDb)
@@ -17,6 +17,7 @@
 
 		const res = await fetch(`/notion.json`)
 		const db = await res.json()
+
 		return {
 			props: {
 				db,
@@ -48,4 +49,8 @@
 	<h1>{project?.name}</h1>
 
 	{@html project.page ? parsePage(project?.page) : ''}
+
+	{#if project.link}
+		<a href={project.link} target="_blank">Link</a>
+	{/if}
 </Page>
