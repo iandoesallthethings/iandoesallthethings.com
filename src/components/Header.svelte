@@ -64,6 +64,6 @@
 		@apply bg-white bg-opacity-10 rounded-md shadow-sm;
 	}
 	input:checked + span {
-		@apply font-bold;
+		@apply font-bold drop-shadow-md;
 	}
 </style>

@@ -24,7 +24,7 @@
 
 <style>
 	aside {
-		@apply relative bg-cover w-full h-full flex justify-center items-center overflow-hidden shadow-md cursor-pointer;
+		@apply z-50 relative bg-cover w-52 h-full flex justify-center items-center overflow-hidden shadow-md cursor-pointer;
 		background-image: url(/images/saxloop-frame2.png);
 		background-position: -90%;
 	}

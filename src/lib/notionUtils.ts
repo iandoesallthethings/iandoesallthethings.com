@@ -45,8 +45,8 @@ export function parsePage (page): string {
 		// code blocks
 		// video embeds??
 		// Lists (ordered and unordered)
+		// Todo list (checkboxes)
 	})
-	console.log(blocks)
 
 	return `<span>${blocks.join('')}</span>`
 }

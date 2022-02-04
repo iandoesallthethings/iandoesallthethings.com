@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte'
 	import { fade, fly, slide } from 'svelte/transition'
 	import float from '$lib/float'
+
+	const dispatch = createEventDispatcher()
 </script>
 
-<div use:float class="particle" transition:fade>
+<div use:float on:dragstart={() => dispatch('dragstart')} class="particle" transition:fade>
 	<slot />
 </div>
 

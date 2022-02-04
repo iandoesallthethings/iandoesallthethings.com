@@ -5,6 +5,7 @@
 
 	import { focus } from '$lib/stores'
 	import localDb from '$lib/localDb'
+	import { logLevelSeverity } from '@notionhq/client/build/src/logging'
 
 	let projects = []
 	onMount(() => {
@@ -20,8 +21,6 @@
 			</Particle>
 		{/if}
 	{/each}
-
-	<!-- <div class="divider" /> -->
 </figure>
 
 <style>
@@ -32,10 +31,5 @@
 		-moz-user-select: none;
 		-o-user-select: none;
 		user-select: none;
-	}
-
-	.divider {
-		@apply absolute border border-black w-full;
-		top: 400px;
 	}
 </style>

@@ -11,6 +11,7 @@
 - [x] Implement draggability
 - [x] Put all particles on same noise field
 - [x] Vary z by small amount for each particle to prevent bunching
+- [ ] Pop clicked particles to the top
 - [ ] Make particles throwable (vector addition and momentum scaling)
 - [ ] Push focused particles toward the top? (i.e. pass in `target` and push toward it)
 - [ ] Visualize noise field? (maybe p5js?)
@@ -27,8 +28,7 @@
 - [ ] Merge and Deploy!!
 
 ### Bugs
-- [ ] Build better db store caching so going back to `/` doesn't take so long
-- [ ] 
+- [ ] Animations opening pages are jerky and weird
 
 ## Developing
 

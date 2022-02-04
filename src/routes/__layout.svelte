@@ -8,6 +8,7 @@
 
 	import projects from '$lib/projects'
 	import Footer from '$components/Footer.svelte'
+	import Obi from '$components/Obi.svelte'
 </script>
 
 <main class={$darkMode ? 'dark' : ''}>
@@ -18,9 +19,9 @@
 	<slot />
 
 	<Footer />
-</main>
 
-<Konami />
+	<Konami />
+</main>
 
 <style>
 	main {

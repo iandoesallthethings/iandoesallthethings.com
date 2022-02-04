@@ -167,9 +167,10 @@ export default function float (
 	}
 
 	function dragStart (e) {
+		particle.dispatchEvent(new CustomEvent('dragstart'))
 		dragging = true
 		handle = pointerPosition(e, particle)
-		setTimeout(() => particle.setPointerCapture(e.pointerId), 50)
+		setTimeout(() => particle.setPointerCapture(e.pointerId), 100)
 	}
 
 	function dragEnd (e) {
