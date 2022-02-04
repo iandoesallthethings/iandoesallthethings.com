@@ -1,4 +1,5 @@
 import localStore from '$lib/localStore'
+import { writable } from 'svelte/store'
 
 const focus = localStore<'development' | 'music' | 'education' | 'all the things'>(
 	'focus',

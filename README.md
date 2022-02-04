@@ -4,27 +4,31 @@
 
 ## TODO
 
-### Float.ts
+### Float.ts features
 - [x] Implement perlin noise field
 - [x] Make particles drift
 - [x] Refactor into svelte action
 - [x] Implement draggability
 - [x] Put all particles on same noise field
-- [ ] Vary z by small amount for each particle to prevent bunching
+- [x] Vary z by small amount for each particle to prevent bunching
 - [ ] Make particles throwable (vector addition and momentum scaling)
+- [ ] Push focused particles toward the top? (i.e. pass in `target` and push toward it)
 - [ ] Visualize noise field? (maybe p5js?)
 
 ### Content
 - [x] Add thumbnails and dummy text to particles
 - [x] Filter displayed particles by field
-- [ ] Push focused particles toward the top?
-- [ ] Implement notion database backend
+- [x] Implement notion database backend
 - [ ] Curate and update projects
 - [ ] Write article for each project
 
 ### Infrastructure
 - [ ] Build pipeline
 - [ ] Merge and Deploy!!
+
+### Bugs
+- [ ] Build better db store caching so going back to `/` doesn't take so long
+- [ ] 
 
 ## Developing
 

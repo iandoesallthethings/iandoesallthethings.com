@@ -4,21 +4,23 @@
 	export let project
 
 	function open() {
-		console.log('clicked')
-		goto(`/${project.name}`)
+		goto(`/${project.route}`)
 	}
 </script>
 
 <article on:click={open}>
 	{#if project.video}
-		<video class="w-full" src={project.video} alt={project.title} autoplay muted loop playsInline />
+		<video class="w-full" src={project.video} alt={project.name} autoplay muted loop playsInline />
 	{:else}
-		<img src={project.image || 'images/maybe.gif'} alt={project.title} />
+		<img src={project.image || 'images/maybe.gif'} alt={project.name} />
 	{/if}
-	<div class="text-white">{project.title}</div>
+	<div class="text-white text-sm">{project.name}</div>
 </article>
 
 <style>
+	article {
+		@apply bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden;
+	}
 	img {
 		-webkit-user-drag: none;
 		-khtml-user-drag: none;

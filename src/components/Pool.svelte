@@ -1,14 +1,23 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import Particle from '$components/Particle.svelte'
-	import { focus } from '$lib/stores'
+	import ProjectCard from './ProjectCard.svelte'
 
-	export let particles
+	import { focus } from '$lib/stores'
+	import localDb from '$lib/localDb'
+
+	let projects = []
+	onMount(() => {
+		projects = $localDb.projects
+	})
 </script>
 
 <figure>
-	{#each particles as particle}
-		{#if particle.field === $focus || $focus === 'all the things'}
-			<Particle {particle} />
+	{#each projects as project}
+		{#if project.fields.includes($focus) || $focus === 'all the things'}
+			<Particle>
+				<ProjectCard {project} />
+			</Particle>
 		{/if}
 	{/each}
 

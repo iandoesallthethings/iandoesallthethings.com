@@ -24,6 +24,15 @@
 		'Enter'
 	]
 
+	const contra = `
+	             _             
+                | |            
+  ___ ___  _ __ | |_ _ __ __ _ 
+ / __/ _ \\| '_ \\| __| '__/ _' |
+| (_| (_) | | | | |_| | | (_| |
+ \\___\\___/|_| |_|\\__|_|  \\__,_|
+`
+
 	const konami = (e) => {
 		if (!playing) {
 			lastElevenKeyCodes.push(e.key)
@@ -31,6 +40,7 @@
 
 			if (JSON.stringify(lastElevenKeyCodes) === JSON.stringify(konamiCode)) {
 				console.log('O SHIIIIIIIIT')
+				console.log(contra)
 				toggleFireworks()
 			}
 		} else {
@@ -61,6 +71,7 @@
 </script>
 
 <svelte:window on:keydown={konami} />
+
 {#if playing}
 	<i
 		class="close far fa-times-circle"

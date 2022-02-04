@@ -13,14 +13,15 @@
 <main class={$darkMode ? 'dark' : ''}>
 	<Header />
 
-	<Pool particles={projects} />
+	<Pool />
 
 	<slot />
+
+	<Footer />
 </main>
 
 <Konami />
 
-<!-- <Footer /> -->
 <style>
 	main {
 		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500 overflow-hidden;

@@ -4,7 +4,6 @@
 	let copied
 
 	const copyEmail = () => {
-		console.debug('clicked')
 		const textArea = document.createElement('textarea')
 		textArea.value = 'ianDoesAllTheThings@gmail.com'
 		document.body.appendChild(textArea)

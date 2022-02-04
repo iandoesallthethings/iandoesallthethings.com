@@ -91,7 +91,6 @@ let z = Math.random()
 
 function flow () {
 	z = Math.random()
-	console.log('flow changed')
 
 	// setTimeout(flow, Math.floor(Math.random() * 1000))
 	if (browser) setTimeout(() => requestAnimationFrame(flow), randomIntBetween(5000, 10000))
@@ -170,7 +169,7 @@ export default function float (
 	function dragStart (e) {
 		dragging = true
 		handle = pointerPosition(e, particle)
-		setTimeout(() => particle.setPointerCapture(e.pointerId), 100)
+		setTimeout(() => particle.setPointerCapture(e.pointerId), 50)
 	}
 
 	function dragEnd (e) {

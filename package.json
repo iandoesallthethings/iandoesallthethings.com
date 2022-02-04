@@ -2,7 +2,7 @@
 	"name": "denkyuu.io",
 	"version": "3.0.0",
 	"scripts": {
-		"dev": "svelte-kit dev",
+		"dev": "svelte-kit dev --host",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
@@ -34,6 +34,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fortawesome/fontawesome-free": "^5.15.4"
+		"@fortawesome/fontawesome-free": "^5.15.4",
+		"@notionhq/client": "^0.4.13",
+		"dotenv": "^16.0.0",
+		"envenc": "^1.0.1"
 	}
 }

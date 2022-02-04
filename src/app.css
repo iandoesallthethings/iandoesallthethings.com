@@ -11,6 +11,10 @@ body {
 	@apply h-screen w-screen text-gray-800;
 }
 
+.code {
+	@apply font-mono text-sm bg-gray-500 bg-opacity-40 rounded-md p-1;
+}
+
 h1,
 h2,
 h3,

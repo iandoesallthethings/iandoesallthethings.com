@@ -5,7 +5,6 @@
 	function toggleVideo() {
 		video.paused ? video.play() : video.pause()
 		paused = video.paused
-		console.log(video.paused)
 	}
 </script>
 

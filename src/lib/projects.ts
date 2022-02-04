@@ -35,13 +35,6 @@ export default [
 		display: true
 	},
 	{
-		name: 'heiheihadet',
-		title: 'Hei Hei Ha Det',
-		field: 'music',
-		link: 'http://partialsband.com',
-		display: false
-	},
-	{
 		name: 'lessons',
 		title: 'PartialsHaus Studios',
 		field: 'education',
