@@ -1,5 +1,8 @@
 import { browser } from '$app/env'
-import { Noise } from 'noisejs'
+// import { Noise } from 'noisejs'
+// This is a weird commonjs shim
+import pkg from 'noisejs'
+const { Noise } = pkg
 
 type Angle = number // in Degrees
 type XComponent = number
