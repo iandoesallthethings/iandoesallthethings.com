@@ -11,7 +11,7 @@
 <div
 	use:float
 	bind:this={particle}
-	on:click={() => floatToTop(particle)}
+	on:pointerdown={() => floatToTop(particle)}
 	class="particle"
 	transition:fade
 >
