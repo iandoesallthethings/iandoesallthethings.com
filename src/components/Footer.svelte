@@ -22,4 +22,8 @@
 	footer {
 		@apply absolute bottom-0 flex justify-start p-3 space-x-2;
 	}
+
+	a {
+		@apply cursor-pointer;
+	}
 </style>

@@ -1,14 +1,11 @@
 <script>
 	import '../app.css'
 	import { darkMode, focus } from '$lib/stores'
-
 	import Header from '$components/Header.svelte'
 	import Pool from '$components/Pool.svelte'
 	import Konami from '$components/Konami.svelte'
-
-	import projects from '$lib/projects'
 	import Footer from '$components/Footer.svelte'
-	import Obi from '$components/Obi.svelte'
+	// import Obi from '$components/Obi.svelte'
 </script>
 
 <main class={$darkMode ? 'dark' : ''}>

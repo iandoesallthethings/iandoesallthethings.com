@@ -2,13 +2,19 @@
 	import { goto } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
+	import { onMount } from 'svelte'
+	import floatToTop from '$lib/floatToTop'
 
 	function close() {
 		goto('/')
 	}
+
+	let page
+
+	onMount(() => floatToTop(page))
 </script>
 
-<div class="wrapper">
+<div bind:this={page} class="wrapper">
 	<article use:clickOutside on:outclick={close} transition:slide class="page">
 		<slot />
 	</article>

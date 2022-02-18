@@ -1,18 +1,26 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 	import { fade, fly, slide } from 'svelte/transition'
+	import floatToTop from '$lib/floatToTop'
 	import float from '$lib/float'
-
 	const dispatch = createEventDispatcher()
+
+	let particle
 </script>
 
-<div use:float on:dragstart={() => dispatch('dragstart')} class="particle" transition:fade>
+<div
+	use:float
+	bind:this={particle}
+	on:click={() => floatToTop(particle)}
+	class="particle"
+	transition:fade
+>
 	<slot />
 </div>
 
 <style>
 	.particle {
-		@apply absolute z-10 cursor-pointer;
+		@apply absolute cursor-pointer;
 		touch-action: none;
 	}
 </style>

@@ -2,12 +2,12 @@
 	import { onMount } from 'svelte'
 	import Particle from '$components/Particle.svelte'
 	import ProjectCard from './ProjectCard.svelte'
+	import type { Project } from '$lib/types'
 
 	import { focus } from '$lib/stores'
 	import localDb from '$lib/localDb'
-	import { logLevelSeverity } from '@notionhq/client/build/src/logging'
 
-	let projects = []
+	let projects: Project[] = []
 	onMount(() => {
 		projects = $localDb.projects
 	})

@@ -32,13 +32,14 @@
 	import Page from '$components/Page.svelte'
 	import localDb from '$lib/localDb'
 	import { parsePage } from '$lib/notionUtils'
+	import type { Project } from '$lib/types'
 
 	export let db
 	export let projectRoute
 
 	$localDb = db
 
-	$: project = {}
+	let project: Project = {}
 
 	onMount(() => {
 		project = $localDb.projects.find((p) => p.route === projectRoute)
@@ -46,11 +47,17 @@
 </script>
 
 <Page>
-	<h1>{project?.name}</h1>
+	{#if project}
+		<h1>{project?.name}</h1>
 
-	{@html project.page ? parsePage(project?.page) : ''}
+		{@html project.page ? parsePage(project?.page) : ''}
 
-	{#if project.link}
-		<a href={project.link} target="_blank">Link</a>
+		{#if project.link}
+			<a href={project.link} target="_blank">Link</a>
+		{/if}
+	{:else}
+		<h1>404'd!</h1>
+
+		<img src="images/404d.png" alt="404'd!" class="rounded-lg my-2" />
 	{/if}
 </Page>
