@@ -2,6 +2,8 @@
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/iandoesallthethings/denkyuu.io)
 
+![GitHub deployments](https://img.shields.io/github/deployments/iandoesallthethings/denkyuu.io/production?label=production&logo=vercel)
+
 ## TODO
 
 ### Float.ts features
@@ -11,7 +13,7 @@
 - [x] Implement draggability
 - [x] Put all particles on same noise field
 - [x] Vary z by small amount for each particle to prevent bunching
-- [ ] Pop clicked particles to front
+- [x] Pop clicked particles to front
 - [ ] Make particles throwable (vector addition and momentum scaling)
 - [ ] Push focused particles toward the top? (i.e. pass in `target` and push toward it)
 - [ ] Visualize noise field? (maybe p5js?)
@@ -24,8 +26,8 @@
 - [ ] Write article for each project
 
 ### Infrastructure
-- [ ] Build pipeline
-- [ ] Merge and Deploy!!
+- [x] Build pipeline
+- [x] Merge and Deploy!!
 
 ### Bugs
 - [ ] Animations opening pages are jerky and weird
