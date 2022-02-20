@@ -29,10 +29,11 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import Page from '$components/Page.svelte'
-	import localDb from '$lib/localDb'
-	import { parsePage } from '$lib/notionUtils'
 	import type { Project } from '$lib/types'
+
+	import Page from '$components/Page.svelte'
+
+	import localDb from '$lib/localDb'
 
 	export let db
 	export let projectRoute
@@ -48,13 +49,17 @@
 
 <Page>
 	{#if project}
-		<h1>{project?.name}</h1>
+		<header class="flex flex-row items-center justify-between space-x-10">
+			<h1>{@html project.name}</h1>
 
-		{@html project.page ? parsePage(project?.page) : ''}
+			{#if project.link}
+				<a href={project.link} target="_blank" class="px-3 py-2 rounded-md hover:bg-white/20">
+					<i class="fas fa-external-link-alt" />
+				</a>
+			{/if}
+		</header>
 
-		{#if project.link}
-			<a href={project.link} target="_blank">Link</a>
-		{/if}
+		{@html project.page}
 	{:else}
 		<h1>404'd!</h1>
 

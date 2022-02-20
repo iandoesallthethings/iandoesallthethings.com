@@ -24,7 +24,9 @@
 		<img src={project.image || 'images/maybe.gif'} alt={project.name} />
 	{/if}
 
-	<div class="text-white text-sm">{project.name}</div>
+	<div class="text-white text-sm">
+		{@html project.name}
+	</div>
 </article>
 
 <style>

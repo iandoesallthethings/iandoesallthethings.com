@@ -12,7 +12,19 @@ body {
 }
 
 .code {
-	@apply font-mono text-sm bg-gray-500 bg-opacity-40 rounded-md p-1;
+	@apply font-mono text-sm bg-gray-500/40 rounded-md p-1;
+}
+
+.codeblock {
+	@apply font-mono text-sm bg-gray-500/40 rounded-md p-2;
+}
+
+.callout {
+	@apply flex flex-row space-x-2 bg-gray-500/40 rounded-md p-2;
+}
+
+figcaption {
+	@apply text-sm text-gray-500;
 }
 
 h1,

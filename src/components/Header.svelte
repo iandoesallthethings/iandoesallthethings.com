@@ -1,16 +1,16 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { focus } from '$lib/stores'
 	import { fade, fly } from 'svelte/transition'
 	import type { Field } from '$lib/types'
+
 	import localDb from '$lib/localDb'
-	import { onMount } from 'svelte'
-	import { parseRichText } from '$lib/notionUtils'
 
 	let fields: Field[] = []
 	onMount(() => (fields = $localDb.fields as Field[]))
 
 	function blurbFor(focusedField) {
-		return parseRichText(fields.find((f) => f.name === focusedField).blurb)
+		return fields.find((f) => f.name === focusedField).blurb
 	}
 </script>
 

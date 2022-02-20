@@ -1,12 +1,9 @@
 export type Url = string
 
-export interface Db {
-	fields: Field[]
-	projects: Project[]
-}
+export type FieldName = 'education' | 'music' | 'development' | 'all the things'
 
 export interface Field {
-	name: 'education' | 'music' | 'development'
+	name: FieldName
 	blurb?: string
 }
 
@@ -19,4 +16,9 @@ export interface Project {
 	image?: Url
 	published?: boolean
 	page?: { [key: string]: unknown }
+}
+
+export interface Db {
+	fields: Field[]
+	projects: Project[]
 }
