@@ -1,17 +1,19 @@
 import { Client } from '@notionhq/client'
-import hljs from 'highlight.js';
+import hljs from 'highlight.js'
 import type { CSSClasses, HTML, PlainText } from '$lib/types'
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
 
 export default notion
 
-export async function getDb(queryObject) {
+export async function getDb (queryObject) {
 	return (await notion.databases.query(queryObject)).results.map(getProperties)
 }
 
 export async function getDbWithPages(queryObject) {
+
 	return (await getDb(queryObject)).map(getPage)
+
 }
 
 function getProperties (row) {
@@ -37,13 +39,15 @@ const propertyTypes = {
 }
 
 function parsePage (page): HTML {
-	return page?.results.map(block => {
+	return page?.results
+		.map(block => {
 			const type = block.type
 
 			if (block.type in blockTypes) return blockTypes[type](block[type])
 			else return `<p>[Unsupported Block type: ${type}]</p>`
 			// else return JSON.stringify(block)
-		}).join('')
+		})
+		.join('')
 }
 
 // TODO: video embeds
@@ -82,7 +86,8 @@ const blockTypes = {
 	code: code => {
 		return `
 			<figure class="codeblock">
-				<pre>${hljs.highlight(parsePlainText(code.text), {language: code.language}).value}</pre>
+				${code.language}
+				<pre>${hljs.highlight(parsePlainText(code.text), { language: code.language }).value}</pre>
 			</figure>
 			<figcaption>${parseRichText(code.caption)}</figcaption>
 		`
@@ -91,22 +96,24 @@ const blockTypes = {
 
 // TODO: Find elegant way to implement intrapage links
 // So far, the best way is a wonky a tag right in the notion text:
-// <a href=pageroute>Link text here! 🤷‍♂️</a>
+// <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText (rich_text): HTML {
-	return rich_text.map(chunk => {
-		const text = chunk.text.content
-
-		if (chunk.href) return `<a href="${chunk.href}" class="${getClasses(chunk)}">${text}</a>`
-		else return `<span class="${getClasses(chunk)}">${text}</span>`
-	}).join('').trim()
+	return rich_text
+		.map(chunk => {
+			if (chunk.href)
+				return `<a href="${chunk.href}" class="${getClasses(chunk)}">${chunk.text.content}</a>`
+			else return `<span class="${getClasses(chunk)}">${chunk.text.content}</span>`
+		})
+		.join('')
+		.trim()
 }
 
-function parsePlainText(rich_text): PlainText {
-	return rich_text.map(chunk=> chunk.plain_text).join('')
+function parsePlainText (rich_text): PlainText {
+	return rich_text.map(chunk => chunk.plain_text).join('')
 }
 
-// This assumes tailwind, but it would be pretty easy 
-// to use the same classnames on the frontend 
+// This assumes tailwind, but it would be pretty easy
+// to use the same classnames on the frontend
 // TODO: make this tailwind agnostic
 function getClasses (chunk): CSSClasses {
 	const annotations = chunk.annotations
@@ -117,10 +124,10 @@ function getClasses (chunk): CSSClasses {
 		annotations.strikethrough ? 'line-through' : '',
 		annotations.code ? 'code' : '',
 		annotations.color !== 'default' ? `text-${annotations.color}-500` : ''
-	] 
+	]
 		.join(' ')
 		.trim()
 }
 
-const objectMap = (obj, fn) => Object.fromEntries(Object.entries(obj).map(([k, v], i) => [k, fn(v, k, i)]))
-
+const objectMap = (obj, fn) =>
+	Object.fromEntries(Object.entries(obj).map(([k, v], i) => [k, fn(v, k, i)]))
