@@ -15,7 +15,7 @@
 				}
 		}
 
-		const res = await fetch(`/notion.json`)
+		const res = await fetch(`/api.json`)
 		const db = await res.json()
 
 		return {
@@ -30,9 +30,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import type { Project } from '$lib/types'
-
 	import Page from '$components/Page.svelte'
-
 	import localDb from '$lib/localDb'
 
 	export let db

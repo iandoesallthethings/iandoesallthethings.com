@@ -1,5 +1,9 @@
 export type Url = string
 
+export type HTML = string
+export type PlainText = string
+export type CSSClasses = string
+
 export type FieldName = 'education' | 'music' | 'development' | 'all the things'
 
 export interface Field {

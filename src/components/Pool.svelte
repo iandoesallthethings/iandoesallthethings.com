@@ -13,7 +13,7 @@
 	})
 </script>
 
-<figure>
+<div id="pool">
 	{#each projects as project}
 		{#if project.fields.includes($focus) || $focus === 'all the things'}
 			<Particle>
@@ -21,15 +21,10 @@
 			</Particle>
 		{/if}
 	{/each}
-</figure>
+</div>
 
 <style>
-	figure {
-		@apply bg-sky-500 dark:bg-sky-900 w-full h-full relative overflow-hidden;
-		-webkit-user-select: none;
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-o-user-select: none;
-		user-select: none;
+	#pool {
+		@apply bg-sky-500 dark:bg-sky-900 w-full h-full relative overflow-hidden select-none;
 	}
 </style>

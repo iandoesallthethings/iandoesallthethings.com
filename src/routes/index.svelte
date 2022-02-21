@@ -9,7 +9,7 @@
 			if (cachedDb) return { props: { db: cachedDb } }
 		}
 
-		const res = await fetch(`/notion.json`)
+		const res = await fetch(`/api.json`)
 		const db = await res.json()
 
 		return { props: { db } }

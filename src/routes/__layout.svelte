@@ -1,5 +1,7 @@
 <script>
 	import '../app.css'
+	import 'highlight.js/styles/github.css'
+
 	import { darkMode, focus } from '$lib/stores'
 	import Header from '$components/Header.svelte'
 	import Pool from '$components/Pool.svelte'

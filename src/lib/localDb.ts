@@ -7,7 +7,7 @@ db.fetchIfMissing = async () => {
 	if (!browser || !get(db)) return
 
 	db.update(async database => {
-		if (!database) return await window.fetch(`/notion.json`)
+		if (!database) return await window.fetch(`/api.json`)
 		else return database
 	})
 

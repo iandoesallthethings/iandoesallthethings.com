@@ -131,7 +131,7 @@ export default function float (
 
 		return {
 			x: clamp(coordinate.x, 0, poolRect.width - particleRect.width),
-			y: clamp(coordinate.y, 0, poolRect.height - particleRect.width)
+			y: clamp(coordinate.y, 0, poolRect.height - particleRect.height)
 		}
 	}
 
@@ -154,6 +154,7 @@ export default function float (
 
 		applyFriction()
 	}
+
 	function applyFriction (amount = 0.005) {
 		momentum.magnitude -= amount
 	}

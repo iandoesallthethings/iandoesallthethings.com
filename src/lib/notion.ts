@@ -1,7 +1,6 @@
-import dotenv from 'dotenv'
 import { Client } from '@notionhq/client'
-
-dotenv.config()
+import hljs from 'highlight.js';
+import type { CSSClasses, HTML, PlainText } from '$lib/types'
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
 
@@ -35,10 +34,9 @@ const propertyTypes = {
 	checkbox: p => p.checkbox,
 	url: p => p.url,
 	multi_select: p => p.multi_select.map(f => f.name)
-
 }
 
-function parsePage (page): string {
+function parsePage (page): HTML {
 	return page?.results.map(block => {
 			const type = block.type
 
@@ -59,8 +57,8 @@ const blockTypes = {
 	divider: () => '<hr />',
 	image: image => {
 		return `
-			<figure>
-				<img src="${image.file.url}" alt="${plainText(image.caption)}" />
+			<figure class="image">
+				<img src="${image.file.url}" alt="${parsePlainText(image.caption)}" />
 				<figcaption>${parseRichText(image.caption)}</figcaption>
 			</figure>
 		`
@@ -83,32 +81,34 @@ const blockTypes = {
 	},
 	code: code => {
 		return `
-			<figure class="codeblock ${code.language}">
-				<pre>${parseRichText(code.text)}</pre>
+			<figure class="codeblock">
+				<pre>${hljs.highlight(parsePlainText(code.text), {language: code.language}).value}</pre>
 			</figure>
 			<figcaption>${parseRichText(code.caption)}</figcaption>
 		`
 	}
 }
 
-function parseRichText (rich_text): string {
-	const chunks = rich_text.map(chunk => {
+// TODO: Find elegant way to implement intrapage links
+// So far, the best way is a wonky a tag right in the notion text:
+// <a href=pageroute>Link text here! 🤷‍♂️</a>
+function parseRichText (rich_text): HTML {
+	return rich_text.map(chunk => {
 		const text = chunk.text.content
 
 		if (chunk.href) return `<a href="${chunk.href}" class="${getClasses(chunk)}">${text}</a>`
 		else return `<span class="${getClasses(chunk)}">${text}</span>`
-	})
-	return `<span>${chunks.join('')}</span>`
+	}).join('').trim()
 }
 
-function plainText(rich_text) {
-	return rich_text.map(chunk=> chunk.plain_text).join('') 
+function parsePlainText(rich_text): PlainText {
+	return rich_text.map(chunk=> chunk.plain_text).join('')
 }
 
 // This assumes tailwind, but it would be pretty easy 
 // to use the same classnames on the frontend 
 // TODO: make this tailwind agnostic
-function getClasses (chunk): string {
+function getClasses (chunk): CSSClasses {
 	const annotations = chunk.annotations
 	return [
 		annotations.bold ? 'font-bold' : '',

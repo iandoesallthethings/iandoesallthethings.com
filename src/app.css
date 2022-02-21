@@ -3,10 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-div#svelte {
-	@apply h-screen w-screen;
-}
-
 body {
 	@apply h-screen w-screen text-gray-800;
 }
@@ -24,7 +20,15 @@ body {
 }
 
 figcaption {
-	@apply text-sm text-gray-500;
+	@apply text-sm text-gray-600 px-2 -mb-2;
+}
+
+p {
+	@apply mb-2
+}
+
+figure, figcaption {
+	@apply mb-2
 }
 
 h1,
@@ -33,7 +37,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply text-white;
+	@apply text-white mb-2;
 }
 h1 {
 	@apply text-4xl;
