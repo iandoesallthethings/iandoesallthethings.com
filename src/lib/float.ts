@@ -20,50 +20,50 @@ interface FloatOptions {
 	pool?: HTMLElement
 }
 
-function wrap (num: number, min: number, max: number): number {
+function wrap(num: number, min: number, max: number): number {
 	return num >= min ? num % max : ((num % max) + max) % max
 }
 
-function clamp (num: number, min: number, max: number): number {
+function clamp(num: number, min: number, max: number): number {
 	return Math.min(Math.max(num, min), max)
 }
 
-function randomIntBetween (min: number, max: number): number {
+function randomIntBetween(min: number, max: number): number {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-function randomBetween (min: number, max: number) {
+function randomBetween(min: number, max: number) {
 	return Math.random() * (max - min) + min
 }
 
-function round (num: number, digits: number): number {
+function round(num: number, digits: number): number {
 	const factor = Math.pow(10, digits)
 	return Math.round(num * factor + Number.EPSILON) / factor
 }
 
-function sinDegrees (degrees: Angle): YComponent {
+function sinDegrees(degrees: Angle): YComponent {
 	return Math.sin((degrees * Math.PI) / 180)
 }
 
-function cosDegrees (degrees: Angle): XComponent {
+function cosDegrees(degrees: Angle): XComponent {
 	return Math.cos((degrees * Math.PI) / 180)
 }
 
-function addVectorToCoordinate (coordinate: Coordinate, vector: Vector): Coordinate {
+function addVectorToCoordinate(coordinate: Coordinate, vector: Vector): Coordinate {
 	return {
 		x: coordinate.x + vector.magnitude * cosDegrees(vector.direction),
 		y: coordinate.y + vector.magnitude * sinDegrees(vector.direction)
 	}
 }
 
-function vectorComponents (vector: Vector): Components {
+function vectorComponents(vector: Vector): Components {
 	return {
 		x: vector.magnitude * cosDegrees(vector.direction),
 		y: vector.magnitude * sinDegrees(vector.direction)
 	}
 }
 
-function componentsToVector (components: Components): Vector {
+function componentsToVector(components: Components): Vector {
 	return {
 		direction: wrap(Math.atan(components.y / components.x) * (180 / Math.PI), 0, 360),
 		magnitude: Math.sqrt((components.x ^ 2) + (components.y ^ 2))
@@ -71,7 +71,7 @@ function componentsToVector (components: Components): Vector {
 }
 
 // This is spuper wrong looool
-function addVectors (a: Vector, b: Vector): Vector {
+function addVectors(a: Vector, b: Vector): Vector {
 	const aComponents = vectorComponents(a)
 	const bComponents = vectorComponents(b)
 
@@ -81,7 +81,7 @@ function addVectors (a: Vector, b: Vector): Vector {
 	})
 }
 
-function pointerPosition (e, relativeNode) {
+function pointerPosition(e, relativeNode) {
 	const rect = relativeNode.getBoundingClientRect()
 	return {
 		x: e.clientX - rect.left,
@@ -92,7 +92,7 @@ function pointerPosition (e, relativeNode) {
 const noise = new Noise(Math.E)
 let z = Math.random()
 
-function flow () {
+function flow() {
 	z = Math.random()
 
 	// setTimeout(flow, Math.floor(Math.random() * 1000))
@@ -100,7 +100,7 @@ function flow () {
 }
 flow()
 
-export default function float (
+export default function float(
 	particle: HTMLElement,
 	options?: FloatOptions | undefined
 ): SvelteAction {
@@ -113,19 +113,19 @@ export default function float (
 	let dragging = false
 	let cooldown = 0
 
-	function randomX (): number {
+	function randomX(): number {
 		return randomIntBetween(0, pool.getBoundingClientRect().width)
 	}
 
-	function randomY (): number {
+	function randomY(): number {
 		return randomIntBetween(0, pool.getBoundingClientRect().height)
 	}
 
-	function randomCoordinate (): Coordinate {
+	function randomCoordinate(): Coordinate {
 		return clampToContainer({ x: randomX(), y: randomY() })
 	}
 
-	function clampToContainer (coordinate: Coordinate): Coordinate {
+	function clampToContainer(coordinate: Coordinate): Coordinate {
 		const poolRect = pool.getBoundingClientRect()
 		const particleRect = particle.getBoundingClientRect()
 
@@ -135,12 +135,12 @@ export default function float (
 		}
 	}
 
-	function flowDirection (coordinate: Coordinate): Angle {
+	function flowDirection(coordinate: Coordinate): Angle {
 		const noiseValue = noise.perlin3(coordinate.x / 1000, coordinate.y / 1000, z + zOffset)
 		return clamp(noiseValue * 360 + 180, 0, 360)
 	}
 
-	function drift () {
+	function drift() {
 		if (momentum.magnitude <= 0) push()
 
 		momentum.direction = flowDirection(position)
@@ -155,29 +155,29 @@ export default function float (
 		applyFriction()
 	}
 
-	function applyFriction (amount = 0.005) {
+	function applyFriction(amount = 0.005) {
 		momentum.magnitude -= amount
 	}
 
-	function push () {
+	function push() {
 		if (cooldown > 0) return cooldown--
 
 		momentum.magnitude = Math.random() + 0.5
 		setCooldown()
 	}
 
-	function setCooldown () {
+	function setCooldown() {
 		cooldown = Math.round(Math.random() * 100)
 	}
 
-	function dragStart (e) {
+	function dragStart(e) {
 		particle.dispatchEvent(new CustomEvent('dragstart'))
 		dragging = true
 		handle = pointerPosition(e, particle)
 		setTimeout(() => particle.setPointerCapture(e.pointerId), 100)
 	}
 
-	function dragEnd (e) {
+	function dragEnd(e) {
 		dragging = false
 		particle.releasePointerCapture(e.pointerId)
 		// momentum.magnitude = 0
@@ -187,14 +187,14 @@ export default function float (
 	let lastPosition: Coordinate
 	let lastTime = new Date().getTime()
 
-	function updatePosition (newPosition) {
+	function updatePosition(newPosition) {
 		position = clampToContainer(newPosition)
 		lastPosition = position
 		particle.style.left = position.x + 'px'
 		particle.style.top = position.y + 'px'
 	}
 
-	function updateMomentum (oldPosition, newPosition) {
+	function updateMomentum(oldPosition, newPosition) {
 		const deltaX = newPosition.x - oldPosition.x
 		const deltaY = newPosition.y - oldPosition.y
 
@@ -208,7 +208,7 @@ export default function float (
 		}
 	}
 
-	function drag (e) {
+	function drag(e) {
 		if (!dragging) return
 		const newPosition = pointerPosition(e, pool)
 
@@ -226,7 +226,7 @@ export default function float (
 	particle.addEventListener('pointerup', dragEnd)
 	particle.addEventListener('pointermove', drag)
 
-	function run () {
+	function run() {
 		if (!dragging) drift()
 		setTimeout(() => requestAnimationFrame(run), 10)
 	}
@@ -234,10 +234,10 @@ export default function float (
 	run()
 
 	return {
-		update (newOptions) {
+		update(newOptions) {
 			pool = newOptions.pool || pool
 		},
-		destroy () {
+		destroy() {
 			particle.removeEventListener('pointerdown', dragStart)
 			particle.removeEventListener('pointerup', dragEnd)
 			particle.removeEventListener('pointermove', drag)

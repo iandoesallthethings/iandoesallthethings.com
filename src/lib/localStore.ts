@@ -4,7 +4,7 @@ import { browser } from '$app/env'
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
-export default function localStore<JsonValue> (
+export default function localStore<JsonValue>(
 	key: string,
 	initialValue: JsonValue
 ): Writable<JsonValue> {

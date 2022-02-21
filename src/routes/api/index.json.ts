@@ -5,11 +5,11 @@ const fieldsId = process.env.NOTION_FIELDS_DB
 const projectsId = process.env.NOTION_PROJECTS_DB
 
 const sorts = [{ property: 'order', direction: 'ascending' }]
-const filter = { property: "published", checkbox: { equals: true } }
+const filter = { property: 'published', checkbox: { equals: true } }
 
-export async function get (): Promise<Partial<Response>> {
- const fields = await getDbWithPages({database_id: fieldsId, sorts, filter})
- const projects = await getDbWithPages({ database_id:projectsId, filter})
+export async function get(): Promise<Partial<Response>> {
+	const fields = await getDbWithPages({ database_id: fieldsId, sorts, filter })
+	const projects = await getDbWithPages({ database_id: projectsId, filter })
 
 	return {
 		body: {

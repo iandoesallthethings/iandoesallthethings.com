@@ -43,7 +43,6 @@ function parsePage(page): HTML {
 
 			if (block.type in blockTypes) return blockTypes[type](block[type])
 			else return `<p>[Unsupported Block type: ${type}]</p>`
-			// else return JSON.stringify(block)
 		})
 		.join('')
 }
