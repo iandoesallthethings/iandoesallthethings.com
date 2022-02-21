@@ -58,6 +58,8 @@
 		</header>
 
 		{@html project.page}
+
+		<!-- Here's a <a href="/modular">test link!</a> -->
 	{:else}
 		<h1>404'd!</h1>
 

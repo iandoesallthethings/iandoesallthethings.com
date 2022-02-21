@@ -1,4 +1,4 @@
-import { getDbWithPages } from '$lib/notion'
+import { getDb, getDbWithPages } from '$lib/notion'
 import type { Db } from '$lib/types'
 
 const fieldsId = process.env.NOTION_FIELDS_DB
@@ -8,7 +8,7 @@ const sorts = [{ property: 'order', direction: 'ascending' }]
 const filter = { property: 'published', checkbox: { equals: true } }
 
 export async function get(): Promise<Partial<Response>> {
-	const fields = await getDbWithPages({ database_id: fieldsId, sorts, filter })
+	const fields = await getDb({ database_id: fieldsId, sorts, filter })
 	const projects = await getDbWithPages({ database_id: projectsId, filter })
 
 	return {

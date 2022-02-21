@@ -102,15 +102,18 @@ const blockTypes = {
 		`
 	},
 	// embed: (embed) => {
+	// 	TODO
 	// 	return `
 	// 		<figure>
-	// 			<iframe
-	// 				src="${embed.url}"
-	// 			/>
+	// 			<iframe src="${embed.url}" />
 	// 		</figure>
 	// 		<figcaption>${parseRichText(embed.caption)}</figcaption>
 	// 	`
-	// }
+	// },
+	// table: (table) => {
+	// 	TODO
+	// 	return
+	// },
 	fallback: (block) => {
 		const env = process.env.NODE_ENV
 
@@ -123,16 +126,18 @@ const blockTypes = {
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText(rich_text): HTML {
-	const chunks = rich_text
-		.map((chunk) => {
-			if (chunk.href)
-				return `<a href="${chunk.href}" class="${getClasses(chunk)}" target=_blank>${
-					chunk.text.content
-				}</a>`
-			else return `<span class="${getClasses(chunk)}">${chunk.text.content}</span>`
-		})
-		.join('')
-	return `<span>${chunks || '&nbsp;'}</span>`
+	const chunks = rich_text.map(wrapChunk).join('')
+	return `<span>${chunks || '&nbsp;'}</span>` // &nbsp; to make empty paragraphs take up space
+}
+
+function wrapChunk(chunk) {
+	if (chunk.type === 'mention') return wrapLink(chunk.plain_text, chunk.plain_text, classes(chunk))
+	else if (chunk.href) return wrapLink(chunk.href, chunk.text.content, classes(chunk))
+	else return `<span class="${classes(chunk)}">${chunk.text.content}</span>`
+}
+
+function wrapLink(href, content, classes) {
+	return `<a href="${href}" class="${classes}">${content}</a>`
 }
 
 function parsePlainText(rich_text): PlainText {
@@ -142,7 +147,7 @@ function parsePlainText(rich_text): PlainText {
 // This assumes tailwind, but it would be pretty easy
 // to use the same classnames on the frontend
 // TODO: make this tailwind agnostic
-function getClasses(chunk): CSSClasses {
+function classes(chunk): CSSClasses {
 	const annotations = chunk.annotations
 	return [
 		annotations.bold ? 'font-bold' : '',
@@ -160,8 +165,6 @@ const objectMap = (obj, fn) =>
 	Object.fromEntries(Object.entries(obj).map(([k, v], i) => [k, fn(v, k, i)]))
 
 export const getVideoId = (url) => {
-	if (!url) return null
-
 	url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
 	return url[2] !== undefined ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
 }
