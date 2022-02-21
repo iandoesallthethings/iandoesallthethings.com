@@ -83,7 +83,6 @@ const blockTypes = {
 	code: (code) => {
 		return `
 			<figure class="codeblock">
-				${code.language}
 				<pre>${hljs.highlight(parsePlainText(code.text), { language: code.language }).value}</pre>
 			</figure>
 			<figcaption>${parseRichText(code.caption)}</figcaption>
@@ -95,7 +94,7 @@ const blockTypes = {
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText(rich_text): HTML {
-	return rich_text
+	const chunks = rich_text
 		.map((chunk) => {
 			if (chunk.href)
 				return `<a href="${chunk.href}" class="${getClasses(chunk)}">${chunk.text.content}</a>`
@@ -103,6 +102,7 @@ function parseRichText(rich_text): HTML {
 		})
 		.join('')
 		.trim()
+	return `<span>${chunks}</span>`
 }
 
 function parsePlainText(rich_text): PlainText {

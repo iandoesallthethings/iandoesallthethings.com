@@ -12,7 +12,7 @@ body {
 }
 
 .codeblock {
-	@apply font-mono text-sm bg-gray-500/40 rounded-md p-2;
+	@apply font-mono text-sm bg-gray-500/40 rounded-md p-2 overflow-x-scroll;
 }
 
 .callout {
