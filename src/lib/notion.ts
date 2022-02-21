@@ -6,41 +6,39 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY })
 
 export default notion
 
-export async function getDb (queryObject) {
+export async function getDb(queryObject) {
 	return (await notion.databases.query(queryObject)).results.map(getProperties)
 }
 
 export async function getDbWithPages(queryObject) {
-
 	return (await getDb(queryObject)).map(getPage)
-
 }
 
-function getProperties (row) {
+function getProperties(row) {
 	return { id: row.id, ...objectMap(row.properties, parseProperty) }
 }
 
-async function getPage (row) {
+async function getPage(row) {
 	return { ...row, page: parsePage(await notion.blocks.children.list({ block_id: row.id })) }
 }
 
-function parseProperty (property) {
+function parseProperty(property) {
 	if (property.type in propertyTypes) return propertyTypes[property.type](property)
 	else return property
 }
 
 const propertyTypes = {
-	title: p => p.title[0].plain_text,
-	rich_text: p => parseRichText(p.rich_text),
-	files: p => p.files[0]?.file.url,
-	checkbox: p => p.checkbox,
-	url: p => p.url,
-	multi_select: p => p.multi_select.map(f => f.name)
+	title: (p) => p.title[0].plain_text,
+	rich_text: (p) => parseRichText(p.rich_text),
+	files: (p) => p.files[0]?.file.url,
+	checkbox: (p) => p.checkbox,
+	url: (p) => p.url,
+	multi_select: (p) => p.multi_select.map((f) => f.name)
 }
 
-function parsePage (page): HTML {
+function parsePage(page): HTML {
 	return page?.results
-		.map(block => {
+		.map((block) => {
 			const type = block.type
 
 			if (block.type in blockTypes) return blockTypes[type](block[type])
@@ -52,14 +50,14 @@ function parsePage (page): HTML {
 
 // TODO: video embeds
 const blockTypes = {
-	heading_1: heading => `<h1>${parseRichText(heading.text)}</h1>`,
-	heading_2: heading => `<h2>${parseRichText(heading.text)}</h2>`,
-	heading_3: heading => `<h3>${parseRichText(heading.text)}</h3>`,
-	paragraph: paragraph => `<p>${parseRichText(paragraph.text) || '&nbsp'}</p>`,
-	numbered_list_item: list_item => `<li>${parseRichText(list_item.text)}</li>`,
-	bulleted_list_item: list_item => `<li>${parseRichText(list_item.text)}</li>`,
+	heading_1: (heading) => `<h1>${parseRichText(heading.text)}</h1>`,
+	heading_2: (heading) => `<h2>${parseRichText(heading.text)}</h2>`,
+	heading_3: (heading) => `<h3>${parseRichText(heading.text)}</h3>`,
+	paragraph: (paragraph) => `<p>${parseRichText(paragraph.text) || '&nbsp'}</p>`,
+	numbered_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
+	bulleted_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
 	divider: () => '<hr />',
-	image: image => {
+	image: (image) => {
 		return `
 			<figure class="image">
 				<img src="${image.file.url}" alt="${parsePlainText(image.caption)}" />
@@ -67,7 +65,7 @@ const blockTypes = {
 			</figure>
 		`
 	},
-	to_do: to_do => {
+	to_do: (to_do) => {
 		return `
 			<p>
 				<input type="checkbox" ${to_do.checked ? 'checked' : ''} onclick="return false;" />
@@ -75,7 +73,7 @@ const blockTypes = {
 			</p>
 		`
 	},
-	callout: callout => {
+	callout: (callout) => {
 		return `
 			<figure class="callout">
 				<div>${callout.icon.emoji}</div>
@@ -83,7 +81,7 @@ const blockTypes = {
 			</figure>
 		`
 	},
-	code: code => {
+	code: (code) => {
 		return `
 			<figure class="codeblock">
 				${code.language}
@@ -97,9 +95,9 @@ const blockTypes = {
 // TODO: Find elegant way to implement intrapage links
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
-function parseRichText (rich_text): HTML {
+function parseRichText(rich_text): HTML {
 	return rich_text
-		.map(chunk => {
+		.map((chunk) => {
 			if (chunk.href)
 				return `<a href="${chunk.href}" class="${getClasses(chunk)}">${chunk.text.content}</a>`
 			else return `<span class="${getClasses(chunk)}">${chunk.text.content}</span>`
@@ -108,14 +106,14 @@ function parseRichText (rich_text): HTML {
 		.trim()
 }
 
-function parsePlainText (rich_text): PlainText {
-	return rich_text.map(chunk => chunk.plain_text).join('')
+function parsePlainText(rich_text): PlainText {
+	return rich_text.map((chunk) => chunk.plain_text).join('')
 }
 
 // This assumes tailwind, but it would be pretty easy
 // to use the same classnames on the frontend
 // TODO: make this tailwind agnostic
-function getClasses (chunk): CSSClasses {
+function getClasses(chunk): CSSClasses {
 	const annotations = chunk.annotations
 	return [
 		annotations.bold ? 'font-bold' : '',

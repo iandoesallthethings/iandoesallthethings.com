@@ -24,11 +24,12 @@ figcaption {
 }
 
 p {
-	@apply mb-2
+	@apply mb-2;
 }
 
-figure, figcaption {
-	@apply mb-2
+figure,
+figcaption {
+	@apply mb-2;
 }
 
 h1,
