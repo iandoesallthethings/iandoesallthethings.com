@@ -42,7 +42,7 @@ function parsePage(page): HTML {
 			const type = block.type
 
 			if (block.type in blockTypes) return blockTypes[type](block[type])
-			else return `<p>[TODO: Implement ${type} blocks]</p>`
+			else return blockTypes.fallback(block)
 		})
 		.join('')
 }
@@ -88,6 +88,34 @@ const blockTypes = {
 			</figure>
 			<figcaption>${parseRichText(code.caption)}</figcaption>
 		`
+	},
+	video: (video) => {
+		return `
+			<figure>
+				<iframe 
+					width="420" 
+					height="315" 
+					src="https://www.youtube.com/embed/${getVideoId(video.external.url)}" 
+				/>
+			</figure>
+			<figcaption>${parseRichText(video.caption)}</figcaption>
+		`
+	},
+	// embed: (embed) => {
+	// 	return `
+	// 		<figure>
+	// 			<iframe
+	// 				src="${embed.url}"
+	// 			/>
+	// 		</figure>
+	// 		<figcaption>${parseRichText(embed.caption)}</figcaption>
+	// 	`
+	// }
+	fallback: (block) => {
+		const env = process.env.NODE_ENV
+
+		if (env === 'development') return JSON.stringify(block)
+		else return `<p>[TODO: Implement ${block.type} blocks]</p>`
 	}
 }
 
@@ -130,3 +158,10 @@ function getClasses(chunk): CSSClasses {
 
 const objectMap = (obj, fn) =>
 	Object.fromEntries(Object.entries(obj).map(([k, v], i) => [k, fn(v, k, i)]))
+
+export const getVideoId = (url) => {
+	if (!url) return null
+
+	url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+	return url[2] !== undefined ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
+}
