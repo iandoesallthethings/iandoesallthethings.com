@@ -47,7 +47,7 @@
 
 <Page>
 	{#if project}
-		<header class="flex flex-row items-center justify-between space-x-10">
+		<header class="flex flex-row items-start justify-between space-x-10 mb-5">
 			<h1>{@html project.name}</h1>
 
 			{#if project.link}

@@ -42,7 +42,7 @@ function parsePage(page): HTML {
 			const type = block.type
 
 			if (block.type in blockTypes) return blockTypes[type](block[type])
-			else return `<p>[Unsupported Block type: ${type}]</p>`
+			else return `<p>[TODO: Implement ${type} blocks]</p>`
 		})
 		.join('')
 }
@@ -52,7 +52,7 @@ const blockTypes = {
 	heading_1: (heading) => `<h1>${parseRichText(heading.text)}</h1>`,
 	heading_2: (heading) => `<h2>${parseRichText(heading.text)}</h2>`,
 	heading_3: (heading) => `<h3>${parseRichText(heading.text)}</h3>`,
-	paragraph: (paragraph) => `<p>${parseRichText(paragraph.text) || '&nbsp'}</p>`,
+	paragraph: (paragraph) => `<p>${parseRichText(paragraph.text)}</p>`,
 	numbered_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
 	bulleted_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
 	divider: () => '<hr />',
@@ -80,6 +80,7 @@ const blockTypes = {
 			</figure>
 		`
 	},
+	// Warning: language: Plain text breaks this?!
 	code: (code) => {
 		return `
 			<figure class="codeblock">
@@ -97,12 +98,13 @@ function parseRichText(rich_text): HTML {
 	const chunks = rich_text
 		.map((chunk) => {
 			if (chunk.href)
-				return `<a href="${chunk.href}" class="${getClasses(chunk)}">${chunk.text.content}</a>`
+				return `<a href="${chunk.href}" class="${getClasses(chunk)}" target=_blank>${
+					chunk.text.content
+				}</a>`
 			else return `<span class="${getClasses(chunk)}">${chunk.text.content}</span>`
 		})
 		.join('')
-		.trim()
-	return `<span>${chunks}</span>`
+	return `<span>${chunks || '&nbsp;'}</span>`
 }
 
 function parsePlainText(rich_text): PlainText {
