@@ -10,20 +10,23 @@
 	// import Obi from '$components/Obi.svelte'
 </script>
 
-<main class={$darkMode ? 'dark' : ''}>
-	<Header />
+<!-- <main class={$darkMode ? 'dark' : ''}> -->
+<theme class:dark={$darkMode}>
+	<main>
+		<Header />
 
-	<Pool />
+		<Pool />
 
-	<slot />
+		<slot />
 
-	<Footer />
+		<Footer />
 
-	<Konami />
-</main>
+		<Konami />
+	</main>
+</theme>
 
 <style>
 	main {
-		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500 overflow-hidden;
+		@apply absolute top-0 left-0 w-full h-full flex flex-col bg-sky-500 dark:bg-sky-600 overflow-hidden;
 	}
 </style>

@@ -7,19 +7,19 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY })
 export default notion
 
 export async function getDb(queryObject) {
-	return (await notion.databases.query(queryObject)).results.map(getProperties)
+	return (await notion.databases.query(queryObject)).results.map(parseProperties)
 }
 
 export async function getDbWithPages(queryObject) {
 	return (await getDb(queryObject)).map(getPage)
 }
 
-function getProperties(row) {
-	return { id: row.id, ...objectMap(row.properties, parseProperty) }
+export async function getPage(row) {
+	return { ...row, page: parsePage(await notion.blocks.children.list({ block_id: row.id })) }
 }
 
-async function getPage(row) {
-	return { ...row, page: parsePage(await notion.blocks.children.list({ block_id: row.id })) }
+function parseProperties(row) {
+	return { id: row.id, ...objectMap(row.properties, parseProperty) }
 }
 
 function parseProperty(property) {
@@ -137,7 +137,7 @@ function wrapChunk(chunk) {
 }
 
 function wrapLink(href, content, classes) {
-	return `<a href="${href}" class="${classes}">${content}</a>`
+	return `<a href="${href}" class="${classes}" target=_blank>${content}</a>`
 }
 
 function parsePlainText(rich_text): PlainText {
@@ -164,7 +164,7 @@ function classes(chunk): CSSClasses {
 const objectMap = (obj, fn) =>
 	Object.fromEntries(Object.entries(obj).map(([k, v], i) => [k, fn(v, k, i)]))
 
-export const getVideoId = (url) => {
+const getVideoId = (url) => {
 	url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
 	return url[2] !== undefined ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
 }

@@ -25,6 +25,6 @@
 
 <style>
 	#pool {
-		@apply bg-sky-500 dark:bg-sky-900 w-full h-full relative overflow-hidden select-none;
+		@apply w-full h-full relative overflow-hidden select-none;
 	}
 </style>

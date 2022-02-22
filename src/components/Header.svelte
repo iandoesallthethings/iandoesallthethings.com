@@ -55,14 +55,14 @@
 	}
 
 	.blurb {
-		@apply flex justify-center text-center rounded-xl shadow-md bg-sky-400 bg-opacity-50 p-5 max-w-prose;
+		@apply flex justify-center text-center rounded-xl shadow-md bg-sky-400/30 p-5 max-w-prose;
 	}
 
 	input + span {
 		@apply cursor-pointer text-white px-2 py-1 text-base md:text-xl;
 	}
 	input:hover + span {
-		@apply bg-white bg-opacity-10 rounded-md shadow-sm;
+		@apply bg-white/10 rounded-md shadow-sm;
 	}
 	input:checked + span {
 		@apply font-bold drop-shadow-md;
