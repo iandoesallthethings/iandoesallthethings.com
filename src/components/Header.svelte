@@ -1,13 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import { focus } from '$lib/stores'
 	import { fade, fly } from 'svelte/transition'
 	import type { Field } from '$lib/types'
 
-	import localDb from '$lib/localDb'
-
-	let fields: Field[] = []
-	onMount(() => (fields = $localDb.fields as Field[]))
+	export let fields: Field[] = []
 
 	function blurbFor(focusedField) {
 		return fields.find((f) => f.name === focusedField).blurb
@@ -34,9 +30,9 @@
 		</nav>
 	</div>
 
-	<div class="w-full flex justify-center items-center mx-10 flex-col items-center">
+	<div class="w-full flex justify-center items-center mx-10 flex-col">
 		{#key $focus}
-			{#if fields.find((field) => field.name === $focus)?.blurb}
+			{#if fields?.find((field) => field.name === $focus)?.blurb}
 				<div class="blurb" in:fly={{ y: -50, duration: 500 }}>
 					{@html blurbFor($focus)}
 				</div>

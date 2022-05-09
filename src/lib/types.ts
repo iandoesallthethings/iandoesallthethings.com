@@ -14,7 +14,7 @@ export interface Field {
 export interface Project {
 	name: string
 	title: string
-	fields: Field[]
+	fields: FieldName[]
 	link?: Url
 	video?: Url
 	image?: Url
@@ -25,4 +25,12 @@ export interface Project {
 export interface Db {
 	fields: Field[]
 	projects: Project[]
+}
+
+export interface ProjectCache {
+	[key: string]: Project
+}
+
+export interface Props {
+	props: { [key: string]: unknown }
 }

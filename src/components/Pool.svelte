@@ -1,16 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import Particle from '$components/Particle.svelte'
 	import ProjectCard from './ProjectCard.svelte'
-	import type { Project } from '$lib/types'
+	import type { Field, Project } from '$lib/types'
 
 	import { focus } from '$lib/stores'
-	import localDb from '$lib/localDb'
 
-	let projects: Project[] = []
-	onMount(() => {
-		projects = $localDb.projects
-	})
+	export let projects: Project[] = []
 </script>
 
 <div id="pool">

@@ -1,21 +1,44 @@
-<script>
+<script context="module" lang="ts">
+	export async function load({ fetch }) {
+		const response = await fetch('/api/fields.json')
+		const fields: Field[] = await response.json()
+		return {
+			props: { fields }
+		}
+	}
+</script>
+
+<script lang="ts">
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
+	import type { Field, Project } from '$lib/types'
+	import { darkMode } from '$lib/stores'
+	import { onMount } from 'svelte'
+	// import { cache } from '$lib/cachedFetch'
 
-	import { darkMode, focus } from '$lib/stores'
 	import Header from '$components/Header.svelte'
 	import Pool from '$components/Pool.svelte'
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 	// import Obi from '$components/Obi.svelte'
+
+	export let fields: Field[] = []
+
+	let projects: Project[] = []
+
+	onMount(async () => {
+		const response = await fetch('/api/projects.json')
+		projects = await response.json()
+	})
+
+	// $: console.debug('cache', $cache)
 </script>
 
-<!-- <main class={$darkMode ? 'dark' : ''}> -->
 <theme class:dark={$darkMode}>
 	<main>
-		<Header />
+		<Header {fields} />
 
-		<Pool />
+		<Pool {projects} />
 
 		<slot />
 

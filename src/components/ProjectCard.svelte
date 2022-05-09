@@ -8,7 +8,7 @@
 	}
 </script>
 
-<article on:click={open}>
+<a href="/{project.route}" sveltekit:prefetch draggable="false">
 	{#if project.video}
 		<video
 			class="w-full"
@@ -27,10 +27,10 @@
 	<div class="text-white text-sm">
 		{@html project.name}
 	</div>
-</article>
+</a>
 
 <style>
-	article {
+	a {
 		@apply bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
 	}
 	img {

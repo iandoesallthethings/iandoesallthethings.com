@@ -1,48 +1,19 @@
-<script context="module">
-	import { browser } from '$app/env'
-	import { get } from 'svelte/store'
-	import dbStore from '$lib/localDb'
+<script context="module" lang="ts">
+	import cachedFetch from '$lib/cachedFetch'
 
+	/** @type {import('./[projectRoute]').Load} */
 	export async function load({ fetch, params }) {
-		if (browser) {
-			const cachedDb = get(dbStore)
-			if (cachedDb)
-				return {
-					props: {
-						db: cachedDb,
-						projectRoute: params.projectRoute
-					}
-				}
-		}
+		const route = params.projectRoute
 
-		const res = await fetch(`/api.json`)
-		const db = await res.json()
-
-		return {
-			props: {
-				db,
-				projectRoute: params.projectRoute
-			}
-		}
+		return await cachedFetch(fetch, route)
 	}
 </script>
 
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import type { Project } from '$lib/types'
 	import Page from '$components/Page.svelte'
-	import localDb from '$lib/localDb'
 
-	export let db
-	export let projectRoute
-
-	$localDb = db
-
-	let project: Project = {}
-
-	onMount(() => {
-		project = $localDb.projects.find((p) => p.route === projectRoute)
-	})
+	export let project: Project
 </script>
 
 <Page>
@@ -58,8 +29,6 @@
 		</header>
 
 		{@html project.page}
-
-		<!-- Here's a <a href="/modular">test link!</a> -->
 	{:else}
 		<h1>404'd!</h1>
 
