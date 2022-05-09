@@ -1,3 +1,1 @@
-<script lang="ts">
-	let noop = () => {}
-</script>
+<!-- This page is intentionally left blank. -->

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { focus } from '$lib/stores'
-	import { fade, fly } from 'svelte/transition'
 	import type { Field } from '$lib/types'
+	import { fade, fly } from 'svelte/transition'
+	import { focus } from '$lib/stores'
 
 	export let fields: Field[] = []
 

@@ -1,7 +1,22 @@
 <script context="module" lang="ts">
-	export async function load({ fetch }) {
+	import { browser } from '$app/env'
+	import { focus } from '$lib/stores'
+
+	function getPreferredFocus(url, fields) {
+		if (!browser) return
+
+		const focusQuery = url.searchParams.get('f')
+		const focusToPreload = fields.find((f) => f.name === focusQuery)
+		if (focusToPreload) focus.set(focusToPreload.name)
+		url.searchParams.delete('f')
+	}
+
+	export async function load({ fetch, url }) {
 		const response = await fetch('/api/fields.json')
 		const fields: Field[] = await response.json()
+
+		getPreferredFocus(url, fields)
+
 		return {
 			props: { fields }
 		}
@@ -11,6 +26,7 @@
 <script lang="ts">
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
+
 	import type { Field, Project } from '$lib/types'
 	import { darkMode } from '$lib/stores'
 	import { onMount } from 'svelte'
