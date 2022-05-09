@@ -32,5 +32,11 @@ export interface ProjectCache {
 }
 
 export interface Props {
-	props: { [key: string]: unknown }
+	props: JsonObject
 }
+
+export interface JsonObject {
+	[key: string]: JsonValue
+}
+
+export type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject

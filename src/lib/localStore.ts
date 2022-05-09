@@ -1,8 +1,7 @@
 import type { Writable } from 'svelte/store'
+import type { JsonObject, JsonValue } from '$lib/types'
 import { writable } from 'svelte/store'
 import { browser } from '$app/env'
-
-type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
 export default function localStore<JsonValue>(
 	key: string,

@@ -7,7 +7,8 @@ const projectsId = process.env.NOTION_PROJECTS_DB
 const sorts = [{ property: 'order', direction: 'ascending' }]
 const filter = { property: 'published', checkbox: { equals: true } }
 
-export async function get(): Promise<Partial<Response>> {
+/** @type {import('@sveltejs/kit').RequestHandler} */
+export async function get() {
 	const fields = await getDb({ database_id: fieldsId, sorts, filter })
 	const projects = await getDbWithPages({ database_id: projectsId, filter })
 

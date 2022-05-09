@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { slide, fade } from 'svelte/transition'
+	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
 	import { onMount } from 'svelte'
 	import floatToTop from '$lib/floatToTop'
@@ -31,6 +31,6 @@
 	}
 
 	.page {
-		@apply bg-white/50 backdrop-blur-md max-w-sm md:max-w-prose max-h-full overflow-y-scroll z-40 rounded-2xl p-5 space-y-4 shadow-2xl overflow-y-scroll;
+		@apply bg-white/50 backdrop-blur-md max-w-sm md:max-w-prose max-h-full z-40 rounded-2xl p-5 space-y-4 shadow-2xl overflow-y-scroll;
 	}
 </style>

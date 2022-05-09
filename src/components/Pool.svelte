@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Particle from '$components/Particle.svelte'
-	import ProjectCard from './ProjectCard.svelte'
-	import type { Field, Project } from '$lib/types'
+	import ProjectCard from '$components/ProjectCard.svelte'
+	import type { Project } from '$lib/types'
 
 	import { focus } from '$lib/stores'
 

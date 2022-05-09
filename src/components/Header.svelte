@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Field } from '$lib/types'
-	import { fade, fly } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 	import { focus } from '$lib/stores'
 
 	export let fields: Field[] = []

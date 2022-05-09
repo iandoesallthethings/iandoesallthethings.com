@@ -4,7 +4,8 @@ const projectsId = process.env.NOTION_PROJECTS_DB
 
 const filter = { property: 'published', checkbox: { equals: true } }
 
-export async function get(): Promise<Partial<Response>> {
+/** @type {import('@sveltejs/kit').RequestHandler} */
+export async function get() {
 	const projects = await getDb({ database_id: projectsId, filter })
 
 	return {

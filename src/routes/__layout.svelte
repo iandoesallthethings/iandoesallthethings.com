@@ -11,6 +11,7 @@
 		url.searchParams.delete('f')
 	}
 
+	/** @type {import('@sveltejs/kit').RequestHandler} */
 	export async function load({ fetch, url }) {
 		const response = await fetch('/api/fields.json')
 		const fields: Field[] = await response.json()

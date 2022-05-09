@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
-	import { fade, fly, slide } from 'svelte/transition'
+	import { fade } from 'svelte/transition'
 	import floatToTop from '$lib/floatToTop'
 	import float from '$lib/float'
-	const dispatch = createEventDispatcher()
 
 	let particle
+
+	function randomFadeTime() {
+		return Math.random() * 800
+	}
 </script>
 
 <div
@@ -13,7 +15,8 @@
 	bind:this={particle}
 	on:pointerdown={() => floatToTop(particle)}
 	class="particle"
-	transition:fade
+	in:fade={{ duration: randomFadeTime() }}
+	out:fade={{ duration: 375 }}
 >
 	<slot />
 </div>
