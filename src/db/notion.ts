@@ -103,22 +103,20 @@ const blockTypes = {
 		`
 	},
 	// embed: (embed) => {
-	// 	TODO
 	// 	return `
-	// 		<figure>
+	// 		<figure class="mx-auto">
 	// 			<iframe src="${embed.url}" />
+	// 			<figcaption>${parseRichText(embed.caption)}</figcaption>
 	// 		</figure>
-	// 		<figcaption>${parseRichText(embed.caption)}</figcaption>
 	// 	`
 	// },
 	// table: (table) => {
-	// 	TODO
 	// 	return
 	// },
 	fallback: (block) => {
 		const env = process.env.NODE_ENV
 
-		if (env === 'development') return JSON.stringify(block)
+		if (env === 'development') return `debug: output\n` + JSON.stringify(block, undefined, 2)
 		else return `<p>[TODO: Implement ${block.type} blocks]</p>`
 	},
 }
