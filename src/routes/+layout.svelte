@@ -1,11 +1,14 @@
 <script lang="ts">
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
-
+	import { dev } from '$app/environment'
+	import { inject } from '@vercel/analytics'
 	import Header from '$components/Header.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
+
+	inject({ mode: dev ? 'development' : 'production' })
 </script>
 
 <theme>
