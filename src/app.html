@@ -3,15 +3,15 @@
 
 <head>
 	<meta charset="utf-8" />
-	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-	<link rel="icon" href="%svelte.assets%/favicon.ico" />
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" /> -->
+	<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
+	<meta name="viewport" content="width=device-width" />
 	<script defer src="fontawesome-free/all.min.js"></script>
-
-	%svelte.head%
+	%sveltekit.head%
 </head>
 
-<body>%svelte.body%</body>
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
 
 </html>

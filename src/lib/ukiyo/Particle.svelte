@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import floatToTop from '$lib/floatToTop'
-	import float from '$lib/float'
+	import floatToTop from '$ukiyo/floatToTop'
+	import ukiyo from '$ukiyo'
 
-	let particle
+	let particle: HTMLElement
 
 	function randomFadeTime() {
 		return Math.random() * 800
@@ -11,7 +11,7 @@
 </script>
 
 <div
-	use:float
+	use:ukiyo
 	bind:this={particle}
 	on:pointerdown={() => floatToTop(particle)}
 	class="particle"

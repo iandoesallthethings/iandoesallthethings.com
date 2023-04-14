@@ -1,19 +1,10 @@
-<script context="module" lang="ts">
-	import cachedFetch from '$lib/cachedFetch'
-
-	/** @type {import('./[projectRoute]').Load} */
-	export async function load({ fetch, params }) {
-		const route = params.projectRoute
-
-		return await cachedFetch(fetch, route)
-	}
-</script>
-
 <script lang="ts">
-	import type { Project } from '$lib/types'
+	import type { PageData } from './$types'
 	import Page from '$components/Page.svelte'
 
-	export let project: Project
+	export let data: PageData
+
+	$: project = data.project
 </script>
 
 <Page>

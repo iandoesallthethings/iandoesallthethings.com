@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Field } from '$lib/types'
 	import { fly } from 'svelte/transition'
 	import { focus } from '$lib/stores'
+	import { page } from '$app/stores'
 
-	export let fields: Field[] = []
+	$: fields = $page.data.fields
 
-	function blurbFor(focusedField) {
-		return fields.find((f) => f.name === focusedField).blurb
+	function blurbFor(focusedFieldName: string) {
+		return fields.find((field) => field.name === focusedFieldName)?.blurb
 	}
 </script>
 

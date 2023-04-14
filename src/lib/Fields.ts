@@ -1,15 +1,15 @@
 import { getDb } from '$lib/notion'
-
 const fieldsId = process.env.NOTION_FIELDS_DB
 
 const sorts = [{ property: 'order', direction: 'ascending' }]
 const filter = { property: 'published', checkbox: { equals: true } }
 
-/** @type {import('@sveltejs/kit').RequestHandler} */
-export async function get() {
-	const fields = await getDb({ database_id: fieldsId, sorts, filter })
+export async function getAll() {
+	const fieldsFromNotion = await getDb({ database_id: fieldsId, sorts, filter })
+	const allTheThings = { name: 'all the things' }
 
 	return {
-		body: [...fields, { name: 'all the things' }]
+		...fieldsFromNotion,
+		allTheThings,
 	}
 }
