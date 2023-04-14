@@ -16,7 +16,9 @@ export async function getPage(projectName: string) {
 		],
 	}
 
-	const projects = await Notion.getDb({ database_id: projectsId, filter })
+	const { 0: project } = await Notion.getDb({ database_id: projectsId, filter })
 
-	return await Notion.getPage(projects[0])
+	if (!project) return
+
+	return await Notion.getPage(project)
 }
