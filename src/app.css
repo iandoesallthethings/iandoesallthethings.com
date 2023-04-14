@@ -4,7 +4,13 @@
 @tailwind utilities;
 
 body {
-	@apply h-screen w-screen text-gray-800;
+	@apply text-gray-800 w-screen;
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+}
+
+html {
+	height: -webkit-fill-available;
 }
 
 .code {
