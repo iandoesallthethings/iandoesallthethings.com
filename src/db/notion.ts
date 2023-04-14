@@ -93,6 +93,7 @@ const blockTypes = {
 		return `
 			<figure>
 				<iframe 
+				 	class="mx-auto"
 					width="420" 
 					height="315" 
 					src="https://www.youtube.com/embed/${getVideoId(video.external.url)}" 
