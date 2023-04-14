@@ -12,6 +12,13 @@ export function initialize() {
 	return updateAnalytics
 }
 
+interface AnalyticsOptions {
+	path: Page['url']['pathname']
+	params: Page['params']
+	analyticsId: string
+	debug?: boolean
+}
+
 function updateAnalytics($page: Page) {
 	if (!(browser && analyticsId)) return
 
@@ -20,13 +27,6 @@ function updateAnalytics($page: Page) {
 		params: $page.params,
 		analyticsId,
 	})
-}
-
-interface AnalyticsOptions {
-	path: Page['url']['pathname']
-	params: Page['params']
-	analyticsId: string
-	debug?: boolean
 }
 
 export function webVitals(options: AnalyticsOptions) {
@@ -48,20 +48,20 @@ function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
 	)
 
 	const body = {
-		dsn: options.analyticsId, // qPgJqYH9LQX5o31Ormk8iWhCxZO
-		id: metric.id, // v2-1653884975443-1839479248192
-		page, // /blog/[slug]
-		href: location.href, // https://{my-example-app-name-here}/blog/my-test
-		event_name: metric.name, // TTFB
-		value: metric.value.toString(), // 60.20000000298023
-		speed: getConnectionSpeed(), // 4g
-	} as unknown as URLSearchParams
+		dsn: options.analyticsId,
+		id: metric.id,
+		page,
+		href: location.href,
+		event_name: metric.name,
+		value: metric.value.toString(),
+		speed: getConnectionSpeed(),
+	}
 
 	if (options.debug) {
 		console.log('[Analytics]', metric.name, JSON.stringify(body, null, 2))
 	}
 
-	const blob = new Blob([new URLSearchParams(body).toString()], {
+	const blob = new Blob([new URLSearchParams(body as unknown as URLSearchParams).toString()], {
 		// This content type is necessary for `sendBeacon`
 		type: 'application/x-www-form-urlencoded',
 	})
@@ -74,14 +74,13 @@ function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
 			method: 'POST',
 			credentials: 'omit',
 			keepalive: true,
-			mode: 'no-cors',
 		})
 }
 
 function getConnectionSpeed() {
 	return 'connection' in navigator &&
 		navigator['connection'] &&
-		//@ts-expect-error This is a mess, but whatever.
+		// @ts-expect-error - Yeesh, what a mess
 		'effectiveType' in navigator['connection']
 		? navigator['connection']['effectiveType']
 		: ''
