@@ -1,6 +1,9 @@
 import type { Coordinate, Vector } from '$ukiyo/Numbers'
+import type FlowField from '$ukiyo/FlowField'
 import * as Numbers from '$ukiyo/Numbers'
 import type Container from '$ukiyo/Container'
+import { browser } from '$app/environment'
+import { bindMethodsToThis } from '$lib/decorators'
 
 function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordinate {
 	const rect = relativeNode.getBoundingClientRect()
@@ -10,7 +13,10 @@ function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordi
 		y: event.clientY - rect.top,
 	}
 }
+
+@bindMethodsToThis
 export default class Particle {
+	flowField: FlowField
 	pool: Container
 	particle: HTMLElement
 	position: Coordinate
@@ -23,7 +29,8 @@ export default class Particle {
 	lastTime = new Date().getTime()
 	destroyed = false
 
-	constructor(pool: Container, particle: HTMLElement) {
+	constructor(flowField: FlowField, pool: Container, particle: HTMLElement) {
+		this.flowField = flowField
 		this.pool = pool
 		this.particle = particle
 
@@ -46,7 +53,7 @@ export default class Particle {
 	drift() {
 		if (this.momentum.magnitude <= 0) this.push()
 
-		this.momentum.direction = flowField.directionAt(this.position, this.zOffset)
+		this.momentum.direction = this.flowField.directionAt(this.position, this.zOffset)
 
 		// Idea from Luca: Scale the influence of the perlin flow on direction to 1/magnitude
 		// momentum = addVectors(momentum, {
@@ -123,6 +130,8 @@ export default class Particle {
 	}
 
 	setup() {
+		if (!browser) return
+
 		this.particle.style.position = 'absolute'
 		this.particle.style.display = 'block'
 		this.particle.addEventListener('pointerdown', this.dragStart)

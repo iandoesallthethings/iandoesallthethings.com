@@ -1,4 +1,4 @@
-import * as Notion from '$lib/notion'
+import * as Notion from '$db/notion'
 
 const projectsId = process.env.NOTION_PROJECTS_DB
 

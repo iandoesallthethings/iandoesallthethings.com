@@ -1,28 +1,27 @@
 // @ts-expect-error This is a weird commonjs shim
 import noisejs from 'noisejs'
 const { Noise } = noisejs
-import * as Numbers from '$lib/ukiyo/Numbers'
-import type { Coordinate, Angle } from '$lib/ukiyo/Numbers'
+import * as Numbers from '$ukiyo/Numbers'
+import type { Coordinate, Angle } from '$ukiyo/Numbers'
+import { browser } from '$app/environment'
+import { bindMethodsToThis } from '$lib/decorators'
 
+@bindMethodsToThis
 export default class FlowField {
 	// @ts-expect-error Old library is old
-	noise: Noise
-	z: number
+	noise: Noise = new Noise(Math.E)
+	z: number = Math.random()
+	destroyed = false
 
 	constructor() {
-		this.noise = new Noise(Math.E)
-		this.z = Math.random()
-
-		this.start()
-	}
-
-	start() {
+		if (!browser) return
 		this.flow()
 	}
 
 	flow() {
-		this.z = Math.random()
+		if (this.destroyed) return
 
+		this.z = Math.random()
 		setTimeout(() => requestAnimationFrame(this.flow), Numbers.randomIntBetween(5000, 10000))
 	}
 
@@ -34,5 +33,9 @@ export default class FlowField {
 		)
 
 		return Numbers.clamp(noiseValue * 360 + 180, 0, 360)
+	}
+
+	destroy() {
+		this.destroyed = true
 	}
 }

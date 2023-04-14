@@ -1,19 +1,27 @@
 import { browser } from '$app/environment'
-import FlowField from './FlowField'
+import FlowField from '$ukiyo/FlowField'
+import Container from '$ukiyo/Container'
+import Particle from '$ukiyo/Particle'
 
-import Container from '$lib/ukiyo/Container'
-import Particle from '$lib/ukiyo/Particle'
+// This flowfield is global to the app
+let flowField: FlowField
 
-const flowField = new FlowField()
-if (browser) flowField.start()
+if (browser) {
+	flowField = new FlowField()
+}
 
 export default function ukiyo(particleElement: HTMLElement, poolElement?: HTMLElement) {
+	if (!flowField) return
+
 	const pool = new Container(poolElement ?? (particleElement.parentNode as HTMLElement))
 
-	const particle = new Particle(pool, particleElement)
+	const particle = new Particle(flowField, pool, particleElement)
 
 	return {
 		update: particle.update,
-		destroy: particle.destroy,
+		destroy() {
+			flowField.destroy()
+			particle.destroy()
+		},
 	}
 }

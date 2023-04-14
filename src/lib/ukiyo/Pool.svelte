@@ -3,9 +3,9 @@
 	import ProjectCard from '$components/ProjectCard.svelte'
 	import { page } from '$app/stores'
 
-	import { focus } from '$lib/stores'
+	import focus from '$lib/focus'
 
-	$: projects = $page.data.projects
+	const projects = $page.data.projects
 </script>
 
 <div id="pool">

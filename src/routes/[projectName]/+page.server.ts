@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types'
-import * as Projects from '$lib/Projects'
+import * as Projects from '$db/Projects'
 
 export const config = {
 	isr: {
@@ -8,5 +8,7 @@ export const config = {
 }
 
 export const load: PageServerLoad = async function ({ params }) {
-	return await Projects.getPage(params.projectName)
+	const project = await Projects.getPage(params.projectName)
+
+	return { project }
 }

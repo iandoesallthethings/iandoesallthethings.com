@@ -40,4 +40,11 @@ export interface JsonObject {
 	[key: string]: JsonValue
 }
 
+// Recursive type for value that can be encoded.
 export type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject
+
+export type ArbitraryFunction = (...args: unknown[]) => unknown
+
+export interface ArbitraryClass<T> {
+	new (...args: unknown[]): T
+}

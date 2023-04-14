@@ -8,6 +8,7 @@ const config = {
 		alias: {
 			$types: './src/types',
 			$components: './src/components',
+			$db: './src/db',
 			$ukiyo: './src/lib/ukiyo',
 		},
 	},
