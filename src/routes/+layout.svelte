@@ -1,27 +1,16 @@
 <script lang="ts">
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
-	import { dev } from '$app/environment'
-	import { inject as VercelAnalytics } from '@vercel/analytics'
-	import { webVitals as VercelWebVitals } from '$lib/vitals'
+	import { page } from '$app/stores'
+	import * as Analytics from '$lib/Analytics'
 	import Header from '$components/Header.svelte'
-	import Pool from '$ukiyo/Pool.svelte'
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
-	import { browser } from '$app/environment'
-	import { page } from '$app/stores'
+	import Pool from '$ukiyo/Pool.svelte'
 
-	VercelAnalytics({ mode: dev ? 'development' : 'production' })
+	const updateAnalytics = Analytics.initialize()
 
-	let analyticsId: string = import.meta.env.VERCEL_ANALYTICS_ID
-
-	$: if (browser && analyticsId) {
-		VercelWebVitals({
-			path: $page.url.pathname,
-			params: $page.params,
-			analyticsId,
-		})
-	}
+	$: updateAnalytics($page)
 </script>
 
 <theme>

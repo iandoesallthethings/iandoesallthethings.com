@@ -1,22 +1,46 @@
+import { browser, dev } from '$app/environment'
 import type { Page } from '@sveltejs/kit'
-import type { Metric } from 'web-vitals'
-import { onCLS, onFCP, onFID, onLCP, onTTFB } from 'web-vitals'
+import { onCLS, onFCP, onFID, onLCP, onTTFB, type Metric } from 'web-vitals'
+import { inject } from '@vercel/analytics'
 
 const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals'
 
-function getConnectionSpeed() {
-	return 'connection' in navigator &&
-		navigator['connection'] &&
-		'effectiveType' in navigator['connection']
-		? navigator['connection']['effectiveType']
-		: ''
+// eslint-disable-next-line prefer-const -- Vercel needs this to be let
+let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
+
+export function initialize() {
+	inject({ mode: dev ? 'development' : 'production' })
+
+	return updateAnalytics
 }
 
-export interface AnalyticsOptions {
+function updateAnalytics($page: Page) {
+	if (!(browser && analyticsId)) return
+
+	webVitals({
+		path: $page.url.pathname,
+		params: $page.params,
+		analyticsId,
+	})
+}
+
+interface AnalyticsOptions {
 	path: Page['url']['pathname']
 	params: Page['params']
 	analyticsId: string
 	debug?: boolean
+}
+
+export function webVitals(options: AnalyticsOptions) {
+	try {
+		onFID((metric) => sendToAnalytics(metric, options))
+		onTTFB((metric) => sendToAnalytics(metric, options))
+		onLCP((metric) => sendToAnalytics(metric, options))
+		onCLS((metric) => sendToAnalytics(metric, options))
+		onFCP((metric) => sendToAnalytics(metric, options))
+	} catch (err) {
+		console.error('[Analytics]', err)
+	}
 }
 
 function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
@@ -43,6 +67,7 @@ function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
 		// This content type is necessary for `sendBeacon`
 		type: 'application/x-www-form-urlencoded',
 	})
+
 	if (navigator.sendBeacon) {
 		navigator.sendBeacon(vitalsUrl, blob)
 	} else
@@ -54,14 +79,11 @@ function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
 		})
 }
 
-export function webVitals(options: AnalyticsOptions) {
-	try {
-		onFID((metric) => sendToAnalytics(metric, options))
-		onTTFB((metric) => sendToAnalytics(metric, options))
-		onLCP((metric) => sendToAnalytics(metric, options))
-		onCLS((metric) => sendToAnalytics(metric, options))
-		onFCP((metric) => sendToAnalytics(metric, options))
-	} catch (err) {
-		console.error('[Analytics]', err)
-	}
+function getConnectionSpeed() {
+	return 'connection' in navigator &&
+		navigator['connection'] &&
+		//@ts-expect-error This is a mess, but whatever.
+		'effectiveType' in navigator['connection']
+		? navigator['connection']['effectiveType']
+		: ''
 }
