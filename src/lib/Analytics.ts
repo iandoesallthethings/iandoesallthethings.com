@@ -74,6 +74,7 @@ function sendToAnalytics(metric: Metric, options: AnalyticsOptions) {
 			method: 'POST',
 			credentials: 'omit',
 			keepalive: true,
+			mode: 'no-cors',
 		})
 }
 
