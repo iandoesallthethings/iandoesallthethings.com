@@ -9,6 +9,8 @@ export async function getAll() {
 }
 
 export async function getPage(projectName: string) {
+	if (!projectName) return
+
 	const filter = {
 		and: [
 			{ property: 'route', rich_text: { contains: projectName } },

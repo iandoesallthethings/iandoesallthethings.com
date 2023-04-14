@@ -9,5 +9,7 @@ export const load: PageServerLoad = async function ({ params }) {
 
 	const project = await Projects.getPage(projectName)
 
+	if (!project) throw error(404)
+
 	return { project }
 }
