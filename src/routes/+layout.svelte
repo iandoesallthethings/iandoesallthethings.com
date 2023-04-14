@@ -13,24 +13,22 @@
 	$: updateAnalytics($page)
 </script>
 
-<theme>
-	<main
-		class="
-			absolute top-0 left-0
-			w-full h-full
-			flex flex-col
-			bg-sky-500 dark:bg-sky-600
-			overflow-hidden
-		"
-	>
-		<Header />
+<main>
+	<Header />
 
-		<Pool />
+	<Pool />
 
-		<slot />
+	<slot />
 
-		<Footer />
+	<Footer />
 
-		<Konami />
-	</main>
-</theme>
+	<Konami />
+</main>
+
+<style lang="postcss">
+	main {
+		@apply w-[100dvw] h-[100dvh] overflow-hidden;
+		@apply flex flex-col;
+		@apply bg-sky-500 dark:bg-sky-600;
+	}
+</style>
