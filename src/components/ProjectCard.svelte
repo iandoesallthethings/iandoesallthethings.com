@@ -1,14 +1,14 @@
-<script>
-	export let project
+<script lang="ts">
+	import type { Project } from '$types'
+	export let project: Project
 </script>
 
-<a href="/{project.route}" sveltekit:prefetch draggable="false">
+<a href="/{project.route}" data-sveltekit-preload-data draggable="false">
 	{#if project.video}
 		<video
 			class="w-full"
 			src={project.video}
-			alt={project.name}
-			disableRemotePlayback="true"
+			disableRemotePlayback={true}
 			autoplay
 			muted
 			loop
@@ -23,7 +23,7 @@
 	</div>
 </a>
 
-<style>
+<style lang="postcss">
 	a {
 		@apply bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
 	}

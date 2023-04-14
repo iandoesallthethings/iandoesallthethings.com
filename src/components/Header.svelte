@@ -41,7 +41,7 @@
 	</div>
 </header>
 
-<style>
+<style lang="postcss">
 	header {
 		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row flex-wrap lg:flex-nowrap items-start;
 	}

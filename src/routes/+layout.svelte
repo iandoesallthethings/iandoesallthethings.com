@@ -2,11 +2,8 @@
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
 
-	import type { Field, Project } from '$types'
-
-	import type { PageData } from './$types'
 	import Header from '$components/Header.svelte'
-	import Pool from '$components/Pool.svelte'
+	import Pool from '$ukiyo/Pool.svelte'
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 </script>
