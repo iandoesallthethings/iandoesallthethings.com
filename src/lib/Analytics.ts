@@ -2,7 +2,9 @@ import { browser, dev } from '$app/environment'
 import type { Page } from '@sveltejs/kit'
 import { onCLS, onFCP, onFID, onLCP, onTTFB, type Metric } from 'web-vitals'
 import { inject } from '@vercel/analytics'
-import { PUBLIC_VERCEL_ANALYTICS_ID as analyticsId } from '$env/static/public'
+
+// eslint-disable-next-line prefer-const
+let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
 
 const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals'
 
