@@ -2,6 +2,7 @@
 	"name": "denkyuu.io",
 	"version": "3.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -42,6 +43,5 @@
 		"dotenvenc": "^3.0.1",
 		"highlight.js": "^11.4.0",
 		"noisejs": "^2.1.0"
-	},
-	"type": "module"
+	}
 }
