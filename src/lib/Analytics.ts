@@ -8,8 +8,13 @@ const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals'
 // eslint-disable-next-line prefer-const -- Vercel needs this to be let
 let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
 let viteAnalyticsId = import.meta.env.VITE_VERCEL_ANALYTICS_ID
+let processViteAnalyticsId = process.env.VERCEL_ANALYTICS_ID
+let processAnalyticsId = process.env.VERCEL_ANALYTICS_ID
+
 console.debug('[Analytics] Id:', analyticsId)
 console.debug('[Analytics] Vite Id:', viteAnalyticsId)
+console.debug('[Analytics] process.env Id:', processAnalyticsId)
+console.debug('[Analytics] process.env Id:', processViteAnalyticsId)
 
 export function initialize() {
 	inject({ mode: dev ? 'development' : 'production' })
