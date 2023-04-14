@@ -6,9 +6,9 @@ const config = {
 	kit: {
 		adapter: adapter({
 			runtime: 'nodejs18.x',
-			isr: {
-				expiration: 60 * 60 * 24, // Pop the cache once a day
-			},
+			// isr: {
+			// 	expiration: 60 * 60 * 24, // Pop the cache once a day
+			// },
 		}),
 		alias: {
 			$types: './src/types',
