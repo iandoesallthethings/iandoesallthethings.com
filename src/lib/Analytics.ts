@@ -3,12 +3,9 @@ import type { Page } from '@sveltejs/kit'
 import { onCLS, onFCP, onFID, onLCP, onTTFB, type Metric } from 'web-vitals'
 import { inject } from '@vercel/analytics'
 
-// eslint-disable-next-line prefer-const
-let analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
-
 const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals'
-
-console.debug('[Analytics] Id:', analyticsId)
+// // eslint-disable-next-line prefer-const
+const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
 
 export function initialize() {
 	inject({ mode: dev ? 'development' : 'production' })
