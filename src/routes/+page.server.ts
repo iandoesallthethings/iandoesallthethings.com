@@ -1,5 +1,3 @@
-export const config = {
-	isr: {
-		expiration: 60 * 60 * 24, // 24 hours
-	},
-}
+import isr from '$lib/isr'
+
+export const config = { isr }
