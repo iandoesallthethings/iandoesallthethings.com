@@ -4,7 +4,6 @@ import { onCLS, onFCP, onFID, onLCP, onTTFB, type Metric } from 'web-vitals'
 import { inject } from '@vercel/analytics'
 
 const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals'
-// // eslint-disable-next-line prefer-const
 const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID
 
 export function initialize() {
