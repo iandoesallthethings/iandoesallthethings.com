@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Field } from '$lib/types'
 	import { fly } from 'svelte/transition'
-	import { focus } from '$lib/stores'
+	import focus from '$lib/focus'
+	import { page } from '$app/stores'
 
-	export let fields: Field[] = []
+	$: fields = $page.data.fields
 
-	function blurbFor(focusedField) {
-		return fields.find((f) => f.name === focusedField).blurb
+	function blurbFor(focusedFieldName: string) {
+		return fields.find((field) => field.name === focusedFieldName)?.blurb
 	}
 </script>
 
@@ -32,7 +32,7 @@
 
 	<div class="w-full flex justify-center items-center mx-10 flex-col">
 		{#key $focus}
-			{#if fields?.find((field) => field.name === $focus)?.blurb}
+			{#if blurbFor($focus)}
 				<div class="blurb" in:fly={{ y: -50, duration: 500 }}>
 					{@html blurbFor($focus)}
 				</div>
@@ -41,7 +41,7 @@
 	</div>
 </header>
 
-<style>
+<style lang="postcss">
 	header {
 		@apply w-full p-2 space-y-2 mt-2 mx-5 flex flex-row flex-wrap lg:flex-nowrap items-start;
 	}

@@ -1,7 +1,3 @@
-<script>
-	import DarkModeSwitch from './DarkModeSwitch.svelte'
-</script>
-
 <footer>
 	<div class="flex flex-row space-x-2 whitespace-nowrap">
 		<a href="mailto:iandoesallthethings@gmail.com" target="_blank">
@@ -22,13 +18,9 @@
 
 		<span>&copy; ian</span>
 	</div>
-
-	<div>
-		<!-- <DarkModeSwitch /> -->
-	</div>
 </footer>
 
-<style>
+<style lang="postcss">
 	footer {
 		@apply absolute bottom-0 flex justify-between px-4 py-2 w-full items-center;
 	}

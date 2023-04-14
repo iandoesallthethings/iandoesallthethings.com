@@ -21,7 +21,7 @@
 		'ArrowRight',
 		'b',
 		'a',
-		'Enter'
+		'Enter',
 	]
 
 	const contra = `
@@ -61,7 +61,7 @@
 						${Math.min(100, 1000 - 1000 * t)}%,
 						${Math.min(50, 500 - 500 * t)}%
 					);`
-			}
+			},
 		}
 	}
 
@@ -88,7 +88,7 @@
 	Canvas is not supported in your browser. You get nothing. You Lose. Good day sir.
 </canvas>
 
-<style>
+<style lang="postcss">
 	canvas {
 		display: none;
 		position: absolute;

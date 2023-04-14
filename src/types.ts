@@ -14,6 +14,7 @@ export interface Field {
 export interface Project {
 	name: string
 	title: string
+	route: string
 	fields: FieldName[]
 	link?: Url
 	video?: Url
@@ -35,8 +36,15 @@ export interface Props {
 	props: JsonObject
 }
 
+// Recursive type for value that can be encoded.
+export type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject
+
+export type ArbitraryFunction = (...args: unknown[]) => unknown
+
+export interface ArbitraryClass<T> {
+	new (...args: unknown[]): T
+}
+
 export interface JsonObject {
 	[key: string]: JsonValue
 }
-
-export type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject

@@ -3,20 +3,19 @@
 	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
 	import { onMount } from 'svelte'
-	import floatToTop from '$lib/floatToTop'
+	import floatToTop from '$ukiyo/floatToTop'
 
 	function close() {
 		goto('/')
 	}
 
-	let page
+	let page: HTMLDivElement
 
 	onMount(() => floatToTop(page))
 </script>
 
-<!-- <div class="overlay" /> -->
 <div bind:this={page} class="wrapper">
-	<article use:clickOutside on:outclick={close} transition:fade class="page">
+	<article use:clickOutside={close} transition:fade class="page">
 		<slot />
 	</article>
 </div>

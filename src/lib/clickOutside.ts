@@ -1,6 +1,8 @@
-export default function clickOutside(node) {
-	const handleClick = (event) => {
-		if (!node.contains(event.target)) node.dispatchEvent(new CustomEvent('outclick'))
+export default function clickOutside(node: HTMLElement, onClickOutside: () => void) {
+	const handleClick = (event: PointerEvent) => {
+		const isOutside = !node.contains(event.target as Node)
+
+		if (isOutside) onClickOutside()
 	}
 
 	document.addEventListener('pointerdown', handleClick, true)
@@ -8,6 +10,6 @@ export default function clickOutside(node) {
 	return {
 		destroy() {
 			document.removeEventListener('pointerdown', handleClick, true)
-		}
+		},
 	}
 }

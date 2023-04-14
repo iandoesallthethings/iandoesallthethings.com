@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Particle from '$components/Particle.svelte'
+	import Particle from '$ukiyo/Particle.svelte'
 	import ProjectCard from '$components/ProjectCard.svelte'
-	import type { Project } from '$lib/types'
+	import { page } from '$app/stores'
 
-	import { focus } from '$lib/stores'
+	import focus from '$lib/focus'
 
-	export let projects: Project[] = []
+	const projects = $page.data.projects
 </script>
 
 <div id="pool">
