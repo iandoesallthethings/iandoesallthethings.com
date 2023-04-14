@@ -29,6 +29,9 @@
 	main {
 		@apply w-[100dvw] h-[100dvh] overflow-hidden;
 		@apply flex flex-col;
+	}
+
+	:global(body) {
 		@apply bg-sky-500 dark:bg-sky-600;
 	}
 </style>
