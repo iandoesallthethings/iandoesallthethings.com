@@ -1,9 +1,12 @@
-<script lang="ts">
-	import type { Project } from '$types'
-	export let project: Project
+<script>
+	// For some reason ts breaks syntax highlighting here??
+	// import type { Project } from '$types'
+	// export let project: Project
+	/** @type {import('$types').Project} */
+	export let project
 </script>
 
-<a href="/{project.route}" data-sveltekit-preload-data draggable="false">
+<a href="/{project.route}" data-sveltekit-preload-data draggable="false" class="group">
 	{#if project.video}
 		<video
 			class="w-full"

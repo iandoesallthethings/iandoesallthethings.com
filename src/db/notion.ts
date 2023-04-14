@@ -30,10 +30,14 @@ function parseProperty(property) {
 const propertyTypes = {
 	title: (p) => p.title[0].plain_text,
 	rich_text: (p) => parseRichText(p.rich_text),
-	files: (p) => p.files[0]?.file.url,
 	checkbox: (p) => p.checkbox,
 	url: (p) => p.url,
 	multi_select: (p) => p.multi_select.map((f) => f.name),
+	files: (p) => p.files[0]?.file.url,
+	// For isr:
+	// files: (p) => {
+	// 	return `/notion-asset?url=${p.files[0]?.file.url}`
+	// },
 }
 
 function parsePage(page): HTML {
@@ -56,6 +60,7 @@ const blockTypes = {
 	numbered_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
 	bulleted_list_item: (list_item) => `<li>${parseRichText(list_item.text)}</li>`,
 	divider: () => '<hr />',
+	// <img src="/notion-asset?url=${image.file.url}" alt="${parsePlainText(image.caption)}" />
 	image: (image) => {
 		return `
 			<figure class="image">

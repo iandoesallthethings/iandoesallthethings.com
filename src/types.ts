@@ -14,6 +14,7 @@ export interface Field {
 export interface Project {
 	name: string
 	title: string
+	subtitle: string
 	route: string
 	fields: FieldName[]
 	link?: Url
