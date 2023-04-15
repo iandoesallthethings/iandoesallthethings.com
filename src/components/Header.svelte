@@ -14,7 +14,7 @@
 	<div>
 		<h1>ian edwards</h1>
 		<nav>
-			<span class="text-gray-700">ian does</span>
+			<span class="text-black/80">ian does</span>
 			{#each fields as field}
 				<label>
 					<input
@@ -24,7 +24,7 @@
 						on:click={() => ($focus = $focus)}
 						class="hidden"
 					/>
-					<span> {field.name} </span>
+					<span>{field.name}</span>
 				</label>
 			{/each}
 		</nav>
@@ -55,7 +55,7 @@
 	}
 
 	input + span {
-		@apply cursor-pointer text-white px-2 py-1 text-base md:text-xl;
+		@apply cursor-pointer text-white/80 px-2 py-1 text-base md:text-xl;
 	}
 	input:hover + span {
 		@apply bg-white/10 rounded-md shadow-sm;

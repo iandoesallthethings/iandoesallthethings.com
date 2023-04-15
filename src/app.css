@@ -44,7 +44,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply text-white mb-4;
+	@apply text-white/80 mb-4;
 }
 h1 {
 	@apply text-4xl;

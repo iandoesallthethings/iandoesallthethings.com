@@ -21,7 +21,7 @@
 		<img src={project.image || 'images/maybe.gif'} alt={project.name} />
 	{/if}
 
-	<div class="text-white text-sm">
+	<div class="text-white/90 font-bold text-sm">
 		{@html project.name}
 	</div>
 </a>
