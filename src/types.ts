@@ -20,7 +20,6 @@ export interface Field extends BaseRow {
 
 export interface Project extends BaseRow {
 	name: string
-	title: string
 	subtitle: string
 	route: string
 	fields: FieldName[]

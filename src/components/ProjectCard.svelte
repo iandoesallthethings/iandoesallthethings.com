@@ -20,7 +20,7 @@
 			playsInline
 		/>
 	{:else}
-		<img src={project.image || 'images/maybe.gif'} alt={stripHtml(project.title)} />
+		<img src={project.image || 'images/maybe.gif'} alt={stripHtml(project.subtitle)} />
 	{/if}
 
 	<div class="text-white/90 font-bold text-sm">
