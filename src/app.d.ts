@@ -7,7 +7,7 @@ declare global {
 		interface PageData {
 			fields: import('$types').Field[]
 			projects: import('$types').Project[]
-			project: import('$types').Project
+			project: Promise<import('$types').Project>
 		}
 		// interface Platform {}
 	}

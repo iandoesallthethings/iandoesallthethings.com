@@ -1,14 +1,15 @@
 import * as Notion from '$db/notion'
+import type { Project } from '$types'
 
 const projectsId = process.env.NOTION_PROJECTS_DB
 
-export async function getAll() {
+export async function getAll(): Promise<Project[]> {
 	const filter = { property: 'published', checkbox: { equals: true } }
 
-	return await Notion.getDb({ database_id: projectsId, filter })
+	return Notion.getDb({ database_id: projectsId, filter })
 }
 
-export async function getPage(projectName: string) {
+export async function getPage(projectName: string): Promise<Project | undefined> {
 	if (!projectName) return
 
 	const filter = {
@@ -18,9 +19,9 @@ export async function getPage(projectName: string) {
 		],
 	}
 
-	const { 0: project } = await Notion.getDb({ database_id: projectsId, filter })
+	const { 0: project } = await Notion.getDb<Project>({ database_id: projectsId, filter })
 
 	if (!project) return
 
-	return await Notion.getPage(project)
+	return Notion.getPage(project)
 }
