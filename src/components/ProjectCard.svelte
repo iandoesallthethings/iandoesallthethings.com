@@ -3,6 +3,7 @@
 
 	export let project: Project
 
+	$: altText = `${stripHtml(project.name)}: ${stripHtml(project.subtitle)}`
 	function stripHtml(s: string) {
 		return s?.replace(/<[^>]*>?/gm, '') ?? ''
 	}
@@ -11,6 +12,7 @@
 <a href="/{project.route}" data-sveltekit-preload-data draggable="false" class="group">
 	{#if project.video}
 		<video
+			title={altText}
 			class="w-full"
 			src={project.video}
 			disableRemotePlayback={true}
@@ -20,7 +22,7 @@
 			playsInline
 		/>
 	{:else}
-		<img src={project.image || 'images/maybe.gif'} alt={stripHtml(project.subtitle)} />
+		<img src={project.image || 'images/maybe.gif'} alt={altText} />
 	{/if}
 
 	<div class="text-white/90 font-bold text-sm">
