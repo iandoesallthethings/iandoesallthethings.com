@@ -8,7 +8,7 @@ const config = {
 			runtime: 'nodejs18.x',
 			isr: {
 				expiration: 60 * 60, // In seconds
-				bypassToken: 'ahyesfresh',
+				bypassToken: 'C4Gab9GQLltu2HfiSLeh9edqDiWwWdy9',
 				allowQuery: ['url'],
 			},
 		}),
