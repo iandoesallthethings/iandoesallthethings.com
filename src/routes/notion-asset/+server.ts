@@ -6,10 +6,5 @@ export const GET: RequestHandler = async function ({ url, fetch }) {
 
 	if (!s3Url) throw error(404, `Could not find asset: ${s3Url}`)
 
-	return await fetch(s3Url, {
-		headers: {
-			'Access-Control-Allow-Methods': 'GET',
-			'Access-Control-Allow-Origin': '*',
-		},
-	})
+	return fetch(s3Url)
 }
