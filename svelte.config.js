@@ -6,11 +6,11 @@ const config = {
 	kit: {
 		adapter: adapter({
 			runtime: 'nodejs18.x',
-			isr: {
-				expiration: 60 * 60, // In seconds
-				bypassToken: 'C4Gab9GQLltu2HfiSLeh9edqDiWwWdy9',
-				allowQuery: ['url'],
-			},
+			// isr: {
+			// 	expiration: 60 * 60, // In seconds
+			// 	bypassToken: 'C4Gab9GQLltu2HfiSLeh9edqDiWwWdy9',
+			// 	allowQuery: ['url'],
+			// },
 		}),
 		alias: {
 			$types: './src/types',
