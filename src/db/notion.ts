@@ -33,7 +33,6 @@ export async function getPage<T extends Row>(row: T): Promise<Page<T>> {
 }
 
 function parseProperties(row: Row) {
-	console.debug({ properties: row.properties })
 	return { id: row.id, ...objectMap(row.properties, parseProperty) }
 }
 

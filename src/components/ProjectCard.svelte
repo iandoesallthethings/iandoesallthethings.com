@@ -1,9 +1,11 @@
-<script>
-	// For some reason ts breaks syntax highlighting here??
-	// import type { Project } from '$types'
-	// export let project: Project
-	/** @type {import('$types').Project} */
-	export let project
+<script lang="ts">
+	import type { Project } from '$types'
+
+	export let project: Project
+
+	function stripHtml(s: string) {
+		return s.replace(/<[^>]*>?/gm, '')
+	}
 </script>
 
 <a href="/{project.route}" data-sveltekit-preload-data draggable="false" class="group">
@@ -18,7 +20,7 @@
 			playsInline
 		/>
 	{:else}
-		<img src={project.image || 'images/maybe.gif'} alt={project.name} />
+		<img src={project.image || 'images/maybe.gif'} alt={stripHtml(project.title)} />
 	{/if}
 
 	<div class="text-white/90 font-bold text-sm">
