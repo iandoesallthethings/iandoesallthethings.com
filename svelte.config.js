@@ -6,9 +6,9 @@ const config = {
 	kit: {
 		adapter: adapter({
 			runtime: 'nodejs18.x',
-			isr: {
-				expiration: 60 * 60 * 24 * 7, // In seconds
-			},
+			// isr: {
+			// 	expiration: 60 * 60 * 24 * 7, // In seconds
+			// },
 		}),
 		alias: {
 			$types: './src/types',
