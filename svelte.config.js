@@ -7,8 +7,7 @@ const config = {
 		adapter: adapter({
 			runtime: 'nodejs18.x',
 			isr: {
-				// Lets try just under an hour. The url changing might pop the cache that often anyway.
-				expiration: 60 * 58,
+				expiration: 60 * 60 * 24 * 7, // In seconds
 			},
 		}),
 		alias: {
