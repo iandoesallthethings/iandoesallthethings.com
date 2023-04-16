@@ -4,7 +4,7 @@
 	export let project: Project
 
 	function stripHtml(s: string) {
-		return s.replace(/<[^>]*>?/gm, '')
+		return s?.replace(/<[^>]*>?/gm, '') ?? ''
 	}
 </script>
 
