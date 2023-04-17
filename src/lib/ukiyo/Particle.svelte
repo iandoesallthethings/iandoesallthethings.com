@@ -34,10 +34,11 @@
 		style="position:absolute; left: {left}px; top: {top}px;"
 	>
 		<slot />
+
 		<div
 			class="
 			window bg-white
-			w-[10%] h-[10%]
+			w-[50%] h-50%
 			left-1/2 -translate-x-1/2
 			top-1/2 -translate-y-1/2
 			absolute
@@ -55,12 +56,9 @@
 		@apply absolute cursor-pointer touch-none;
 		/* @apply mix-blend-multiply; */
 	}
-	.fade {
-		@apply inset-16;
-	}
 
 	.metaball {
 		@apply absolute;
-		@apply scale-125;
+		@apply scale-110;
 	}
 </style>

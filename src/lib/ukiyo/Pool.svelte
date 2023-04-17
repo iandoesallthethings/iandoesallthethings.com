@@ -27,12 +27,13 @@
 <style>
 	#contrast {
 		@apply absolute top-0 w-full h-full;
-		@apply contrast-[40];
+		@apply contrast-[50];
 	}
 
 	#blur-pool {
 		@apply w-full h-full absolute top-0 left-0;
 		@apply blur-[18px];
+		@apply mix-blend-multiply;
 	}
 
 	#pool {

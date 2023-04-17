@@ -32,7 +32,9 @@
 
 <style lang="postcss">
 	a {
-		@apply m-8 bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
+		@apply bg-gray-900/25 w-48 max-h-fit;
+		@apply flex flex-col items-center text-center;
+		@apply rounded-lg overflow-hidden transition;
 	}
 
 	img {
