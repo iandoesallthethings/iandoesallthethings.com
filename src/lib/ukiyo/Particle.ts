@@ -79,7 +79,9 @@ export default class Particle {
 		this.particle.dispatchEvent(new CustomEvent('dragstart'))
 		this.dragging = true
 		this.handle = pointerPosition(event, this.particle)
-		setTimeout(() => this.particle.setPointerCapture(event.pointerId), 100)
+		// This timeout controls how fast a click turns into a drag. Longer times make it
+		// easier to click but also make shorter drags open the page, which can be frustrating.
+		setTimeout(() => this.particle.setPointerCapture(event.pointerId), 50)
 	}
 
 	drag(event: PointerEvent) {
@@ -106,6 +108,10 @@ export default class Particle {
 		this.lastPosition = this.position
 		this.particle.style.left = this.position.x + 'px'
 		this.particle.style.top = this.position.y + 'px'
+
+		this.particle.dispatchEvent(
+			new CustomEvent<Coordinate>('particle-move', { detail: this.position })
+		)
 	}
 
 	updateMomentum(oldPosition: Coordinate, newPosition: Coordinate) {

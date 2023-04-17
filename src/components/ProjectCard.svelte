@@ -25,14 +25,14 @@
 		<img src={project.image || 'images/maybe.gif'} alt={altText} />
 	{/if}
 
-	<div class="text-white/90 font-bold text-sm">
+	<!-- <div class="text-white/90 font-bold text-sm">
 		{@html project.name}
-	</div>
+	</div> -->
 </a>
 
 <style lang="postcss">
 	a {
-		@apply bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
+		@apply m-8 bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
 	}
 
 	img {

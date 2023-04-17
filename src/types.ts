@@ -141,3 +141,8 @@ export interface ArbitraryClass<T> {
 export interface JsonObject {
 	[key: string]: JsonValue
 }
+
+export interface ActionEventListeners {
+	update?: (parameters: any) => void
+	destroy?: () => void
+}

@@ -8,17 +8,33 @@
 	const projects = $page.data.projects
 </script>
 
-<div id="pool">
-	{#each projects as project}
-		{#if project.fields.includes($focus) || $focus === 'all the things'}
-			<Particle>
-				<ProjectCard {project} />
-			</Particle>
-		{/if}
-	{/each}
+<div class="w-full h-full relative">
+	<div id="contrast">
+		<div id="blur-pool" />
+	</div>
+
+	<div id="pool">
+		{#each projects as project}
+			{#if project.fields.includes($focus) || $focus === 'all the things'}
+				<Particle>
+					<ProjectCard {project} />
+				</Particle>
+			{/if}
+		{/each}
+	</div>
 </div>
 
 <style>
+	#contrast {
+		@apply absolute top-0 w-full h-full;
+		@apply contrast-[40];
+	}
+
+	#blur-pool {
+		@apply w-full h-full absolute top-0 left-0;
+		@apply blur-[18px];
+	}
+
 	#pool {
 		@apply w-full h-full relative overflow-hidden select-none;
 	}
