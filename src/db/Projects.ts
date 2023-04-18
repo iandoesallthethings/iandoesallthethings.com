@@ -1,5 +1,5 @@
 import * as Notion from '$db/notion'
-import type { Project } from '$types'
+import type { Page, Project } from '$types'
 
 const projectsId = process.env.NOTION_PROJECTS_DB
 
@@ -9,7 +9,7 @@ export async function getAll(): Promise<Project[]> {
 	return Notion.getDb({ database_id: projectsId, filter })
 }
 
-export async function getPage(projectName: string): Promise<Project | undefined> {
+export async function getPage(projectName: string): Promise<Page<Project> | undefined> {
 	if (!projectName) return
 
 	const filter = {

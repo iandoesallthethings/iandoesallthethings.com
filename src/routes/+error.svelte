@@ -2,12 +2,12 @@
 	import Page from '$components/Page.svelte'
 	import { page } from '$app/stores'
 
-	const errors = {
+	const errorText: Record<number, string> = {
 		404: "404'd!",
-		default: "ERROR'D",
+		500: "ERROR'D",
 	}
 
-	$: message = errors[$page.status] || errors.default
+	$: message = errorText[$page.status] || errorText[500]
 </script>
 
 <Page>

@@ -1,8 +1,7 @@
-import type { PageServerLoad } from './$types'
 import * as Projects from '$db/Projects'
 import { error } from '@sveltejs/kit'
 
-export const load: PageServerLoad = async function ({ params }) {
+export async function load({ params }) {
 	const projectName = params.projectName
 
 	if (!projectName) throw error(404)
