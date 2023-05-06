@@ -50,10 +50,11 @@ const propertyTypes = {
 	files: (p: FilesProperty) => {
 		const url = p.files[0]?.file.url
 
-		if (url) {
-			const encodedUrl = encodeURIComponent(url)
-			return `/notion-asset?url=${encodedUrl}`
-		}
+		return url
+		// if (url) {
+		// 	const encodedUrl = encodeURIComponent(url)
+		// 	return `/notion-asset?url=${encodedUrl}`
+		// }
 	},
 }
 
@@ -89,7 +90,8 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 		const url = encodeURIComponent(file.url)
 		return `
 			<figure class="image">
-				<img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
+				<!-- <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" /> -->
+				<img src="${url}" alt="${parsePlainText(caption)}" />
 
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
