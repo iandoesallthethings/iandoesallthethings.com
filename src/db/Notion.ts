@@ -1,6 +1,5 @@
-import { Client } from '@notionhq/client'
-import hljs from 'highlight.js'
 import type {
+	QueryDatabaseParameters,
 	CSSClasses,
 	HtmlString,
 	Page,
@@ -15,13 +14,34 @@ import type {
 	CheckboxProperty,
 	UrlProperty,
 	RichTextChunk,
+	NotionSort,
 } from '$types'
+import { env } from '$env/dynamic/private'
+import { Client } from '@notionhq/client'
+import hljs from 'highlight.js'
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY })
+const notion = new Client({ auth: env.NOTION_API_KEY })
 
 export default notion
 
-export async function getDb<T extends Row>(queryObject): Promise<T[]> {
+export const filters = {
+	published: () => ({ property: 'published', checkbox: { equals: true } }),
+	propertyContains: (property: string, contains: string) => ({ property, rich_text: { contains } }),
+}
+
+export const sorts: {
+	[key: string]: (property: string) => NotionSort
+} = {
+	ascending: (property: string) => ({ property, direction: 'ascending' }),
+}
+
+export async function getDbWithPage<T extends Row>(
+	queryObject: QueryDatabaseParameters
+): Promise<Page<T>[]> {
+	return await Promise.all((await getDb<T>(queryObject)).map(getPage))
+}
+
+export async function getDb<T extends Row>(queryObject: QueryDatabaseParameters): Promise<T[]> {
 	return (await notion.databases.query(queryObject)).results.map(parseProperties)
 }
 
@@ -37,8 +57,11 @@ function parseProperties(row: Row) {
 }
 
 function parseProperty(property: Property) {
-	if (property.type in propertyTypes) return propertyTypes[property.type](property)
-	else return property
+	if (property.type in propertyTypes) {
+		return propertyTypes[property.type](property)
+	}
+
+	return property
 }
 
 const propertyTypes = {
@@ -56,6 +79,7 @@ const propertyTypes = {
 		// 	return `/notion-asset?url=${encodedUrl}`
 		// }
 	},
+	number: (p: { number: number }) => p.number,
 }
 
 async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
@@ -147,10 +171,11 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	// 	return
 	// },
 	fallback: (block) => {
-		const env = process.env.NODE_ENV
+		if (env.NODE_ENV === 'development') {
+			return `debug: output\n` + JSON.stringify(block, undefined, 2)
+		}
 
-		if (env === 'development') return `debug: output\n` + JSON.stringify(block, undefined, 2)
-		else return `<p>[TODO: Implement ${block.type} blocks]</p>`
+		return `<p>[TODO: Implement ${block.type} blocks]</p>`
 	},
 }
 

@@ -1,14 +1,21 @@
-import * as Notion from '$db/notion'
+import * as Notion from '$db/Notion'
 import type { Field } from '$types'
-const fieldsId = process.env.NOTION_FIELDS_DB
+import { env } from '$env/dynamic/private'
 
-const sorts = [{ property: 'order', direction: 'ascending' }]
-const filter = { property: 'published', checkbox: { equals: true } }
+const database_id = env.NOTION_FIELDS_DB
+
+const filter = Notion.filters.published()
+const sorts = [Notion.sorts.ascending('order')]
 
 export async function getAll(): Promise<Field[]> {
-	const fieldsFromNotion: Field[] = await Notion.getDb({ database_id: fieldsId, sorts, filter })
+	const fieldsFromNotion: Field[] = await Notion.getDb({ database_id, filter, sorts })
 
-	const allTheThings = { name: 'all the things' } as Field
+	const allTheThings: Field = {
+		id: 'all the things',
+		name: 'all the things',
+		order: 4,
+		published: true,
+	}
 
 	return [...fieldsFromNotion, allTheThings]
 }
@@ -17,13 +24,10 @@ export async function getPage(projectName: string): Promise<Field | undefined> {
 	if (!projectName) return
 
 	const filter = {
-		and: [
-			{ property: 'route', rich_text: { contains: projectName } },
-			{ property: 'published', checkbox: { equals: true } },
-		],
+		and: [Notion.filters.propertyContains('route', projectName), Notion.filters.published()],
 	}
 
-	const { 0: project } = await Notion.getDb<Field>({ database_id: fieldsId, filter })
+	const { 0: project } = await Notion.getDb<Field>({ database_id, filter })
 
 	if (!project) return
 

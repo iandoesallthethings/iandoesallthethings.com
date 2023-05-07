@@ -1,3 +1,5 @@
+export type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+
 export type UrlString = string
 
 export type HtmlString = string
@@ -10,12 +12,14 @@ export type Row = Field | Project
 
 export interface BaseRow {
 	id: string
-	properties: Record<PropertyName, Property>
+	properties?: Record<PropertyName, Property>
 }
 
 export interface Field extends BaseRow {
 	name: FieldName
 	blurb?: string
+	order: number
+	published: boolean
 }
 
 export interface Project extends BaseRow {
@@ -27,6 +31,7 @@ export interface Project extends BaseRow {
 	video?: UrlString
 	image?: UrlString
 	published: boolean
+	indev: boolean
 }
 
 export type PropertyName = 'title' | 'rich_text' | 'checkbox' | 'url' | 'multi_select' | 'files'
@@ -140,4 +145,9 @@ export interface ArbitraryClass<T> {
 
 export interface JsonObject {
 	[key: string]: JsonValue
+}
+
+export interface NotionSort {
+	property: string
+	direction: 'ascending' | 'descending'
 }

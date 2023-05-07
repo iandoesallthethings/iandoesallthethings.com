@@ -13,23 +13,26 @@ datasource db {
 }
 
 model Field {
-  id       String    @id
-  name     String
-  blurb    String?
+  id        String  @id
+  name      String  @unique
+  order     Int
+  published Boolean
+  blurb     String?
+
   projects Project[]
-  // properties Json
 }
 
 model Project {
   id        String  @id
-  name      String
-  subtitle  String
-  route     String
+  name      String  @unique
+  route     String  @unique
+  published Boolean
+  indev     Boolean
+  subtitle  String?
   link      String?
   video     String?
   image     String?
-  published Boolean
-  fields    Field[]
-  page      String
-  // properties Json
+  page      String?
+
+  fields Field[]
 }
