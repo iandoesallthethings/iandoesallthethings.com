@@ -38,7 +38,20 @@ export async function GET({ url }) {
 		})
 	})
 
-	await Promise.all([...fieldPromises, ...projectPromises])
+	const deleteOldProjectPromise = prisma.project.deleteMany({
+		where: { id: { notIn: projects.map((project) => project.id) } },
+	})
+
+	const deleteOldFieldsPromise = prisma.field.deleteMany({
+		where: { id: { notIn: fields.map((field) => field.id) } },
+	})
+
+	await Promise.all([
+		...fieldPromises,
+		...projectPromises,
+		deleteOldProjectPromise,
+		deleteOldFieldsPromise,
+	])
 
 	console.log('✨ Done ✨')
 	return json({ fields, projects })
