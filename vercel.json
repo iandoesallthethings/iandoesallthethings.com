@@ -1,7 +1,7 @@
 {
 	"crons": [
 		{
-			"path": "/jobs/sync",
+			"path": "/jobs/sync?key=pleaseupdatethesitewithdatafromnotion",
 			"schedule": "0 0 * * *"
 		}
 	]

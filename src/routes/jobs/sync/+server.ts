@@ -1,7 +1,11 @@
 import { Fields, Projects, prisma } from '$db'
-import { json } from '@sveltejs/kit'
+import { error, json } from '@sveltejs/kit'
 
-export async function GET() {
+const cronKey = 'pleaseupdatethesitewithdatafromnotion'
+
+export async function GET({ url }) {
+	if (url.searchParams.get('key') !== cronKey) throw error(403, 'Invalid key')
+
 	const fields = await Fields.getAll()
 	const projects = await Projects.getAllPages()
 
