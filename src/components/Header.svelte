@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 	import focus from '$lib/focus'
-	import { page } from '$app/stores'
+	import type { Field } from '@prisma/client'
 
-	$: fields = $page.data.fields
+	export let fields: Field[]
 
-	function blurbFor(focusedFieldName: string) {
-		return fields.find((field) => field.name === focusedFieldName)?.blurb
+	function setFocus(field: Field) {
+		$focus = field
 	}
+	function blurbFor(currentField: Field) {
+		return fields.find((field) => field.id === currentField.id)?.blurb
+	}
+
+	console.debug(fields)
 </script>
 
 <header>
@@ -19,9 +24,9 @@
 				<label>
 					<input
 						type="radio"
-						value={field.name}
+						value={field}
 						bind:group={$focus}
-						on:click={() => ($focus = $focus)}
+						on:click={() => setFocus(field)}
 						class="hidden"
 					/>
 					<span>{field.name}</span>

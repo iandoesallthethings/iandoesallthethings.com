@@ -1,4 +1,5 @@
 import localStore from '$lib/localStore'
-import type { FieldName } from '$types'
+import type { Field } from '@prisma/client'
+import { allTheThings } from './Fields'
 
-export default localStore<FieldName>('focus', 'all the things')
+export default localStore<Field>('focus', allTheThings)

@@ -7,16 +7,22 @@
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
+	import focus from '$lib/focus'
 
+	export let data
+	$focus = data.fields[0]
+
+	$: projects = data.projects
+	$: fields = data.fields
 	const updateAnalytics = Analytics.initialize()
 
 	$: updateAnalytics($page)
 </script>
 
 <main>
-	<Header />
+	<Header {fields} />
 
-	<Pool />
+	<Pool {projects} />
 
 	<slot />
 

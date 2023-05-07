@@ -9,8 +9,6 @@ export async function GET({ url }) {
 	const fields = await Fields.getAll()
 	const projects = await Projects.getAllPages()
 
-	// return json({ fields, projects })
-
 	const fieldPromises = fields.map((field) => {
 		prisma.field.upsert({
 			where: { id: field.id },

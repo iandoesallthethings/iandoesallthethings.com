@@ -1,4 +1,13 @@
 export type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints'
+import { Prisma } from '@prisma/client'
+import type { Field, Project } from '@prisma/client'
+export { Field, Project }
+
+const projectWithFields = Prisma.validator<Prisma.ProjectArgs>()({
+	include: { fields: true },
+})
+
+export type ProjectWithFields = Prisma.ProjectGetPayload<typeof projectWithFields>
 
 export type UrlString = string
 
@@ -10,28 +19,14 @@ export type FieldName = 'education' | 'music' | 'development' | 'all the things'
 
 export type Row = Field | Project
 
-export interface BaseRow {
-	id: string
-	properties?: Record<PropertyName, Property>
-}
-
-export interface Field extends BaseRow {
-	name: FieldName
-	blurb?: string
-	order: number
-	published: boolean
-}
-
-export interface Project extends BaseRow {
-	name: string
-	subtitle: string
-	route: string
+export interface NotionProject extends Project {
+	properties: Record<PropertyName, Property>
 	fields: FieldName[]
-	link?: UrlString
-	video?: UrlString
-	image?: UrlString
-	published: boolean
-	indev: boolean
+}
+
+export interface NotionField extends Field {
+	name: FieldName
+	properties?: Record<PropertyName, Property>
 }
 
 export type PropertyName = 'title' | 'rich_text' | 'checkbox' | 'url' | 'multi_select' | 'files'

@@ -1,16 +1,15 @@
 <script lang="ts">
+	import type { ProjectWithFields } from '$types'
 	import Particle from '$ukiyo/Particle.svelte'
 	import ProjectCard from '$components/ProjectCard.svelte'
-	import { page } from '$app/stores'
-
 	import focus from '$lib/focus'
 
-	const projects = $page.data.projects
+	export let projects: ProjectWithFields[]
 </script>
 
 <div id="pool">
 	{#each projects as project}
-		{#if project.fields.includes($focus) || $focus === 'all the things'}
+		{#if project.fields.map((f) => f.id)?.includes($focus.id) || $focus.id === 'all the things'}
 			<Particle>
 				<ProjectCard {project} />
 			</Particle>
