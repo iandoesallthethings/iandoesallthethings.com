@@ -1,14 +1,19 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import Page from '$components/Page.svelte'
 
 	export let data
 
 	$: project = data.project
+
+	function goHome() {
+		goto('/')
+	}
 </script>
 
-<Page>
-	<header class="flex flex-row items-start justify-between space-x-10 mb-5">
-		<div class="">
+<Page on:close={goHome}>
+	<header class="flex items-start justify-between space-x-10">
+		<div>
 			<h1>{@html project.name}</h1>
 			<h3>{@html project.subtitle}</h3>
 		</div>

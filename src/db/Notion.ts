@@ -111,11 +111,11 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	bulleted_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		const url = encodeURIComponent(file.url)
+		// const url = encodeURIComponent(file.url)
+		//  <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
 		return `
 			<figure class="image">
-				<!-- <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" /> -->
-				<img src="${url}" alt="${parsePlainText(caption)}" />
+				<img src="${file.url}" alt="${parsePlainText(caption)}" />
 
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
@@ -150,7 +150,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 		return `
 			<figure>
 				<iframe 
-				 	class="mx-auto"
+				 	class="mx-auto max-w-full"
 					width="420" 
 					height="315" 
 					src="https://www.youtube.com/embed/${getVideoId(external.url)}" 

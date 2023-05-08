@@ -2,11 +2,13 @@
 	import { goto } from '$app/navigation'
 	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
-	import { onMount } from 'svelte'
+	import { createEventDispatcher, onMount } from 'svelte'
 	import floatToTop from '$ukiyo/floatToTop'
 
+	const dispatch = createEventDispatcher()
+
 	function close() {
-		goto('/')
+		dispatch('close')
 	}
 
 	let page: HTMLElement
@@ -28,6 +30,8 @@
 	}
 
 	.page {
-		@apply cursor-default bg-white/50 backdrop-blur-lg max-w-sm md:max-w-prose max-h-full z-40 rounded-2xl p-5 space-y-4 shadow-2xl overflow-y-scroll;
+		@apply z-40 cursor-default rounded-2xl bg-white/50 backdrop-blur-lg;
+		@apply m-4 w-full md:max-w-prose h-full max-h-full;
+		@apply p-5 space-y-4 shadow-2xl overflow-y-scroll;
 	}
 </style>
