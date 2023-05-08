@@ -22,17 +22,26 @@
 			playsInline
 		/>
 	{:else}
-		<img src={project.image || 'images/maybe.gif'} alt={altText} />
+		<img src={project.image || 'images/maybe.gif'} alt={altText} class="" />
 	{/if}
 
-	<div class="text-white/90 font-bold text-sm">
+	<div
+		class="
+			flex
+			opacity-0 group-hover:opacity-100 transition
+			absolute w-full h-full
+			justify-center items-center
+			font-bold text-xl break-words
+			mix-blend-difference
+		"
+	>
 		{@html project.name}
 	</div>
 </a>
 
 <style lang="postcss">
 	a {
-		@apply bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition;
+		@apply relative bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition select-none;
 	}
 
 	img {
