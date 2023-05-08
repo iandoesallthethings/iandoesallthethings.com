@@ -1,6 +1,6 @@
 <script lang="ts">
-	let video
-	let paused
+	let video: HTMLVideoElement
+	let paused: boolean
 
 	function toggleVideo() {
 		video.paused ? video.play() : video.pause()
@@ -8,7 +8,12 @@
 	}
 </script>
 
-<aside on:click={toggleVideo}>
+<aside
+	on:click={toggleVideo}
+	on:keydown={(event) => {
+		event.key === 'space' && toggleVideo()
+	}}
+>
 	<video
 		src="images/saxloop.mp4"
 		poster="images/saxloop-frame2.png"
@@ -29,9 +34,9 @@
 		background-position: -90%;
 	}
 
-	.backgroundVideo {
+	/* .backgroundVideo {
 		@apply absolute h-full;
-	}
+	} */
 
 	.paused {
 		@apply hidden;

@@ -1,3 +1,4 @@
+// @ts-nocheck This file is a mess
 // Fireworks - I stole this from the internet. :P
 // https://codepen.io/whqet/pen/Auzch
 

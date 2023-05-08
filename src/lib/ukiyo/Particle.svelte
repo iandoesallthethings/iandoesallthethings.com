@@ -21,7 +21,7 @@
 	<slot />
 </div>
 
-<style>
+<style lang="postcss">
 	.particle {
 		@apply absolute cursor-pointer;
 		touch-action: none;

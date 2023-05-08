@@ -112,7 +112,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
 		// const url = encodeURIComponent(file.url)
-		//  <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
+		// <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
 		return `
 			<figure class="image">
 				<img src="${file.url}" alt="${parsePlainText(caption)}" />

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
 	import Page from '$components/Page.svelte'
 
@@ -25,5 +26,8 @@
 		{/if}
 	</header>
 
-	{@html project.page}
+	<!-- Alas, youtube embeds break ssr -->
+	{#if browser}
+		{@html project.page}
+	{/if}
 </Page>

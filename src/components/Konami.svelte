@@ -1,11 +1,10 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte'
 	import { elasticOut } from 'svelte/easing'
-	import { fade } from 'svelte/transition'
-
+	import { fade, type TransitionConfig } from 'svelte/transition'
 	import fireworks from '$lib/fireworks.js'
 
-	let canvas
+	let canvas: HTMLCanvasElement
 	let playing = false
 
 	// Konami Code
@@ -33,9 +32,9 @@
  \\___\\___/|_| |_|\\__|_|  \\__,_|
 `
 
-	const konami = (e) => {
+	const konami = (event: KeyboardEvent) => {
 		if (!playing) {
-			lastElevenKeyCodes.push(e.key)
+			lastElevenKeyCodes.push(event.key)
 			lastElevenKeyCodes.shift()
 
 			if (JSON.stringify(lastElevenKeyCodes) === JSON.stringify(konamiCode)) {
@@ -48,10 +47,10 @@
 		}
 	}
 
-	const spin = (node, { duration }) => {
+	const spin = (_node: Node, { duration }: TransitionConfig) => {
 		return {
 			duration,
-			css: (t) => {
+			css: (t: number) => {
 				const eased = elasticOut(t)
 
 				return `
@@ -76,6 +75,7 @@
 	<i
 		class="close far fa-times-circle"
 		on:click={toggleFireworks}
+		on:keydown={(event) => event.key === 'Escape' && toggleFireworks()}
 		in:fade={{ duration: 1000, delay: 6000 }}
 		out:fade
 	/>
@@ -84,6 +84,7 @@
 		<p class="rainbow">YOU DID IT</p>
 	</div>
 {/if}
+
 <canvas bind:this={canvas} id="canvas" class:playing>
 	Canvas is not supported in your browser. You get nothing. You Lose. Good day sir.
 </canvas>

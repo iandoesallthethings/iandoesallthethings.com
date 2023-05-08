@@ -18,7 +18,7 @@
 	{/each}
 </div>
 
-<style>
+<style lang="postcss">
 	#pool {
 		@apply w-full h-full relative overflow-hidden select-none;
 	}

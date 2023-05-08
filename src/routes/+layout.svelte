@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css'
 	import 'highlight.js/styles/github.css'
+	import { browser } from '$app/environment'
 	import { page } from '$app/stores'
 	import * as Analytics from '$lib/Analytics'
 	import Header from '$components/Header.svelte'
@@ -10,7 +11,9 @@
 
 	const updateAnalytics = Analytics.initialize()
 
-	$: updateAnalytics($page)
+	$: if (browser) {
+		updateAnalytics($page)
+	}
 </script>
 
 <main>
