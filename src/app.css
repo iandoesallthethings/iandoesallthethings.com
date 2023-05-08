@@ -60,7 +60,7 @@ h4 {
 }
 
 a {
-	@apply text-white hover:underline;
+	@apply text-white/80 hover:underline;
 }
 
 li {
