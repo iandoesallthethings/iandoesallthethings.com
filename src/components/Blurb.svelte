@@ -4,6 +4,8 @@
 	import focus from '$lib/focus'
 	import floatToTop from '$ukiyo/floatToTop'
 
+	export let classes = ''
+
 	$: fields = $page.data.fields
 	$: currentBlurb = blurbFor($focus)
 
@@ -32,6 +34,7 @@
 				flex flex-col justify-center items-center
 				text-justify
 				pointer-events-none
+				{classes}
 			"
 	>
 		<div

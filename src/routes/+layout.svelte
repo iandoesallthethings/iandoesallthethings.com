@@ -24,8 +24,6 @@
 		z-0
 	"
 >
-	<Blurb />
-
 	<Pool />
 
 	<Konami />

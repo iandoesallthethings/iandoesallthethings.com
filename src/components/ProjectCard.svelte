@@ -2,6 +2,7 @@
 	import type { Project } from '$types'
 
 	export let project: Project
+	export let classes = ''
 
 	$: altText = `${stripHtml(project.name)}: ${stripHtml(project.subtitle)}`
 
@@ -10,11 +11,11 @@
 	}
 </script>
 
-<a href="/{project.route}" data-sveltekit-preload-data draggable="false" class="group">
+<a href="/{project.route}" data-sveltekit-preload-data draggable="false" class="group {classes}">
 	{#if project.video}
 		<video
 			title={altText}
-			class="w-full"
+			class="w-full !object-cover"
 			src={project.video}
 			disableRemotePlayback={true}
 			autoplay
@@ -42,7 +43,9 @@
 
 <style lang="postcss">
 	a {
-		@apply relative bg-gray-900 w-48 max-h-fit flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition select-none;
+		@apply relative bg-gray-900 flex flex-col items-center text-center rounded-lg shadow-xl overflow-hidden transition select-none;
+		@apply w-24 max-h-24 min-h-[40px];
+		@apply sm:w-48 sm:max-h-64 sm:min-h-[100px];
 	}
 
 	img {
