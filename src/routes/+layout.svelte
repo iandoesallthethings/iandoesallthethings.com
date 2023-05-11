@@ -8,6 +8,7 @@
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
+	import Blurb from '$components/Blurb.svelte'
 
 	const updateAnalytics = Analytics.initialize()
 
@@ -16,24 +17,27 @@
 	}
 </script>
 
-<main>
-	<Header />
+<div
+	class="
+		backdrop absolute top-0 left-0
+		w-[100dvw] h-[100dvh]
+		z-0
+	"
+>
+	<Blurb />
 
 	<Pool />
 
-	<slot />
-
-	<Footer />
-
 	<Konami />
-</main>
+</div>
+
+<Header />
+
+<slot />
+
+<Footer />
 
 <style lang="postcss">
-	main {
-		@apply w-[100dvw] h-[100dvh] overflow-hidden;
-		@apply flex flex-col;
-	}
-
 	:global(body) {
 		@apply bg-sky-500 dark:bg-sky-600;
 	}

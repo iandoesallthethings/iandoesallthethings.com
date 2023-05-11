@@ -13,17 +13,10 @@
 <div
 	use:ukiyo
 	bind:this={particle}
-	on:pointerdown={() => floatToTop(particle)}
-	class="particle"
+	on:pointerdown={() => floatToTop(particle, '.backdrop *')}
+	class="particle absolute cursor-pointer touch-none"
 	in:fade={{ duration: randomFadeTime() }}
 	out:fade={{ duration: 375 }}
 >
 	<slot />
 </div>
-
-<style lang="postcss">
-	.particle {
-		@apply absolute cursor-pointer;
-		touch-action: none;
-	}
-</style>

@@ -4,6 +4,7 @@
 	export let project: Project
 
 	$: altText = `${stripHtml(project.name)}: ${stripHtml(project.subtitle)}`
+
 	function stripHtml(s: string) {
 		return s?.replace(/<[^>]*>?/gm, '') ?? ''
 	}

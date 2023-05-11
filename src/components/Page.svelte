@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
-	import { createEventDispatcher, onMount } from 'svelte'
-	import floatToTop from '$ukiyo/floatToTop'
+	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -11,8 +10,6 @@
 	}
 
 	let page: HTMLElement
-
-	onMount(() => floatToTop(page))
 </script>
 
 <div bind:this={page} class="wrapper">

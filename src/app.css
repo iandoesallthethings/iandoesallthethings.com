@@ -44,7 +44,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply text-white/80 mb-4;
+	@apply text-white/80 mb-4 drop-shadow-md;
 }
 h1 {
 	@apply text-4xl;
@@ -60,7 +60,7 @@ h4 {
 }
 
 a {
-	@apply text-white/80 hover:underline;
+	@apply text-white/80 hover:underline drop-shadow-md;
 }
 
 li {
