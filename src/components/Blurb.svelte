@@ -22,10 +22,12 @@
 
 {#if currentBlurb}
 	<div
+		role="button"
+		tabindex="0"
+		on:keydown={float}
 		bind:this={blurb}
-		in:fade
 		on:click={float}
-		on:keydown
+		in:fade
 		class="
 				absolute
 				z-0
