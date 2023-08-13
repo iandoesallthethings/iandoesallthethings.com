@@ -19,6 +19,7 @@ import type {
 import { env } from '$env/dynamic/private'
 import { Client } from '@notionhq/client'
 import hljs from 'highlight.js'
+import * as S3 from '$db/S3'
 
 const notion = new Client({ auth: env.NOTION_API_KEY })
 
@@ -73,11 +74,11 @@ const propertyTypes = {
 	files: (p: FilesProperty) => {
 		const url = p.files[0]?.file.url
 
-		return url
-		// if (url) {
-		// 	const encodedUrl = encodeURIComponent(url)
-		// 	return `/notion-asset?url=${encodedUrl}`
-		// }
+		if (url) {
+			const urlComponents = S3.extractFromUrl(url)
+			const encodedUrl = encodeURIComponent(urlComponents)
+			return `/notion-asset/${encodedUrl}`
+		}
 	},
 	number: (p: { number: number }) => p.number,
 }
@@ -111,15 +112,16 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	bulleted_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		// const url = encodeURIComponent(file.url)
-		// <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
+		const urlComponents = S3.extractFromUrl(file.url)
+		const url = encodeURIComponent(urlComponents)
+
 		return `
 			<figure class="image">
-				<img src="${file.url}" alt="${parsePlainText(caption)}" />
-
+				<img src="/notion-asset/${url}" alt="${parsePlainText(caption)}" />
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
 		`
+		// <img src="${file.url}" alt="${parsePlainText(caption)}" />
 	},
 	to_do: ({ text, checked }) => {
 		return `
@@ -171,11 +173,15 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	// 	return
 	// },
 	fallback: (block) => {
-		if (env.NODE_ENV === 'development') {
-			return `debug: output\n` + JSON.stringify(block, undefined, 2)
-		}
+		if (env.NODE_ENV === 'production') return ''
 
-		return `<p>[TODO: Implement ${block.type} blocks]</p>`
+		return `
+			<p>[TODO: Implement ${block.type} blocks]</p>
+			<figure class="codeblock">
+				<pre>${hljs.highlight(JSON.stringify(block, undefined, 2), { language: 'json' }).value}</pre>
+			</figure>
+			<figcaption>Debug Info</figcaption>
+		`
 	},
 }
 

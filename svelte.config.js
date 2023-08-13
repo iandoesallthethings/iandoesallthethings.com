@@ -1,17 +1,13 @@
+// import adapter from '@sveltejs/adapter-auto'
+// import adapter from '@sveltejs/adapter-static'
 import adapter from '@sveltejs/adapter-vercel'
 import { vitePreprocess } from '@sveltejs/kit/vite'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
-		adapter: adapter({
-			runtime: 'nodejs18.x',
-			// isr: {
-			// 	expiration: 60 * 60, // In seconds
-			// 	bypassToken: 'C4Gab9GQLltu2HfiSLeh9edqDiWwWdy9',
-			// 	allowQuery: ['url'],
-			// },
-		}),
+		adapter: adapter(),
+		prerender: { entries: ['*'] },
 		alias: {
 			$types: './src/types',
 			$components: './src/components',
