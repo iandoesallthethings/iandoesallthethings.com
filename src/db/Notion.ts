@@ -83,9 +83,11 @@ const propertyTypes = {
 }
 
 async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
-	const { results: blocks } = (await notion.blocks.children.list({
+	const { results: blocks } = await notion.blocks.children.list({
 		block_id: notionDbRow.id,
-	})) as unknown as { results: Block[] }
+	}) //as unknown as { results: Block[] }
+
+	console.debug(blocks)
 
 	return blocks
 		.map((block) => {
@@ -93,6 +95,7 @@ async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
 			const value = block[type]
 
 			if (block.type in blockTypes) {
+				console.debug(block)
 				return blockTypes[type](value)
 			} else {
 				return blockTypes.fallback(block)
@@ -103,12 +106,12 @@ async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
 
 // TODO: video embeds
 const blockTypes: Record<string, (block: Block) => HtmlString> = {
-	heading_1: ({ text }) => `<h1>${parseRichText(text)}</h1>`,
-	heading_2: ({ text }) => `<h2>${parseRichText(text)}</h2>`,
-	heading_3: ({ text }) => `<h3>${parseRichText(text)}</h3>`,
-	paragraph: ({ text }) => `<p>${parseRichText(text)}</p>`,
-	numbered_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
-	bulleted_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
+	heading_1: ({ rich_text }) => `<h1>${parseRichText(rich_text)}</h1>`,
+	heading_2: ({ rich_text }) => `<h2>${parseRichText(rich_text)}</h2>`,
+	heading_3: ({ rich_text }) => `<h3>${parseRichText(rich_text)}</h3>`,
+	paragraph: ({ rich_text }) => `<p>${parseRichText(rich_text)}</p>`,
+	numbered_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
+	bulleted_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
 		const urlSlug = S3.extractFromUrl(file.url)
@@ -120,27 +123,27 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 		`
 		// <img src="${file.url}" alt="${parsePlainText(caption)}" />
 	},
-	to_do: ({ text, checked }) => {
+	to_do: ({ rich_text, checked }) => {
 		return `
 			<p>
 				<input type="checkbox" ${checked ? 'checked' : ''} onclick="return false;" />
-				${parseRichText(text)}
+				${parseRichText(rich_text)}
 			</p>
 		`
 	},
-	callout: ({ icon, text }) => {
+	callout: ({ icon, rich_text }) => {
 		return `
 			<figure class="callout">
 				<div>${icon.emoji}</div>
-				<div>${parseRichText(text)}</div>
+				<div>${parseRichText(rich_text)}</div>
 			</figure>
 		`
 	},
 	// Warning: language: Plain text breaks this?!
-	code: ({ text, language, caption }) => {
+	code: ({ rich_text, language, caption }) => {
 		return `
 			<figure class="codeblock">
-				<pre>${hljs.highlight(parsePlainText(text), { language }).value}</pre>
+				<pre>${hljs.highlight(parsePlainText(rich_text), { language }).value}</pre>
 			</figure>
 			<figcaption>${parseRichText(caption)}</figcaption>
 		`
@@ -186,7 +189,8 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText(rich_text: RichTextChunk[]): HtmlString {
-	const chunks = rich_text.map(wrapChunk).join('')
+	console.debug('rich_text', rich_text)
+	const chunks = rich_text?.map(wrapChunk).join('')
 	return `<span>${chunks || '&nbsp;'}</span>` // &nbsp; to make empty paragraphs take up space
 }
 
