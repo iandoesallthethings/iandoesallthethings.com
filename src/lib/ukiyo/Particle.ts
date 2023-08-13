@@ -79,7 +79,7 @@ export default class Particle {
 		this.particle.dispatchEvent(new CustomEvent('dragstart'))
 		this.dragging = true
 		this.handle = pointerPosition(event, this.particle)
-		setTimeout(() => this.particle.setPointerCapture(event.pointerId), 50)
+		setTimeout(() => this.particle.setPointerCapture(event.pointerId), 150)
 	}
 
 	drag(event: PointerEvent) {

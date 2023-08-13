@@ -111,7 +111,6 @@ export type BlockType =
 
 export interface Block {
 	type: BlockType
-
 	text: RichTextChunk[]
 	caption: RichTextChunk[]
 	checked: boolean
