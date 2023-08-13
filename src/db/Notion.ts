@@ -85,21 +85,14 @@ const propertyTypes = {
 async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
 	const { results: blocks } = await notion.blocks.children.list({
 		block_id: notionDbRow.id,
-	}) //as unknown as { results: Block[] }
-
-	console.debug(blocks)
+	})
 
 	return blocks
 		.map((block) => {
 			const type = block.type
 			const value = block[type]
 
-			if (block.type in blockTypes) {
-				console.debug(block)
-				return blockTypes[type](value)
-			} else {
-				return blockTypes.fallback(block)
-			}
+			return type in blockTypes ? blockTypes[type](value) : blockTypes.fallback(block)
 		})
 		.join('')
 }
@@ -189,7 +182,6 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText(rich_text: RichTextChunk[]): HtmlString {
-	console.debug('rich_text', rich_text)
 	const chunks = rich_text?.map(wrapChunk).join('')
 	return `<span>${chunks || '&nbsp;'}</span>` // &nbsp; to make empty paragraphs take up space
 }

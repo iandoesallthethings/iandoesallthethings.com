@@ -7,7 +7,7 @@ import { vitePreprocess } from '@sveltejs/kit/vite'
 const config = {
 	kit: {
 		adapter: adapter(),
-		prerender: { entries: ['*'], crawl: true },
+		prerender: { entries: ['*'] },
 		alias: {
 			$types: './src/types',
 			$components: './src/components',
