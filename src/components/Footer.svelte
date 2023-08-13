@@ -1,5 +1,5 @@
 <footer>
-	<div class="flex flex-row space-x-2 whitespace-nowrap">
+	<div class="flex flex-row space-x-2 whitespace-nowrap text-xl">
 		<a href="mailto:iandoesallthethings@gmail.com" target="_blank">
 			<i class="far fa-envelope" />
 		</a>
@@ -16,7 +16,7 @@
 			<i class="fab fa-linkedin" />
 		</a>
 
-		<span>&copy; ian</span>
+		<!-- <span>&copy; ian</span> -->
 	</div>
 </footer>
 

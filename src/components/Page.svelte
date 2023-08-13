@@ -2,17 +2,17 @@
 	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
 	import { createEventDispatcher } from 'svelte'
+	import { goto } from '$app/navigation'
 
 	const dispatch = createEventDispatcher()
 
 	function close() {
 		dispatch('close')
+		goto('/')
 	}
-
-	let page: HTMLElement
 </script>
 
-<div bind:this={page} class="wrapper">
+<div class="wrapper">
 	<article use:clickOutside={close} transition:fade class="page">
 		<slot />
 	</article>
