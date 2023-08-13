@@ -8,8 +8,10 @@
 // &X-Amz-SignedHeaders=host
 // &x-id=GetObject
 
+const delimiter = ':'
+
 export function reconstructUrl(urlParts: string) {
-	const [date, credential, signature, key, fileName] = decodeURIComponent(urlParts).split(' ')
+	const [date, credential, signature, key, fileName] = decodeURIComponent(urlParts).split(delimiter)
 	console.debug('Rendering', fileName)
 
 	const root = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/'
@@ -46,6 +48,5 @@ export function extractFromUrl(s3Url: string) {
 	// 20230813T004707Z // date
 	// c618aac3fb543bf0e235da5b24ff304bfe7a4d0fdede751d950fd918e1e60c73 // signature
 	// AKIAT73L2G45EIPT3X45/20230813/us-west-2/s3/aws4_request // credential
-	// return { key, fileName, credential, date, signature }
-	return [date, credential, signature, key, fileName].join('%20')
+	return encodeURIComponent([date, credential, signature, key, fileName].join(delimiter))
 }

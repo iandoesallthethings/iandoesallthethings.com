@@ -75,9 +75,8 @@ const propertyTypes = {
 		const url = p.files[0]?.file.url
 
 		if (url) {
-			const urlComponents = S3.extractFromUrl(url)
-			const encodedUrl = encodeURIComponent(urlComponents)
-			return `/notion-asset/${encodedUrl}`
+			const urlSlug = S3.extractFromUrl(url)
+			return `/notion-asset/${urlSlug}`
 		}
 	},
 	number: (p: { number: number }) => p.number,
@@ -112,12 +111,10 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	bulleted_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		const urlComponents = S3.extractFromUrl(file.url)
-		const url = encodeURIComponent(urlComponents)
-
+		const urlSlug = S3.extractFromUrl(file.url)
 		return `
 			<figure class="image">
-				<img src="/notion-asset/${url}" alt="${parsePlainText(caption)}" />
+				<img src="/notion-asset/${urlSlug}" alt="${parsePlainText(caption)}" />
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
 		`
