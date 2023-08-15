@@ -8,9 +8,16 @@
 // &X-Amz-SignedHeaders=host
 // &x-id=GetObject
 
-export const cache = new Map<string, { url: string; response?: Response }>()
+export const cache = new Map<string, { url: string; response?: Response | Promise<Response> }>()
 
-export function cacheUrl(url: string, response?: Response) {
+export function getCachedResponse(slug: string) {
+	const cached = cache.get(slug)
+	if (!cached) return undefined
+
+	return cached.response
+}
+
+export function cacheUrl(url: string, response?: Response | Promise<Response>) {
 	const { key, fileName } = extractFromUrl(url)
 	const slug = key + '-' + fileName
 	cache.set(slug, { url, response })

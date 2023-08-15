@@ -4,8 +4,16 @@ import * as S3 from '$db/S3'
 export const prerender = true
 
 export async function GET({ params, fetch }) {
-	const { url, response } = S3.cache.get(params.url) ?? {}
-	if (!url) throw error(404, `Could not find asset: ${params.url}`)
+	const slug = params.url
+	let { url, response } = S3.cache.get(slug) ?? {}
 
-	return response ?? fetch(url)
+	if (!url) throw error(404, `Could not find asset: ${slug}`)
+
+	if (response) return response
+
+	response = fetch(slug)
+
+	S3.cacheUrl(params.url, response)
+
+	return response
 }
