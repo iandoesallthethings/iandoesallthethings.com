@@ -4,7 +4,7 @@ import * as Numbers from '$ukiyo/Numbers'
 import type Container from '$ukiyo/Container'
 import { browser } from '$app/environment'
 import { bindMethodsToThis } from '$lib/decorators'
-import { tick } from 'svelte'
+import { tick as svelteTick } from 'svelte'
 
 function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordinate {
 	const rect = relativeNode.getBoundingClientRect()
@@ -35,8 +35,8 @@ export default class Particle {
 		this.pool = pool
 		this.particle = particle
 
-		// const startingPosition = pool.randomChildPosition(particle)
-		const startingPosition = pool.initialChildPosition(particle)
+		const startingPosition = pool.randomChildPosition(particle)
+		// const startingPosition = pool.initialChildPosition(particle)
 		this.position = startingPosition
 		this.lastPosition = startingPosition
 
@@ -44,7 +44,7 @@ export default class Particle {
 	}
 
 	async setup() {
-		await tick() // Wait for all the particles to show up to start moving.
+		await svelteTick() // Wait for all the particles to show up to start moving.
 
 		this.particle.style.position = 'absolute'
 		this.particle.addEventListener('pointerdown', this.dragStart)
