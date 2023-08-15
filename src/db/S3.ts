@@ -13,16 +13,21 @@ import { error } from '@sveltejs/kit'
 type Slug = string
 type S3Url = string
 
-export const cache = new Map<Slug, { url: S3Url; response?: Response | Promise<Response> }>()
+export const cache = new Map<Slug, CachedAsset>()
 
-export async function getCache(slug: string, sveltekitFetch?: typeof fetch) {
+interface CachedAsset {
+	url: S3Url
+	response?: Response | Promise<Response>
+}
+
+export function getCache(slug: string, sveltekitFetch?: typeof fetch) {
 	let { url, response } = cache.get(slug) ?? {}
 
 	if (!url) throw error(404, `Could not find asset: ${slug}`)
 
 	if (response) {
 		console.log('Cache hit:', slug)
-		return response
+		return { url, response }
 	}
 
 	console.log('Cache miss. Fetching:', slug)
@@ -31,7 +36,7 @@ export async function getCache(slug: string, sveltekitFetch?: typeof fetch) {
 
 	setCache(url, response)
 
-	return response
+	return { url, response }
 }
 
 export function setCache(url: S3Url, response?: Response | Promise<Response>): Slug {

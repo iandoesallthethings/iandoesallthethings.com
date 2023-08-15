@@ -77,7 +77,7 @@ const propertyTypes = {
 
 		const slug = S3.setCache(url)
 
-		return `/notion-asset/${slug}`
+		return `/notion-asset/${slug}/thumbnail`
 	},
 	number: (p: { number: number }) => p.number,
 }
@@ -110,7 +110,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 		const slug = S3.setCache(file.url)
 
 		return `
-			<figure class="image">
+			<figure class="image mx-auto">
 				<img src="/notion-asset/${slug}" alt="${parsePlainText(caption)}" />
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
