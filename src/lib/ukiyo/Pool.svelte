@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Project } from '$types'
+	import type { FieldName, Project } from '$types'
 	import Particle from '$ukiyo/Particle.svelte'
 	import ProjectCard from '$components/ProjectCard.svelte'
 	import { page } from '$app/stores'
@@ -15,7 +15,7 @@
 		$gridMode = !$gridMode
 	}
 
-	function shouldHide(project: Project) {
+	function shouldHide(project: Project, $focus: FieldName) {
 		return !project.fields.includes($focus) && $focus !== 'all the things'
 	}
 </script>
@@ -34,11 +34,9 @@
 	<Blurb classes={$gridMode ? 'relative max-w-[220px]' : ''} />
 
 	{#each projects as project}
-		{#if project.fields.includes($focus) || $focus === 'all the things'}
-			<Particle disabled={$gridMode} hidden={shouldHide(project)}>
-				<ProjectCard {project} />
-			</Particle>
-		{/if}
+		<Particle disabled={$gridMode} hidden={shouldHide(project, $focus)}>
+			<ProjectCard {project} />
+		</Particle>
 	{/each}
 
 	{#each new Array(10) as _pad}

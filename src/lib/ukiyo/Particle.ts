@@ -4,6 +4,7 @@ import * as Numbers from '$ukiyo/Numbers'
 import type Container from '$ukiyo/Container'
 import { browser } from '$app/environment'
 import { bindMethodsToThis } from '$lib/decorators'
+import { tick } from 'svelte'
 
 function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordinate {
 	const rect = relativeNode.getBoundingClientRect()
@@ -34,11 +35,62 @@ export default class Particle {
 		this.pool = pool
 		this.particle = particle
 
-		const startingPosition = pool.randomChildPosition(particle)
+		// const startingPosition = pool.randomChildPosition(particle)
+		const startingPosition = pool.initialChildPosition(particle)
 		this.position = startingPosition
 		this.lastPosition = startingPosition
 
 		this.setup()
+	}
+
+	async setup() {
+		await tick() // Wait for all the particles to show up to start moving.
+
+		this.particle.style.position = 'absolute'
+		this.particle.addEventListener('pointerdown', this.dragStart)
+		this.particle.addEventListener('pointerup', this.dragEnd)
+		this.particle.addEventListener('pointermove', this.drag)
+
+		this.tick()
+	}
+
+	destroy() {
+		this.destroyed = true
+		this.particle.removeEventListener('pointerdown', this.dragStart)
+		this.particle.removeEventListener('pointerup', this.dragEnd)
+		this.particle.removeEventListener('pointermove', this.drag)
+	}
+
+	update(newPool: Container) {
+		this.pool = newPool
+	}
+
+	tick() {
+		if (this.destroyed) return
+
+		if (!this.dragging) this.drift()
+		setTimeout(() => requestAnimationFrame(this.tick), 10)
+	}
+
+	updatePosition(newPosition: Coordinate, pool: Container) {
+		this.position = pool.clampChildToContainer(this.particle, newPosition)
+		this.lastPosition = this.position
+		this.particle.style.left = this.position.x + 'px'
+		this.particle.style.top = this.position.y + 'px'
+	}
+
+	updateMomentum(oldPosition: Coordinate, newPosition: Coordinate) {
+		const deltaX = newPosition.x - oldPosition.x
+		const deltaY = newPosition.y - oldPosition.y
+
+		const now = new Date().getTime()
+		const deltaT = (now - this.lastTime) / 10 // Arbitrarily scaled by 10? 🤷‍♂️
+		this.lastTime = now
+
+		this.momentum = {
+			direction: Math.atan(deltaY / deltaX) * (180 / Math.PI),
+			magnitude: Math.sqrt((deltaX ^ 2) + (deltaY ^ 2)) / deltaT,
+		}
 	}
 
 	push() {
@@ -99,56 +151,5 @@ export default class Particle {
 		this.particle.releasePointerCapture(event.pointerId)
 		// momentum.magnitude = 0
 		this.setCooldown()
-	}
-
-	updatePosition(newPosition: Coordinate, pool: Container) {
-		this.position = pool.clampChildToContainer(this.particle, newPosition)
-		this.lastPosition = this.position
-		this.particle.style.left = this.position.x + 'px'
-		this.particle.style.top = this.position.y + 'px'
-	}
-
-	updateMomentum(oldPosition: Coordinate, newPosition: Coordinate) {
-		const deltaX = newPosition.x - oldPosition.x
-		const deltaY = newPosition.y - oldPosition.y
-
-		const now = new Date().getTime()
-		const deltaT = (now - this.lastTime) / 10 // Arbitrarily scaled by 10? 🤷‍♂️
-		this.lastTime = now
-
-		this.momentum = {
-			direction: Math.atan(deltaY / deltaX) * (180 / Math.PI),
-			magnitude: Math.sqrt((deltaX ^ 2) + (deltaY ^ 2)) / deltaT,
-		}
-	}
-
-	tick() {
-		if (this.destroyed) return
-
-		if (!this.dragging) this.drift()
-		setTimeout(() => requestAnimationFrame(this.tick), 10)
-	}
-
-	setup() {
-		if (!browser) return
-
-		this.particle.style.position = 'absolute'
-		this.particle.style.display = 'block'
-		this.particle.addEventListener('pointerdown', this.dragStart)
-		this.particle.addEventListener('pointerup', this.dragEnd)
-		this.particle.addEventListener('pointermove', this.drag)
-
-		this.tick()
-	}
-
-	update(newPool: Container) {
-		this.pool = newPool
-	}
-
-	destroy() {
-		this.destroyed = true
-		this.particle.removeEventListener('pointerdown', this.dragStart)
-		this.particle.removeEventListener('pointerup', this.dragEnd)
-		this.particle.removeEventListener('pointermove', this.drag)
 	}
 }

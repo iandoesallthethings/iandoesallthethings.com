@@ -30,6 +30,13 @@ export default class Container {
 		})
 	}
 
+	initialChildPosition(childElement: HTMLElement): Coordinate {
+		return this.clampChildToContainer(childElement, {
+			x: childElement.getBoundingClientRect().left,
+			y: childElement.getBoundingClientRect().top,
+		})
+	}
+
 	clampChildToContainer(childElement: HTMLElement, coordinate: Coordinate): Coordinate {
 		const poolRect = this.rect()
 		const particleRect = childElement.getBoundingClientRect()

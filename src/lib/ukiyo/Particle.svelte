@@ -22,7 +22,7 @@
 		use:ukiyo
 		bind:this={particle}
 		on:pointerdown={() => floatToTop(particle, '.backdrop *')}
-		class="particle absolute cursor-pointer touch-none"
+		class="particle cursor-pointer touch-none"
 		in:fade={{ duration: randomFadeTime() }}
 		out:fade={{ duration: 375 }}
 	>

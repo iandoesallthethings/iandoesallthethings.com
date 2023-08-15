@@ -11,7 +11,7 @@ export async function entries() {
 
 export async function load({ params }) {
 	const projectName = params.projectName
-	console.debug('Rendering', projectName)
+	console.log('Rendering', projectName)
 
 	if (!projectName) throw error(404)
 
