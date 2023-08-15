@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Project } from '$types'
 	import Particle from '$ukiyo/Particle.svelte'
 	import ProjectCard from '$components/ProjectCard.svelte'
 	import { page } from '$app/stores'
@@ -13,11 +14,15 @@
 	function toggleGrid() {
 		$gridMode = !$gridMode
 	}
+
+	function shouldHide(project: Project) {
+		return !project.fields.includes($focus) && $focus !== 'all the things'
+	}
 </script>
 
-{#if $gridMode}
-	<div
-		class="
+<div
+	class:h-full={!$gridMode}
+	class="
 			flex flex-wrap w-full max-h-full
 			py-24 px-4
 			items-center
@@ -25,30 +30,21 @@
 			overflow-scroll
 			justify-between
 		"
-	>
-		<Blurb classes="relative max-w-[220px]" />
-
-		{#each projects as project}
-			{#if project.fields.includes($focus) || $focus === 'all the things'}
-				<ProjectCard {project} />
-			{/if}
-		{/each}
-
-		{#each new Array(10) as pad}
-			<div class="" />
-		{/each}
-	</div>
-{:else}
-	<Blurb />
+>
+	<Blurb classes={$gridMode ? 'relative max-w-[220px]' : ''} />
 
 	{#each projects as project}
 		{#if project.fields.includes($focus) || $focus === 'all the things'}
-			<Particle>
+			<Particle disabled={$gridMode} hidden={shouldHide(project)}>
 				<ProjectCard {project} />
 			</Particle>
 		{/if}
 	{/each}
-{/if}
+
+	{#each new Array(10) as _pad}
+		<div class="" />
+	{/each}
+</div>
 
 <button
 	on:click={toggleGrid}
