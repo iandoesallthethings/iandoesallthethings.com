@@ -52,12 +52,22 @@
 
 <button
 	on:click={toggleGrid}
-	class="rounded-full absolute bottom-2 right-2 text-white/80 drop-shadow-lg w-8 h-8 text-xl mix-blend-difference"
+	title={$gridMode ? 'Switch to list mode' : 'Switch to Grid mode'}
+	class="group rounded-full absolute bottom-2 right-2 text-white/80 drop-shadow-lg w-8 h-8 text-xl mix-blend-difference"
 >
-	{#if $gridMode}
-		<i class="fa solid fa-water" />
-		<!-- <i class="fa-solid fa-leaf fa-stack-1x" /> -->
-	{:else}
-		<i class="fa-solid fa-grid" />
-	{/if}
+	<i
+		class="
+			group-hover:hidden
+			fa solid
+			{$gridMode ? 'fa-grid' : 'fa-water'}
+		"
+	/>
+
+	<i
+		class="
+			hidden group-hover:block
+			fa solid
+			{$gridMode ? 'fa-water' : 'fa-grid'}
+	"
+	/>
 </button>
