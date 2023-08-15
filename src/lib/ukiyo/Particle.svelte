@@ -3,6 +3,9 @@
 	import floatToTop from '$ukiyo/floatToTop'
 	import ukiyo from '$ukiyo'
 
+	export let hidden = false
+	export let disabled = false
+
 	let particle: HTMLElement
 
 	function randomFadeTime() {
@@ -10,13 +13,19 @@
 	}
 </script>
 
-<div
-	use:ukiyo
-	bind:this={particle}
-	on:pointerdown={() => floatToTop(particle, '.backdrop *')}
-	class="particle absolute cursor-pointer touch-none"
-	in:fade={{ duration: randomFadeTime() }}
-	out:fade={{ duration: 375 }}
->
+{#if hidden}
+	<!--  -->
+{:else if disabled}
 	<slot />
-</div>
+{:else}
+	<div
+		use:ukiyo
+		bind:this={particle}
+		on:pointerdown={() => floatToTop(particle, '.backdrop *')}
+		class="particle absolute cursor-pointer touch-none"
+		in:fade={{ duration: randomFadeTime() }}
+		out:fade={{ duration: 375 }}
+	>
+		<slot />
+	</div>
+{/if}

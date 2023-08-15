@@ -8,7 +8,6 @@
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
-	import Blurb from '$components/Blurb.svelte'
 
 	const updateAnalytics = Analytics.initialize()
 

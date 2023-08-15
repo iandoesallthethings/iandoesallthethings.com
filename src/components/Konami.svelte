@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import { elasticOut } from 'svelte/easing'
 	import { fade, type TransitionConfig } from 'svelte/transition'
-	import fireworks from '$lib/fireworks.js'
+	import * as Fireworks from '$lib/fireworks/index.js'
 
-	let canvas: HTMLCanvasElement
 	let playing = false
 
 	// Konami Code
@@ -64,28 +62,31 @@
 		}
 	}
 
-	const toggleFireworks = () => (playing = !playing)
-
-	onMount(fireworks)
+	function toggleFireworks() {
+		playing = !playing
+		playing ? Fireworks.start() : Fireworks.stop()
+	}
 </script>
 
 <svelte:window on:keydown={konami} />
 
 {#if playing}
-	<i
-		class="close far fa-times-circle"
+	<button
+		class="all-unset"
 		on:click={toggleFireworks}
 		on:keydown={(event) => event.key === 'Escape' && toggleFireworks()}
 		in:fade={{ duration: 1000, delay: 6000 }}
 		out:fade
-	/>
+	>
+		<i class="close far fa-times-circle" />
+	</button>
 	<div class="youDidIt" in:spin={{ duration: 8000 }} out:fade>
 		<p class="cursive">great job</p>
 		<p class="rainbow">YOU DID IT</p>
 	</div>
 {/if}
 
-<canvas bind:this={canvas} id="canvas" class:playing>
+<canvas id="canvas" class:playing>
 	Canvas is not supported in your browser. You get nothing. You Lose. Good day sir.
 </canvas>
 

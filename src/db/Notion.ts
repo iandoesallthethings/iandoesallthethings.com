@@ -19,6 +19,7 @@ import type {
 import { env } from '$env/dynamic/private'
 import { Client } from '@notionhq/client'
 import hljs from 'highlight.js'
+import * as S3 from '$db/S3'
 
 const notion = new Client({ auth: env.NOTION_API_KEY })
 
@@ -72,76 +73,71 @@ const propertyTypes = {
 	multi_select: (p: MultiSelectProperty) => p.multi_select.map((f) => f.name),
 	files: (p: FilesProperty) => {
 		const url = p.files[0]?.file.url
+		if (!url) return
 
-		return url
-		// if (url) {
-		// 	const encodedUrl = encodeURIComponent(url)
-		// 	return `/notion-asset?url=${encodedUrl}`
-		// }
+		const slug = S3.setCache(url)
+
+		return `/notion-asset/${slug}`
 	},
 	number: (p: { number: number }) => p.number,
 }
 
 async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
-	const { results: blocks } = (await notion.blocks.children.list({
+	const { results: blocks } = await notion.blocks.children.list({
 		block_id: notionDbRow.id,
-	})) as unknown as { results: Block[] }
+	})
 
 	return blocks
 		.map((block) => {
 			const type = block.type
 			const value = block[type]
 
-			if (block.type in blockTypes) {
-				return blockTypes[type](value)
-			} else {
-				return blockTypes.fallback(block)
-			}
+			return type in blockTypes ? blockTypes[type](value) : blockTypes.fallback(block)
 		})
 		.join('')
 }
 
 // TODO: video embeds
 const blockTypes: Record<string, (block: Block) => HtmlString> = {
-	heading_1: ({ text }) => `<h1>${parseRichText(text)}</h1>`,
-	heading_2: ({ text }) => `<h2>${parseRichText(text)}</h2>`,
-	heading_3: ({ text }) => `<h3>${parseRichText(text)}</h3>`,
-	paragraph: ({ text }) => `<p>${parseRichText(text)}</p>`,
-	numbered_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
-	bulleted_list_item: ({ text }) => `<li>${parseRichText(text)}</li>`,
+	heading_1: ({ rich_text }) => `<h1>${parseRichText(rich_text)}</h1>`,
+	heading_2: ({ rich_text }) => `<h2>${parseRichText(rich_text)}</h2>`,
+	heading_3: ({ rich_text }) => `<h3>${parseRichText(rich_text)}</h3>`,
+	paragraph: ({ rich_text }) => `<p>${parseRichText(rich_text)}</p>`,
+	numbered_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
+	bulleted_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		// const url = encodeURIComponent(file.url)
-		// <img src="/notion-asset?url=${url}" alt="${parsePlainText(caption)}" />
+		const slug = S3.setCache(file.url)
+
 		return `
 			<figure class="image">
-				<img src="${file.url}" alt="${parsePlainText(caption)}" />
-
+				<img src="/notion-asset/${slug}" alt="${parsePlainText(caption)}" />
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
 		`
+		// <img src="${file.url}" alt="${parsePlainText(caption)}" />
 	},
-	to_do: ({ text, checked }) => {
+	to_do: ({ rich_text, checked }) => {
 		return `
 			<p>
 				<input type="checkbox" ${checked ? 'checked' : ''} onclick="return false;" />
-				${parseRichText(text)}
+				${parseRichText(rich_text)}
 			</p>
 		`
 	},
-	callout: ({ icon, text }) => {
+	callout: ({ icon, rich_text }) => {
 		return `
 			<figure class="callout">
 				<div>${icon.emoji}</div>
-				<div>${parseRichText(text)}</div>
+				<div>${parseRichText(rich_text)}</div>
 			</figure>
 		`
 	},
 	// Warning: language: Plain text breaks this?!
-	code: ({ text, language, caption }) => {
+	code: ({ rich_text, language, caption }) => {
 		return `
 			<figure class="codeblock">
-				<pre>${hljs.highlight(parsePlainText(text), { language }).value}</pre>
+				<pre>${hljs.highlight(parsePlainText(rich_text), { language }).value}</pre>
 			</figure>
 			<figcaption>${parseRichText(caption)}</figcaption>
 		`
@@ -171,11 +167,15 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	// 	return
 	// },
 	fallback: (block) => {
-		if (env.NODE_ENV === 'development') {
-			return `debug: output\n` + JSON.stringify(block, undefined, 2)
-		}
+		if (env.NODE_ENV === 'production') return ''
 
-		return `<p>[TODO: Implement ${block.type} blocks]</p>`
+		return `
+			<p>[TODO: Implement ${block.type} blocks]</p>
+			<figure class="codeblock">
+				<pre>${hljs.highlight(JSON.stringify(block, undefined, 2), { language: 'json' }).value}</pre>
+			</figure>
+			<figcaption>Debug Info</figcaption>
+		`
 	},
 }
 
@@ -183,7 +183,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 // So far, the best way is a wonky a tag right in the notion text:
 // <a href=routename>Link text here! 🤷‍♂️</a>
 function parseRichText(rich_text: RichTextChunk[]): HtmlString {
-	const chunks = rich_text.map(wrapChunk).join('')
+	const chunks = rich_text?.map(wrapChunk).join('')
 	return `<span>${chunks || '&nbsp;'}</span>` // &nbsp; to make empty paragraphs take up space
 }
 

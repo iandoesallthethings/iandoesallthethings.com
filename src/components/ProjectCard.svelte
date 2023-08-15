@@ -11,12 +11,7 @@
 	}
 </script>
 
-<a
-	href="/{project.route}"
-	data-sveltekit-preload-data
-	draggable="false"
-	class="group mask {classes}"
->
+<a href="/{project.route}" draggable="false" class="group mask {classes}">
 	{#if project.video}
 		<video
 			title={altText}
