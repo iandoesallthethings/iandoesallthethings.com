@@ -73,11 +73,11 @@ const propertyTypes = {
 	multi_select: (p: MultiSelectProperty) => p.multi_select.map((f) => f.name),
 	files: (p: FilesProperty) => {
 		const url = p.files[0]?.file.url
+		if (!url) return
 
-		if (url) {
-			const urlSlug = S3.extractFromUrl(url)
-			return `/notion-asset/${urlSlug}`
-		}
+		const slug = S3.cacheUrl(url)
+
+		return `/notion-asset/${slug}`
 	},
 	number: (p: { number: number }) => p.number,
 }
@@ -107,10 +107,11 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	bulleted_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		const urlSlug = S3.extractFromUrl(file.url)
+		const slug = S3.cacheUrl(file.url)
+
 		return `
 			<figure class="image">
-				<img src="/notion-asset/${urlSlug}" alt="${parsePlainText(caption)}" />
+				<img src="/notion-asset/${slug}" alt="${parsePlainText(caption)}" />
 				<figcaption>${parseRichText(caption)}</figcaption>
 			</figure>
 		`

@@ -8,8 +8,17 @@
 // &X-Amz-SignedHeaders=host
 // &x-id=GetObject
 
-const delimiter = ':'
+export const cache = new Map<string, { url: string; response?: Response }>()
 
+export function cacheUrl(url: string, response?: Response) {
+	const { key, fileName } = extractFromUrl(url)
+	const slug = key + '-' + fileName
+	cache.set(slug, { url, response })
+
+	return key + '-' + fileName
+}
+
+const delimiter = ':'
 export function reconstructUrl(urlParts: string) {
 	const [date, credential, signature, key, fileName] = decodeURIComponent(urlParts).split(delimiter)
 	console.debug('Rendering', fileName)
@@ -48,5 +57,7 @@ export function extractFromUrl(s3Url: string) {
 	// 20230813T004707Z // date
 	// c618aac3fb543bf0e235da5b24ff304bfe7a4d0fdede751d950fd918e1e60c73 // signature
 	// AKIAT73L2G45EIPT3X45/20230813/us-west-2/s3/aws4_request // credential
-	return encodeURIComponent([date, credential, signature, key, fileName].join(delimiter))
+	const slug = encodeURIComponent([date, credential, signature, key, fileName].join(delimiter))
+
+	return { key, fileName, slug }
 }
