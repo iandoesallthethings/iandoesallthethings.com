@@ -8,21 +8,40 @@
 // &X-Amz-SignedHeaders=host
 // &x-id=GetObject
 
-export const cache = new Map<string, { url: string; response?: Response | Promise<Response> }>()
+import { error } from '@sveltejs/kit'
 
-export function getCachedResponse(slug: string) {
-	const cached = cache.get(slug)
-	if (!cached) return undefined
+type Slug = string
+type S3Url = string
 
-	return cached.response
+export const cache = new Map<Slug, { url: S3Url; response?: Response | Promise<Response> }>()
+
+export async function getCache(slug: string, sveltekitFetch?: typeof fetch) {
+	let { url, response } = cache.get(slug) ?? {}
+
+	if (!url) throw error(404, `Could not find asset: ${slug}`)
+
+	if (response) {
+		console.log('Cache hit:', slug)
+		return response
+	}
+
+	console.log('Cache miss. Fetching:', slug)
+
+	response = (sveltekitFetch || fetch)(url)
+
+	setCache(url, response)
+
+	return response
 }
 
-export function cacheUrl(url: string, response?: Response | Promise<Response>) {
+export function setCache(url: S3Url, response?: Response | Promise<Response>): Slug {
 	const { key, fileName } = extractFromUrl(url)
+
 	const slug = key + '-' + fileName
+
 	cache.set(slug, { url, response })
 
-	return key + '-' + fileName
+	return slug
 }
 
 const delimiter = ':'

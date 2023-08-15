@@ -75,7 +75,7 @@ const propertyTypes = {
 		const url = p.files[0]?.file.url
 		if (!url) return
 
-		const slug = S3.cacheUrl(url)
+		const slug = S3.setCache(url)
 
 		return `/notion-asset/${slug}`
 	},
@@ -107,7 +107,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	bulleted_list_item: ({ rich_text }) => `<li>${parseRichText(rich_text)}</li>`,
 	divider: () => '<hr />',
 	image: ({ file, caption }) => {
-		const slug = S3.cacheUrl(file.url)
+		const slug = S3.setCache(file.url)
 
 		return `
 			<figure class="image">
