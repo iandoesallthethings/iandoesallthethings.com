@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css'
+	import '../app.postcss'
 	import 'highlight.js/styles/github.css'
 	import { browser } from '$app/environment'
 	import { page } from '$app/stores'
