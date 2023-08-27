@@ -7,6 +7,6 @@ export default defineConfig({
 		'import.meta.env.VERCEL_ANALYTICS_ID': JSON.stringify(process.env.VERCEL_ANALYTICS_ID),
 	},
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}'],
-	},
+		include: ['src/**/*.{test,spec}.{js,ts}']
+	}
 })
