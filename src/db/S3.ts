@@ -37,19 +37,20 @@ export async function getCache(slug: string, sveltekitFetch?: typeof fetch) {
 export function setCache(url: S3Url, response?: Response | Promise<Response>): Slug {
 	const { key, fileName } = extractFromUrl(url)
 
-	const slug = key + '-' + fileName
+	const slug = key + '/' + fileName
 
 	cache.set(slug, { url, response })
 
 	return slug
 }
 
+const s3Host = 'prod-files-secure.s3.us-west-2.amazonaws.com'
 const delimiter = ':'
 export function reconstructUrl(urlParts: string) {
 	const [date, credential, signature, key, fileName] = decodeURIComponent(urlParts).split(delimiter)
-	console.debug('Rendering', fileName)
 
-	const root = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/'
+	// const root = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/'
+	const root = 'https://' + s3Host + '/'
 	const params =
 		'?' +
 		[
@@ -68,15 +69,18 @@ export function reconstructUrl(urlParts: string) {
 
 export function extractFromUrl(s3Url: string) {
 	const url = new URL(s3Url)
+	// console.debug(url)
 
 	const pathSegments = url.pathname.split('/')
-	const key = pathSegments[pathSegments.indexOf('secure.notion-static.com') + 1]
-	const fileName = pathSegments[pathSegments.indexOf('secure.notion-static.com') + 2]
+	const key = pathSegments[2]
+	const fileName = pathSegments[3]
 
 	const queryParameters = url.searchParams
 	const credential = queryParameters.get('X-Amz-Credential')
 	const date = queryParameters.get('X-Amz-Date')
 	const signature = queryParameters.get('X-Amz-Signature')
+
+	console.debug({ s3Url, pathSegments, key, fileName, credential, date, signature })
 
 	// 26a1ba29-164d-4a04-baa2-c2c1b6c03d54
 	// santoka.png
