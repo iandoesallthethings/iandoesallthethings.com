@@ -3,14 +3,16 @@
 	import { fade } from 'svelte/transition'
 	import focus from '$lib/focus'
 	import floatToTop from '$ukiyo/floatToTop'
+	import type { Field } from '$types'
 
 	export let classes = ''
 
-	$: fields = $page.data.fields
-	$: currentBlurb = blurbFor($focus)
+	$: currentBlurb = blurbFor($focus, $page.data.fields)
 
-	function blurbFor(focusedFieldName: string) {
-		return fields.find((field) => field.name === focusedFieldName)?.blurb
+	async function blurbFor(focusedFieldName: string, fields: Field[]) {
+		console.debug(fields)
+
+		return (await fields).find((field) => field.name === focusedFieldName)?.blurb
 	}
 
 	let blurb: HTMLElement
