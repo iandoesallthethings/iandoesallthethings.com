@@ -27,7 +27,8 @@
 			py-24 px-4
 			items-center
 			gap-2 sm:gap-4
-			overflow-scroll
+			overflow-y-scroll
+			no-scrollbar
 			justify-between
 		"
 >
