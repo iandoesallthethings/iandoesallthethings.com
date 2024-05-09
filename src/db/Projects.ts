@@ -1,8 +1,8 @@
 import * as Notion from '$db/Notion'
 import type { Page, Project } from '$types'
-import { env } from '$env/dynamic/private'
+import { NOTION_PROJECTS_DB } from '$env/static/private'
 
-const database_id = env.NOTION_PROJECTS_DB
+const database_id = NOTION_PROJECTS_DB
 
 const filter = Notion.filters.published()
 

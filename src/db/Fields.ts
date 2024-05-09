@@ -1,8 +1,8 @@
 import * as Notion from '$db/Notion'
 import type { Field } from '$types'
-import { env } from '$env/dynamic/private'
+import { NOTION_FIELDS_DB } from '$env/static/private'
 
-const database_id = env.NOTION_FIELDS_DB
+const database_id = NOTION_FIELDS_DB
 
 const filter = Notion.filters.published()
 const sorts = [Notion.sorts.ascending('order')]

@@ -16,12 +16,12 @@ import type {
 	RichTextChunk,
 	NotionSort,
 } from '$types'
-import { env } from '$env/dynamic/private'
+import { NOTION_API_KEY, NODE_ENV } from '$env/static/private'
 import { Client } from '@notionhq/client'
 import hljs from 'highlight.js'
 import * as S3 from '$db/S3'
 
-const notion = new Client({ auth: env.NOTION_API_KEY })
+const notion = new Client({ auth: NOTION_API_KEY })
 
 export default notion
 
@@ -167,7 +167,7 @@ const blockTypes: Record<string, (block: Block) => HtmlString> = {
 	// 	return
 	// },
 	fallback: (block) => {
-		if (env.NODE_ENV === 'production') return ''
+		if (NODE_ENV === 'production') return ''
 
 		return `
 			<p>[TODO: Implement ${block.type} blocks]</p>
