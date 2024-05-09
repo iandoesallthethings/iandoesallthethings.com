@@ -9,10 +9,8 @@
 
 	$: currentBlurb = blurbFor($focus, $page.data.fields)
 
-	async function blurbFor(focusedFieldName: string, fields: Field[]) {
-		console.debug(fields)
-
-		return (await fields).find((field) => field.name === focusedFieldName)?.blurb
+	function blurbFor(focusedFieldName: string, fields: Field[]) {
+		return fields.find((field) => field.name === focusedFieldName)?.blurb
 	}
 
 	let blurb: HTMLElement

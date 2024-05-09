@@ -69,7 +69,6 @@ export function reconstructUrl(urlParts: string) {
 
 export function extractFromUrl(s3Url: string) {
 	const url = new URL(s3Url)
-	// console.debug(url)
 
 	const pathSegments = url.pathname.split('/')
 	const key = pathSegments[2]
@@ -79,8 +78,6 @@ export function extractFromUrl(s3Url: string) {
 	const credential = queryParameters.get('X-Amz-Credential')
 	const date = queryParameters.get('X-Amz-Date')
 	const signature = queryParameters.get('X-Amz-Signature')
-
-	console.debug({ s3Url, pathSegments, key, fileName, credential, date, signature })
 
 	// 26a1ba29-164d-4a04-baa2-c2c1b6c03d54
 	// santoka.png

@@ -50,7 +50,6 @@ export function stop() {
 }
 
 function loop() {
-	console.debug('loop')
 	if (playing) window.requestAnimationFrame(loop)
 
 	// hue += 0.5 // increase the hue to get different colored fireworks over time
