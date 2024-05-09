@@ -51,6 +51,9 @@
     "bun": "^1.1.7"
   },
   "trustedDependencies": [
+    "@sveltejs/kit",
+    "bun",
+    "esbuild",
     "svelte-preprocess"
   ]
 }

@@ -16,13 +16,7 @@
 	}
 </script>
 
-<div
-	class="
-		backdrop absolute top-0 left-0
-		w-[100dvw] h-[100dvh]
-		z-0
-	"
->
+<div class="backdrop absolute top-0 left-0 w-[100dvw] h-[100dvh] z-0">
 	<Pool />
 
 	<Konami />

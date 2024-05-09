@@ -9,8 +9,6 @@
 
 	const gridMode = localStore('gridMode', false)
 
-	$: projects = $page.data.projects
-
 	function toggleGrid() {
 		$gridMode = !$gridMode
 	}
@@ -34,11 +32,13 @@
 >
 	<Blurb classes={$gridMode ? 'relative max-w-[220px]' : ''} />
 
-	{#each projects as project}
-		<Particle disabled={$gridMode} hidden={shouldHide(project, $focus)}>
-			<ProjectCard {project} />
-		</Particle>
-	{/each}
+	{#await $page.data.projects then projects}
+		{#each projects as project}
+			<Particle disabled={$gridMode} hidden={shouldHide(project, $focus)}>
+				<ProjectCard {project} />
+			</Particle>
+		{/each}
+	{/await}
 
 	{#each new Array(10) as _pad}
 		<div class="" />

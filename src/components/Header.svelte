@@ -1,8 +1,6 @@
 <script lang="ts">
 	import focus from '$lib/focus'
 	import { page } from '$app/stores'
-
-	$: fields = $page.data.fields
 </script>
 
 <header
@@ -25,26 +23,28 @@
 	<nav class="header-row flex gap-4">
 		<span class="hidden sm:inline text-black/80">ian does</span>
 
-		{#each fields as field}
-			<label>
-				<input
-					type="radio"
-					value={field.name}
-					bind:group={$focus}
-					on:click={() => ($focus = $focus)}
-					class="hidden peer"
-				/>
+		{#await $page.data.fields then fields}
+			{#each fields as field}
+				<label>
+					<input
+						type="radio"
+						value={field.name}
+						bind:group={$focus}
+						on:click={() => ($focus = $focus)}
+						class="hidden peer"
+					/>
 
-				<span
-					class="
+					<span
+						class="
 						cursor-pointer
 						peer-checked:font-bold
 						peer-checked:drop-shadow-lg"
-				>
-					{field.name}
-				</span>
-			</label>
-		{/each}
+					>
+						{field.name}
+					</span>
+				</label>
+			{/each}
+		{/await}
 	</nav>
 </header>
 
