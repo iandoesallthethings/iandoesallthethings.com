@@ -6,7 +6,7 @@ export type HtmlString = string
 export type PlainText = string
 export type CSSClasses = string
 
-export type FieldName = 'education' | 'music' | 'development' | 'all the things'
+export type FieldName = string
 
 export type Row = Field | Project
 

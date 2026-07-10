@@ -14,7 +14,7 @@ function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordi
 	}
 }
 
-class Particle {
+export default class Particle {
 	flowField: FlowField
 	pool: Container
 	particle: HTMLElement
@@ -152,4 +152,4 @@ class Particle {
 	}
 }
 
-export default bindMethodsToThis(Particle)
+bindMethodsToThis(Particle)

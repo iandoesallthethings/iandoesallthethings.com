@@ -6,7 +6,7 @@ import type { Coordinate, Angle } from '$ukiyo/Numbers'
 import { browser } from '$app/environment'
 import { bindMethodsToThis } from '$lib/decorators'
 
-class FlowField {
+export default class FlowField {
 	// @ts-expect-error Old library is old
 	noise: Noise = new Noise(Math.E)
 	z: number = Math.random()
@@ -39,4 +39,4 @@ class FlowField {
 	}
 }
 
-export default bindMethodsToThis(FlowField)
+bindMethodsToThis(FlowField)

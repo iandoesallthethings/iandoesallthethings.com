@@ -2,7 +2,7 @@ import { bindMethodsToThis } from '$lib/decorators'
 import * as Numbers from '$ukiyo/Numbers'
 import type { Coordinate } from '$ukiyo/Numbers'
 
-class Container {
+export default class Container {
 	container: HTMLElement
 
 	constructor(container: HTMLElement) {
@@ -47,4 +47,4 @@ class Container {
 	}
 }
 
-export default bindMethodsToThis(Container)
+bindMethodsToThis(Container)
