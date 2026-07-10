@@ -80,37 +80,37 @@ Loader must be lenient: a malformed file is skipped with a warning, never a cras
 Each phase is a beads issue (`bd list` for live status). IDs share the
 `iandoesallthethings_com-` prefix, abbreviated here.
 
-1. **Foundation** (`-g0r`) — branch `v4` off `main`; land `content/`, `docs/`,
+1. **Foundation** (`-31t`) — branch `v4` off `main`; land `content/`, `docs/`,
    `.beads/`. The `update-everything` branch is superseded (its dep bumps are
    redone better in phase 2; the dirty working tree there is debug junk, stashed
    for safety).
-2. **Toolchain upgrade** (`-dwu`) — Svelte 5, Kit ≥2.69.1, Vite 7,
+2. **Toolchain upgrade** (`-91t`) — Svelte 5, Kit ≥2.69.1, Vite 7,
    `npx sv migrate svelte-5`; eslint/prettier/svelte-check current and green. The
    Notion data layer may be broken at this point (key likely dead); acceptable —
    it's deleted in phase 4.
-3. **Markdown data layer (filesystem mode)** (`-1s1`) — frontmatter loader
+3. **Markdown data layer (filesystem mode)** (`-3u9`) — frontmatter loader
    (lenient), unified pipeline with Obsidian plugins, `/attachments/*` dev route;
    replace `Projects.getAll()` / `Fields.getAll()`. Site fully works locally with
    zero network calls.
-4. **Delete the old world** (`-4i7`) — `Notion.ts`, `S3.ts`, `Projects.ts`,
+4. **Delete the old world** (`-7x9`) — `Notion.ts`, `S3.ts`, `Projects.ts`,
    `Fields.ts`, `notion-asset` route, `jobs/` dead code, `@notionhq/client`,
    `@vercel/postgres`; revoke the old Notion key, delete the Vercel Postgres
    store, prune `.env`.
-5. **Visual parity + Svelte 5 idioms** (`-3dl`) — port components to runes where
+5. **Visual parity + Svelte 5 idioms** (`-ryn`) — port components to runes where
    the migration left legacy patterns; verify pool/particles/fireworks/filters/
    project modal against the live site.
-6. **Remote content mode** (`-2v9`) — GitHub fetch layer (Contents API + HEAD-sha
+6. **Remote content mode** (`-v7k`) — GitHub fetch layer (Contents API + HEAD-sha
    resolution, SHA-pinned media URLs), dev/prod mode switch, ISR config with
    `bypassToken`, env: `GITHUB_TOKEN` (or none if rate limits allow), `CONTENT_REF`.
-7. **Publish loop** (`-3dk`) — `/api/revalidate` (verify GitHub webhook HMAC, map
+7. **Publish loop** (`-cpx`) — `/api/revalidate` (verify GitHub webhook HMAC, map
    changed files → routes, fire `x-prerender-revalidate` per path + `/`), Vercel
    Ignored Build Step (`git diff --quiet HEAD^ HEAD -- . ':(exclude)content/'`),
    GitHub webhook config; end-to-end test: push content-only commit, see it live,
    no build.
-8. **Vault ergonomics + content cleanup** (`-rf4`) — `.obsidian/` in `content/`
+8. **Vault ergonomics + content cleanup** (`-ikk`) — `.obsidian/` in `content/`
    (gitignore `workspace.json`), fix stale content (localhost link in
    fields/music.md, sapper dupe in fields/dev.md), curate.
-9. **Launch** (`-fn0`) — Playwright smoke tests, deploy, verify prod +
+9. **Launch** (`-7br`) — Playwright smoke tests, deploy, verify prod +
    revalidation on the real domain, update README.
 
 ## Open questions
