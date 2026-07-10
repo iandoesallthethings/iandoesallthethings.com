@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Page from '$components/Page.svelte'
 
-	export let data
+	let { data } = $props()
 </script>
 
 <Page>
@@ -12,7 +12,12 @@
 		</div>
 
 		{#if data.project.link}
-			<a href={data.project.link} target="_blank" class="px-3 py-2 rounded-md hover:bg-white/20">
+			<a
+				href={data.project.link}
+				target="_blank"
+				aria-label="Open project site"
+				class="px-3 py-2 rounded-md hover:bg-white/20"
+			>
 				<i class="fas fa-external-link-alt"></i>
 			</a>
 		{/if}

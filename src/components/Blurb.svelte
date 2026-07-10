@@ -1,22 +1,20 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import type { Field } from '$types'
+	import { page } from '$app/state'
 	import { fade } from 'svelte/transition'
 	import focus from '$lib/focus'
 	import floatToTop from '$ukiyo/floatToTop'
 
-	export let classes = ''
+	let { classes = '' }: { classes?: string } = $props()
 
-	$: fields = $page.data.fields
-	$: currentBlurb = blurbFor($focus)
+	const currentBlurb = $derived(
+		page.data.fields.find((field: Field) => field.name === $focus)?.blurb
+	)
 
-	function blurbFor(focusedFieldName: string) {
-		return fields.find((field) => field.name === focusedFieldName)?.blurb
-	}
-
-	let blurb: HTMLElement
+	let blurb: HTMLElement | undefined = $state()
 
 	function float() {
-		floatToTop(blurb, '.backdrop *')
+		if (blurb) floatToTop(blurb, '.backdrop *')
 	}
 </script>
 
@@ -24,9 +22,9 @@
 	<div
 		role="button"
 		tabindex="0"
-		on:keydown={float}
+		onkeydown={float}
 		bind:this={blurb}
-		on:click={float}
+		onclick={float}
 		in:fade
 		class="
 				absolute

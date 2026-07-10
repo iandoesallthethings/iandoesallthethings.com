@@ -1,10 +1,14 @@
 <script lang="ts">
 	import type { Project } from '$types'
 
-	export let project: Project
-	export let classes = ''
+	interface Props {
+		project: Project
+		classes?: string
+	}
 
-	$: altText = `${stripHtml(project.name)}: ${stripHtml(project.subtitle)}`
+	let { project, classes = '' }: Props = $props()
+
+	const altText = $derived(`${stripHtml(project.name)}: ${stripHtml(project.subtitle)}`)
 
 	function stripHtml(s: string) {
 		return s?.replace(/<[^>]*>?/gm, '') ?? ''

@@ -1,12 +1,18 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import floatToTop from '$ukiyo/floatToTop'
 	import ukiyo from '$ukiyo'
 
-	export let hidden = false
-	export let disabled = false
+	interface Props {
+		hidden?: boolean
+		disabled?: boolean
+		children: Snippet
+	}
 
-	let particle: HTMLElement
+	let { hidden = false, disabled = false, children }: Props = $props()
+
+	let particle: HTMLElement | undefined = $state()
 
 	function randomFadeTime() {
 		return Math.random() * 800
@@ -16,16 +22,17 @@
 {#if hidden}
 	<!--  -->
 {:else if disabled}
-	<slot />
+	{@render children()}
 {:else}
+	<!-- svelte-ignore a11y_no_static_element_interactions -- the interactive element is the project link inside; this wrapper only floats it -->
 	<div
 		use:ukiyo
 		bind:this={particle}
-		on:pointerdown={() => floatToTop(particle, '.backdrop *')}
+		onpointerdown={() => particle && floatToTop(particle, '.backdrop *')}
 		class="particle cursor-pointer touch-none"
 		in:fade={{ duration: randomFadeTime() }}
 		out:fade={{ duration: 375 }}
 	>
-		<slot />
+		{@render children()}
 	</div>
 {/if}

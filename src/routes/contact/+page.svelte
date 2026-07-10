@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Page from '$components/Page.svelte'
 
-	let copied: HTMLSpanElement
+	let copied: HTMLSpanElement | undefined = $state()
 
 	const copyEmail = () => {
 		const textArea = document.createElement('textarea')
@@ -10,7 +10,7 @@
 		textArea.select()
 		document.execCommand('Copy')
 		textArea.remove()
-		flash(copied)
+		if (copied) flash(copied)
 	}
 
 	const flash = (element: HTMLElement) => {
@@ -34,7 +34,7 @@
 			<i class="far fa-envelope"></i>
 			<span id="email">ianDoesAllTheThings@gmail.com</span>
 		</a>
-		<a href="/#" on:click={copyEmail}>
+		<a href="/#" aria-label="Copy email address" onclick={copyEmail}>
 			<i class="fas fa-clipboard opacity-0 group-hover:opacity-100 cursor-pointer"></i>
 		</a>
 		<span bind:this={copied} class="opacity-0 mx-5 border rounded-md p-2 text-xs">Copied! ❤️</span>

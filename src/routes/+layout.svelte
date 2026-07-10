@@ -7,6 +7,8 @@
 	import Footer from '$components/Footer.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
 
+	let { children } = $props()
+
 	Analytics.initialize()
 </script>
 
@@ -24,7 +26,7 @@
 
 <Header />
 
-<slot />
+{@render children()}
 
 <Footer />
 

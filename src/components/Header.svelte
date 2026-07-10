@@ -1,8 +1,8 @@
 <script lang="ts">
 	import focus from '$lib/focus'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 
-	$: fields = $page.data.fields
+	const fields = $derived(page.data.fields)
 </script>
 
 <header
@@ -31,7 +31,7 @@
 					type="radio"
 					value={field.name}
 					bind:group={$focus}
-					on:click={() => ($focus = $focus)}
+					onclick={() => ($focus = $focus)}
 					class="hidden peer"
 				/>
 

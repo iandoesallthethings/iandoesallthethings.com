@@ -1,13 +1,13 @@
 <script lang="ts">
 	import Page from '$components/Page.svelte'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 
 	const errorText: Record<number, string> = {
 		404: "404'd!",
 		500: "ERROR'D",
 	}
 
-	$: message = errorText[$page.status] || errorText[500]
+	const message = $derived(errorText[page.status] || errorText[500])
 </script>
 
 <Page>

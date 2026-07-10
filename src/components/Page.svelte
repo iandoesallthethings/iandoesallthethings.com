@@ -1,20 +1,19 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import clickOutside from '$lib/clickOutside'
-	import { createEventDispatcher } from 'svelte'
 	import { goto } from '$app/navigation'
 
-	const dispatch = createEventDispatcher()
+	let { children }: { children: Snippet } = $props()
 
 	function close() {
-		dispatch('close')
 		goto('/')
 	}
 </script>
 
 <div class="wrapper">
 	<article use:clickOutside={close} transition:fade class="page">
-		<slot />
+		{@render children()}
 	</article>
 </div>
 

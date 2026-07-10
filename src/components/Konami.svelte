@@ -3,7 +3,7 @@
 	import { fade, type TransitionConfig } from 'svelte/transition'
 	import * as Fireworks from '$lib/fireworks/index.js'
 
-	let playing = false
+	let playing = $state(false)
 
 	// Konami Code
 	let lastElevenKeyCodes = Array(11).fill('')
@@ -69,13 +69,14 @@
 	}
 </script>
 
-<svelte:window on:keydown={konami} />
+<svelte:window onkeydown={konami} />
 
 {#if playing}
 	<button
 		class="all-unset"
-		on:click={toggleFireworks}
-		on:keydown={(event) => event.key === 'Escape' && toggleFireworks()}
+		aria-label="Stop the fireworks"
+		onclick={toggleFireworks}
+		onkeydown={(event) => event.key === 'Escape' && toggleFireworks()}
 		in:fade={{ duration: 1000, delay: 6000 }}
 		out:fade
 	>
