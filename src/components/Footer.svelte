@@ -13,7 +13,7 @@
 			<i class="fab fa-github"></i>
 		</a>
 		<a
-			href="https://www.linkedin.com/in/ian-edwards-81920080/"
+			href="https://www.linkedin.com/in/iandoesallthethings/"
 			aria-label="LinkedIn"
 			target="_blank"
 		>

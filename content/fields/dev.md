@@ -1,11 +1,11 @@
 ---
 name: dev
-blurb: "I’m a founding member of http://hyperbloom.ai/ specializing in full-stack web dev and wonky art stuff."
+blurb: "I am a full-snack software engineer, art mercenary, and forward deployed engineer at [Tribe AI](http://tribe.ai). I'm also an diy hardware nerd and homelabber. Mostly I just like to make things."
 order: 0
 published: true
 ---
 
-I am a full-snack web developer, art mercenary, and founding member of [Hyperbloom.ai](http://hypberbloom.ai). I also work with hardware like Raspberry Pi, Arduino, and bare analog circuitry. Mostly I just like to make things. So please [get in touch](#contact) if you want to hire me to make something or even collaborate on a a project!
+I am a full-snack software engineer, art mercenary, and forward deployed engineer at [Tribe AI](http://tribe.ai). I'm also an diy hardware nerd and homelabber. Mostly I just like to make things." Mostly I just like to make things. So please [get in touch](#contact) if you want to hire me to make something or even collaborate on a a project!
 
 ![[javascript-plain.svg]]
 

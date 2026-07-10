@@ -1,6 +1,6 @@
 ---
 name: music
-blurb: I’m a saxophonist, synth enthusiast, member of the psychedelic dance act Partials, maker of weird modular techno.
+blurb: I’m a saxophonist, synth enthusiast, member of the psychedelic dance band Partials, and a maker of weird noises in general.
 order: 1
 published: true
 ---

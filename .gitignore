@@ -16,3 +16,5 @@ vite.config.ts.timestamp-*
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+.obsidian
