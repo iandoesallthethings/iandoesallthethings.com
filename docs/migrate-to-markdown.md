@@ -113,6 +113,25 @@ Each phase is a beads issue (`bd list` for live status). IDs share the
 9. **Launch** (`-7br`) — Playwright smoke tests, deploy, verify prod +
    revalidation on the real domain, update README.
 
+## Launch wiring (dashboard steps, phase 9)
+
+The publish loop is code-complete but needs three one-time hookups at launch:
+
+1. **Vercel env vars**: `BYPASS_TOKEN` (32+ random chars, used for ISR on-demand
+   revalidation), `WEBHOOK_SECRET` (random, shared with the GitHub webhook),
+   `GITHUB_TOKEN` (fine-grained, read-only contents on this repo — raises the
+   API rate limit for sha/dir-listing calls). Optional: `ISR_EXPIRATION`
+   (default 300s).
+2. **GitHub webhook** (repo settings): payload URL
+   `https://www.iandoesallthethings.com/api/revalidate`, content type
+   `application/json`, secret = `WEBHOOK_SECRET`, events: just pushes.
+3. **Ignored Build Step**: `vercel.json`'s `ignoreCommand` handles it; verify
+   in Vercel project settings that vercel.json is respected (no dashboard
+   override configured).
+
+Also at launch: revoke the old Notion API key, delete the Vercel Postgres store,
+and point production at the `v4` branch (or merge to main).
+
 ## Open questions
 
 - Tailwind 3 → 4: bump during phase 2 or defer? (Independent of everything else.)
