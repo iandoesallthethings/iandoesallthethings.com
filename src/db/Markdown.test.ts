@@ -50,6 +50,23 @@ describe('Markdown.toHtml', () => {
 		expect(html).toContain('hljs')
 	})
 
+	it('renders inline html without a wrapping paragraph', async () => {
+		const html = await Markdown.toInlineHtml(
+			'Founding member of http://hyperbloom.ai/ and **more**'
+		)
+
+		expect(html).not.toContain('<p>')
+		expect(html).toContain('<a href="http://hyperbloom.ai/">')
+		expect(html).toContain('<strong>more</strong>')
+	})
+
+	it('leaves multi-paragraph inline input wrapped', async () => {
+		const html = await Markdown.toInlineHtml('one\n\ntwo')
+
+		expect(html).toContain('<p>one</p>')
+		expect(html).toContain('<p>two</p>')
+	})
+
 	it('strips script tags', async () => {
 		const html = await Markdown.toHtml('hello <script>alert(1)</script>')
 

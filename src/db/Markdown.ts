@@ -49,3 +49,14 @@ const processor = unified()
 export async function toHtml(markdown: string): Promise<HtmlString> {
 	return String(await processor.process(markdown))
 }
+
+// For one-liners rendered inside an existing block element (e.g. field blurbs):
+// unwraps the surrounding <p> so the result can nest anywhere
+export async function toInlineHtml(markdown: string): Promise<HtmlString> {
+	const html = (await toHtml(markdown)).trim()
+	const match = html.match(/^<p>([\s\S]*)<\/p>$/)
+
+	if (match && !match[1].includes('<p')) return match[1]
+
+	return html
+}
