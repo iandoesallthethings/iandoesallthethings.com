@@ -1,29 +1,41 @@
-import * as Notion from '$db/Notion'
+import * as Content from '$db/Content'
+import * as Markdown from '$db/Markdown'
+import type { Note } from '$db/Content'
 import type { Page, Project } from '$types'
-import { env } from '$env/dynamic/private'
-
-const database_id = env.NOTION_PROJECTS_DB
-
-const filter = Notion.filters.published()
-
-export async function getAllPages(): Promise<Page<Project>[]> {
-	return Notion.getDbWithPage<Project>({ database_id, filter })
-}
 
 export async function getAll(): Promise<Project[]> {
-	return Notion.getDb({ database_id, filter })
+	const notes = await Content.getCollection('projects')
+
+	return notes.map(toProject).filter((project) => project.published)
 }
 
 export async function getPage(projectName: string): Promise<Page<Project> | undefined> {
 	if (!projectName) return
 
-	const filter = {
-		and: [Notion.filters.propertyContains('route', projectName), Notion.filters.published()],
+	const note = await Content.getNote('projects', projectName)
+
+	if (!note) return
+
+	const project = toProject(note)
+
+	if (!project.published) return
+
+	return { ...project, page: await Markdown.toHtml(note.body) }
+}
+
+function toProject(note: Note): Project {
+	const { frontmatter: fm, slug } = note
+
+	return {
+		id: slug,
+		route: slug,
+		name: String(fm.name ?? slug),
+		subtitle: String(fm.subtitle ?? ''),
+		fields: Content.asList(fm.fields),
+		link: typeof fm.link === 'string' ? fm.link : undefined,
+		image: Content.attachmentUrl(fm.image),
+		video: Content.attachmentUrl(fm.video),
+		published: Content.asBoolean(fm.published),
+		indev: Content.asBoolean(fm.indev),
 	}
-
-	const { 0: project } = await Notion.getDb<Project>({ database_id, filter })
-
-	if (!project) return
-
-	return Notion.getPage(project)
 }

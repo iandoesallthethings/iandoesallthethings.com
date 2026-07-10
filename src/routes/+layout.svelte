@@ -1,19 +1,13 @@
 <script lang="ts">
 	import '../app.postcss'
 	import 'highlight.js/styles/github.css'
-	import { browser } from '$app/environment'
-	import { page } from '$app/stores'
 	import * as Analytics from '$lib/Analytics'
 	import Header from '$components/Header.svelte'
 	import Konami from '$components/Konami.svelte'
 	import Footer from '$components/Footer.svelte'
 	import Pool from '$ukiyo/Pool.svelte'
 
-	const updateAnalytics = Analytics.initialize()
-
-	$: if (browser) {
-		updateAnalytics($page)
-	}
+	Analytics.initialize()
 </script>
 
 <div

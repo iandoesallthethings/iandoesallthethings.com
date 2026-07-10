@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "iandoesallthethings_com",
+  "project_id": "178e0d11-2458-41c0-9b13-3ae8a230e387"
+}

@@ -1,35 +1,31 @@
-import * as Notion from '$db/Notion'
+import * as Content from '$db/Content'
+import * as Markdown from '$db/Markdown'
+import type { Note } from '$db/Content'
 import type { Field } from '$types'
-import { env } from '$env/dynamic/private'
-
-const database_id = env.NOTION_FIELDS_DB
-
-const filter = Notion.filters.published()
-const sorts = [Notion.sorts.ascending('order')]
 
 export async function getAll(): Promise<Field[]> {
-	const fieldsFromNotion: Field[] = await Notion.getDb({ database_id, filter, sorts })
+	const notes = await Content.getCollection('fields')
+
+	const fields = (await Promise.all(notes.map(toField))).filter((field) => field.published)
 
 	const allTheThings: Field = {
 		id: 'all the things',
 		name: 'all the things',
-		order: 4,
+		order: fields.length,
 		published: true,
 	}
 
-	return [...fieldsFromNotion, allTheThings]
+	return [...fields, allTheThings].sort((a, b) => a.order - b.order)
 }
 
-export async function getPage(projectName: string): Promise<Field | undefined> {
-	if (!projectName) return
+async function toField(note: Note): Promise<Field> {
+	const { frontmatter: fm, slug } = note
 
-	const filter = {
-		and: [Notion.filters.propertyContains('route', projectName), Notion.filters.published()],
+	return {
+		id: slug,
+		name: String(fm.name ?? slug),
+		blurb: typeof fm.blurb === 'string' ? await Markdown.toInlineHtml(fm.blurb) : undefined,
+		order: Number(fm.order ?? 99),
+		published: Content.asBoolean(fm.published),
 	}
-
-	const { 0: project } = await Notion.getDb<Field>({ database_id, filter })
-
-	if (!project) return
-
-	return Notion.getPage(project)
 }

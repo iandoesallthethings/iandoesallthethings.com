@@ -2,7 +2,6 @@ import type { Coordinate, Vector } from '$ukiyo/Numbers'
 import type FlowField from '$ukiyo/FlowField'
 import * as Numbers from '$ukiyo/Numbers'
 import type Container from '$ukiyo/Container'
-import { browser } from '$app/environment'
 import { bindMethodsToThis } from '$lib/decorators'
 import { tick as svelteTick } from 'svelte'
 
@@ -15,7 +14,6 @@ function pointerPosition(event: PointerEvent, relativeNode: HTMLElement): Coordi
 	}
 }
 
-@bindMethodsToThis
 export default class Particle {
 	flowField: FlowField
 	pool: Container
@@ -153,3 +151,5 @@ export default class Particle {
 		this.setCooldown()
 	}
 }
+
+bindMethodsToThis(Particle)

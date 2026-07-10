@@ -34,14 +34,14 @@
 >
 	<Blurb classes={$gridMode ? 'relative max-w-[220px]' : ''} />
 
-	{#each projects as project}
+	{#each projects as project (project.name)}
 		<Particle disabled={$gridMode} hidden={shouldHide(project, $focus)}>
 			<ProjectCard {project} />
 		</Particle>
 	{/each}
 
-	{#each new Array(10) as _pad}
-		<div class="" />
+	{#each new Array(10), i (i)}
+		<div class=""></div>
 	{/each}
 </div>
 
@@ -56,7 +56,7 @@
 			fa solid
 			{$gridMode ? 'fa-grid' : 'fa-water'}
 		"
-	/>
+	></i>
 
 	<i
 		class="
@@ -64,5 +64,5 @@
 			fa solid
 			{$gridMode ? 'fa-water' : 'fa-grid'}
 	"
-	/>
+	></i>
 </button>
