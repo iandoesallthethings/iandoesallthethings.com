@@ -9,19 +9,13 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeStringify from 'rehype-stringify'
 import type { HtmlString } from '$types'
 
-// Obsidian embeds (`![[file.png]]`) and links (`[[note]]`) resolve here
-function urlResolver({ filePath, heading, isEmbed }: UrlResolverOptions) {
-	const anchor = heading ? `#${heading}` : ''
-
-	if (isEmbed) return `/attachments/${filePath}`
-
-	return `/${filePath}${anchor}`
+export interface RenderOptions {
+	// Where Obsidian embeds (`![[file.png]]`) point; defaults to the local attachments route
+	attachmentUrl?: (filename: string) => string
 }
 
-interface UrlResolverOptions {
-	filePath: string
-	heading: string
-	isEmbed: boolean
+function defaultAttachmentUrl(filename: string) {
+	return `/attachments/${encodeURIComponent(filename)}`
 }
 
 const schema = {
@@ -36,24 +30,45 @@ const schema = {
 	},
 }
 
-const processor = unified()
-	.use(remarkParse)
-	.use(remarkGfm)
-	.use(remarkWikiLink, { urlResolver })
-	.use(remarkCallout)
-	.use(remarkRehype)
-	.use(rehypeSanitize, schema)
-	.use(rehypeHighlight)
-	.use(rehypeStringify)
+function processor(attachmentUrl: (filename: string) => string) {
+	function urlResolver({ filePath, heading, isEmbed }: UrlResolverOptions) {
+		if (isEmbed) return attachmentUrl(filePath)
 
-export async function toHtml(markdown: string): Promise<HtmlString> {
-	return String(await processor.process(markdown))
+		const anchor = heading ? `#${heading}` : ''
+
+		return `/${filePath}${anchor}`
+	}
+
+	return unified()
+		.use(remarkParse)
+		.use(remarkGfm)
+		.use(remarkWikiLink, { urlResolver })
+		.use(remarkCallout)
+		.use(remarkRehype)
+		.use(rehypeSanitize, schema)
+		.use(rehypeHighlight)
+		.use(rehypeStringify)
+}
+
+interface UrlResolverOptions {
+	filePath: string
+	heading: string
+	isEmbed: boolean
+}
+
+export async function toHtml(markdown: string, options: RenderOptions = {}): Promise<HtmlString> {
+	const render = processor(options.attachmentUrl ?? defaultAttachmentUrl)
+
+	return String(await render.process(markdown))
 }
 
 // For one-liners rendered inside an existing block element (e.g. field blurbs):
 // unwraps the surrounding <p> so the result can nest anywhere
-export async function toInlineHtml(markdown: string): Promise<HtmlString> {
-	const html = (await toHtml(markdown)).trim()
+export async function toInlineHtml(
+	markdown: string,
+	options: RenderOptions = {}
+): Promise<HtmlString> {
+	const html = (await toHtml(markdown, options)).trim()
 	const match = html.match(/^<p>([\s\S]*)<\/p>$/)
 
 	if (match && !match[1].includes('<p')) return match[1]

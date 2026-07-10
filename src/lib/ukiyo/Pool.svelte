@@ -2,14 +2,14 @@
 	import type { FieldName, Project } from '$types'
 	import Particle from '$ukiyo/Particle.svelte'
 	import ProjectCard from '$components/ProjectCard.svelte'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 	import focus from '$lib/focus'
 	import Blurb from '$components/Blurb.svelte'
 	import localStore from '$lib/localStore'
 
 	const gridMode = localStore('gridMode', false)
 
-	$: projects = $page.data.projects
+	const projects = $derived(page.data.projects)
 
 	function toggleGrid() {
 		$gridMode = !$gridMode
@@ -46,7 +46,7 @@
 </div>
 
 <button
-	on:click={toggleGrid}
+	onclick={toggleGrid}
 	title={$gridMode ? 'Switch to list mode' : 'Switch to Grid mode'}
 	class="group rounded-full absolute bottom-2 right-2 text-white/80 drop-shadow-lg w-8 h-8 text-xl mix-blend-difference"
 >

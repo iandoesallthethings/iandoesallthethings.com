@@ -1,6 +1,9 @@
-import * as Content from '$db/Content'
+import * as filesystem from '$db/sources/filesystem'
 import { error } from '@sveltejs/kit'
 
+// Serves vault attachments in dev and local preview builds. Deployed renders
+// use sha-pinned raw.githubusercontent.com URLs instead, so new attachments
+// arrive with content pushes without a rebuild.
 export const prerender = true
 
 const mimeTypes: Record<string, string> = {
@@ -17,14 +20,14 @@ const mimeTypes: Record<string, string> = {
 }
 
 export async function entries() {
-	const filenames = await Content.listAttachments()
+	const filenames = await filesystem.listAttachments()
 
 	return filenames.map((path) => ({ path }))
 }
 
 export async function GET({ params }) {
 	const filename = decodeURIComponent(params.path)
-	const file = await Content.readAttachment(filename)
+	const file = await filesystem.readAttachment(filename)
 
 	if (!file) throw error(404, `Could not find attachment: ${filename}`)
 

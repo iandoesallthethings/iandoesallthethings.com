@@ -1,10 +1,11 @@
 import * as Content from '$db/Content'
 import * as Markdown from '$db/Markdown'
-import type { Note } from '$db/Content'
+import { asBoolean, type Note } from '$db/Note'
 import type { Field } from '$types'
 
 export async function getAll(): Promise<Field[]> {
-	const notes = await Content.getCollection('fields')
+	const source = await Content.open()
+	const notes = await source.getCollection('fields')
 
 	const fields = (await Promise.all(notes.map(toField))).filter((field) => field.published)
 
@@ -26,6 +27,6 @@ async function toField(note: Note): Promise<Field> {
 		name: String(fm.name ?? slug),
 		blurb: typeof fm.blurb === 'string' ? await Markdown.toInlineHtml(fm.blurb) : undefined,
 		order: Number(fm.order ?? 99),
-		published: Content.asBoolean(fm.published),
+		published: asBoolean(fm.published),
 	}
 }
