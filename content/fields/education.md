@@ -11,4 +11,4 @@ I teach private music lessons to all ages online or in person in the Athens, Geo
 
 All Band and Orchestra instruments (Woodwinds, Brass, Percussion, Strings), Early Childhood General Music, Guitar (Classical, Acoustic, Electric), Bass Guitar, Drums, Vocals, Improvisation, Songwriting, Production, and Synthesis (Analog &Software)
 
-To sign up for lessons, please [**get in touch**](http://localhost:5000/#contact) and drop me an email including your name, instrument/focus, experience level, and preferable lesson times.
+To sign up for lessons, please [**get in touch**](/contact) and drop me an email including your name, instrument/focus, experience level, and preferable lesson times.
