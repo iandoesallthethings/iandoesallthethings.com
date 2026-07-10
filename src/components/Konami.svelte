@@ -64,7 +64,8 @@
 
 	function toggleFireworks() {
 		playing = !playing
-		playing ? Fireworks.start() : Fireworks.stop()
+		if (playing) Fireworks.start()
+		else Fireworks.stop()
 	}
 </script>
 
@@ -78,7 +79,7 @@
 		in:fade={{ duration: 1000, delay: 6000 }}
 		out:fade
 	>
-		<i class="close far fa-times-circle" />
+		<i class="close far fa-times-circle"></i>
 	</button>
 	<div class="youDidIt" in:spin={{ duration: 8000 }} out:fade>
 		<p class="cursive">great job</p>

@@ -13,7 +13,7 @@
 		flash(copied)
 	}
 
-	export const flash = (element: HTMLElement) => {
+	const flash = (element: HTMLElement) => {
 		requestAnimationFrame(() => {
 			element.style.transition = 'none'
 			element.style.opacity = '1'
@@ -31,17 +31,17 @@
 
 	<p class="group">
 		<a href="mailto:iandoesallthethings@gmail.com" target="_blank">
-			<i class="far fa-envelope" />
+			<i class="far fa-envelope"></i>
 			<span id="email">ianDoesAllTheThings@gmail.com</span>
 		</a>
 		<a href="/#" on:click={copyEmail}>
-			<i class="fas fa-clipboard opacity-0 group-hover:opacity-100 cursor-pointer" />
+			<i class="fas fa-clipboard opacity-0 group-hover:opacity-100 cursor-pointer"></i>
 		</a>
 		<span bind:this={copied} class="opacity-0 mx-5 border rounded-md p-2 text-xs">Copied! ❤️</span>
 	</p>
 	<p>
 		<a href="https://www.instagram.com/iandoesallthethings/" target="_blank">
-			<i class="fab fa-instagram" />
+			<i class="fab fa-instagram"></i>
 			<span>@ianDoesAllTheThings</span>
 		</a>
 	</p>
@@ -53,13 +53,13 @@
 	</p> -->
 	<p>
 		<a href="https://github.com/iandoesallthethings" target="_blank">
-			<i class="fab fa-github" />
+			<i class="fab fa-github"></i>
 			<span>ianDoesAllTheThings</span>
 		</a>
 	</p>
 	<p>
 		<a href="https://www.linkedin.com/in/ian-edwards-81920080/" target="_blank">
-			<i class="fab fa-linkedin" />
+			<i class="fab fa-linkedin"></i>
 			<span>Ian Edwards</span>
 		</a>
 	</p>

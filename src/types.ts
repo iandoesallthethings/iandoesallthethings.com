@@ -137,10 +137,12 @@ export interface Props {
 // Recursive type for value that can be encoded.
 export type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject
 
-export type ArbitraryFunction = (...args: unknown[]) => unknown
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ArbitraryFunction = (...args: any[]) => unknown
 
 export interface ArbitraryClass<T> {
-	new (...args: unknown[]): T
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	new (...args: any[]): T
 }
 
 export interface JsonObject {

@@ -43,6 +43,7 @@ export async function getDbWithPage<T extends Row>(
 }
 
 export async function getDb<T extends Row>(queryObject: QueryDatabaseParameters): Promise<T[]> {
+	// @ts-expect-error - legacy loose typing; this file is deleted in the markdown migration
 	return (await notion.databases.query(queryObject)).results.map(parseProperties)
 }
 
@@ -54,11 +55,12 @@ export async function getPage<T extends Row>(row: T): Promise<Page<T>> {
 }
 
 function parseProperties(row: Row) {
-	return { id: row.id, ...objectMap(row.properties, parseProperty) }
+	return { id: row.id, ...objectMap(row.properties ?? {}, parseProperty) }
 }
 
 function parseProperty(property: Property) {
 	if (property.type in propertyTypes) {
+		// @ts-expect-error - legacy loose typing; this file is deleted in the markdown migration
 		return propertyTypes[property.type](property)
 	}
 
@@ -89,9 +91,12 @@ async function pageHtml(notionDbRow: Row): Promise<HtmlString> {
 
 	return blocks
 		.map((block) => {
+			// @ts-expect-error - legacy loose typing; this file is deleted in the markdown migration
 			const type = block.type
+			// @ts-expect-error - legacy loose typing; this file is deleted in the markdown migration
 			const value = block[type]
 
+			// @ts-expect-error - legacy loose typing; this file is deleted in the markdown migration
 			return type in blockTypes ? blockTypes[type](value) : blockTypes.fallback(block)
 		})
 		.join('')
@@ -224,7 +229,10 @@ function objectMap<T extends Record<string, unknown>>(
 ) {
 	const entries = Object.entries(obj)
 
-	const mappedEntries = entries.map(([key, value], index) => [key, fn(value, key, index)])
+	const mappedEntries = entries.map(([key, value], index) => [
+		key,
+		fn(value as T[keyof T], key, index),
+	])
 
 	return Object.fromEntries(mappedEntries)
 }

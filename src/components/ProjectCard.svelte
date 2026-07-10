@@ -22,7 +22,7 @@
 			muted
 			loop
 			playsInline
-		/>
+		></video>
 	{:else}
 		<img src={project.image || 'images/maybe.gif'} alt={altText} class="" />
 	{/if}

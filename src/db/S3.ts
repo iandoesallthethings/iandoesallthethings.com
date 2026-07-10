@@ -16,7 +16,9 @@ type S3Url = string
 export const cache = new Map<Slug, { url: S3Url; response?: Response | Promise<Response> }>()
 
 export async function getCache(slug: string, sveltekitFetch?: typeof fetch) {
-	let { url, response } = cache.get(slug) ?? {}
+	const cached = cache.get(slug)
+	const url = cached?.url
+	let response = cached?.response
 
 	if (!url) throw error(404, `Could not find asset: ${slug}`)
 

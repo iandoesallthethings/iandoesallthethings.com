@@ -25,7 +25,7 @@
 	<nav class="header-row flex gap-4">
 		<span class="hidden sm:inline text-black/80">ian does</span>
 
-		{#each fields as field}
+		{#each fields as field (field.name)}
 			<label>
 				<input
 					type="radio"
