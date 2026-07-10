@@ -25,16 +25,21 @@ html {
 	height: -webkit-fill-available;
 }
 
-.code {
+:not(pre) > code {
 	@apply font-mono text-sm bg-gray-500/30 rounded-md p-1;
 }
 
-.codeblock {
-	@apply font-mono text-sm bg-gray-500/30 rounded-md p-4 overflow-x-scroll;
+pre {
+	@apply font-mono text-sm bg-gray-500/30 rounded-md p-4 overflow-x-auto mb-2;
 }
 
-.callout {
-	@apply flex flex-row space-x-4 bg-gray-500/30 rounded-md p-4;
+/* Obsidian-style callouts from @r4ai/remark-callout */
+[data-callout] {
+	@apply flex flex-col space-y-1 bg-gray-500/30 rounded-md p-4 mb-2;
+}
+
+[data-callout-title] {
+	@apply font-bold;
 }
 
 figcaption {
@@ -75,6 +80,10 @@ a {
 	@apply text-white/80 hover:underline drop-shadow-md;
 }
 
-li {
-	@apply list-outside;
+ul {
+	@apply list-disc list-outside pl-6 mb-2;
+}
+
+ol {
+	@apply list-decimal list-outside pl-6 mb-2;
 }
