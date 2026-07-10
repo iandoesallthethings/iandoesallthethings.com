@@ -1,65 +1,42 @@
-# denkyuu.io
-
-![GitHub package.json version](https://img.shields.io/github/package-json/v/iandoesallthethings/denkyuu.io)
+# iandoesallthethings.com
 
 ![GitHub deployments](https://img.shields.io/github/deployments/iandoesallthethings/denkyuu.io/production?label=production&logo=vercel)
 
-## TODO
+Personal portfolio. Projects float around a perlin-noise pool; content lives in an
+Obsidian vault right here in the repo.
 
-### Float.ts features
+## How it works
 
-- [x] Implement perlin noise field
-- [x] Make particles drift
-- [x] Refactor into svelte action
-- [x] Implement draggability
-- [x] Put all particles on same noise field
-- [x] Vary z by small amount for each particle to prevent bunching
-- [x] Pop clicked particles to front
-- [x] Implement Vercel ISR
-- [ ] Make particles throwable (vector addition and momentum scaling)
-- [ ] Push focused particles toward the top? (i.e. pass in `target` and push toward it)
-- [ ] Visualize noise field? (maybe p5js?)
-
-### Content
-
-- [x] Add thumbnails and dummy text to particles
-- [x] Filter displayed particles by field
-- [x] Implement notion database backend
-- [ ] Curate and update projects
-- [ ] Write article for each project
-
-### Infrastructure
-
-- [x] Build pipeline
-- [x] Merge and Deploy!!
-
-### Bugs
-
-- [ ] Animations opening pages are jerky and weird
+- **Content** is markdown in [`content/`](content/) — an Obsidian vault. Frontmatter
+  replaces what used to be Notion database properties; `content/attachments/` holds
+  media. See [`docs/migrate-to-markdown.md`](docs/migrate-to-markdown.md) for the
+  architecture and migration plan.
+- **Rendering** is a unified/remark pipeline with Obsidian extensions (wikilinks,
+  embeds, callouts) in [`src/db/Markdown.ts`](src/db/Markdown.ts).
+- **Stack**: SvelteKit (Svelte 5) on Vercel, bun for package management, Node 22
+  runtime. Tasks are tracked with [beads](https://github.com/steveyegge/beads)
+  (`bd ready` to see what's next).
 
 ## Developing
 
 ```bash
-# Install dependencies
-yarn install
+bun install
+bun dev
+```
 
-# Start the dev server
-npm run dev
+## Testing
 
-# Or start the server and open the app in a new browser tab
-npm run dev -- --open
+```bash
+bun run test        # playwright + vitest
+bun run check       # svelte-check
+bun run lint        # prettier + eslint
 ```
 
 ## Building
 
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Theoretically, this app should work with `adapter-static`. Then:
-
 ```bash
-# Build the production version to test locally
-yarn build
-
-# Or build and deploy to AWS
-yarn deploy
+bun run build
+bun run preview
 ```
 
-> You can preview the built app with `yarn preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+Deploys to Vercel on push.
